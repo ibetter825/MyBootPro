@@ -1,0 +1,21 @@
+后:
+	1.多数据源
+	2.redis缓存,没有redis则使用ecache代替 
+	3.MQ消息队列
+	4.文件服务器
+	5.quartz
+	6.线程池
+	7.序列化,集成几种工具的使用
+	8。Google Guava
+	9.权限管理使用 spring shiro
+	10.Session管理使用Spring Session, 配合redis使用
+	11.cglib动态创建类，如果是数据表对应的类，再注入到mybatis的mapper中 x
+前:
+	1.bootstrap.js
+	2.require.js
+	3.layer.js
+	4.angular.js
+	
+wap:
+	1.vue.js
+	2.layer.js//弹出框

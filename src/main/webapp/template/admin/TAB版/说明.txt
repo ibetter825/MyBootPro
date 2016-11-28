@@ -1,0 +1,26 @@
+框架由于涉及到跨iframe操作，请使用http协议访问示例，避免报错：Uncaught SecurityError: Blocked a frame with origin "null" from accessing a frame with origin "null". Protocols, domains, and ports must match. 
+
+框架对外API包含:
+1. openTab: 打开一个TAB页，框架里使用:frame.openTab(数据), 内页里使用：top.window.frame.openTab(数据)
+
+需要传入的参数为：
+{
+    name: 'infoEdit', // 当前TAB的唯一标识，每个TAB都应该不一样
+    label: '信息编辑', // 当前TAB显示出来的标题
+    url: 'infoEdit.html' // 当前TAB需要打开的页面地址
+}
+
+2. closeTab: 关闭一个TAB页，框架里使用:frame.closeTab(name), 内页里使用：top.window.frame.closeTab(name)
+
+需要传入的参数为需要关闭的TAB的name,如：top.window.frame.closeTab('infoEdit') 即关闭信息编辑页面。
+
+
+3. reloadCurrentFrame: 刷新当前的页面。框架里使用:frame.reloadCurrentFrame(), 内页里使用：top.window.frame.reloadCurrentFrame()。关闭弹窗刷新请用这个实现。
+
+无参数
+
+
+
+4. closeCurrent: 关闭当前的页面。框架里使用:frame.closeCurrent(), 内页里使用：top.window.frame.closeCurrent()
+
+无参数

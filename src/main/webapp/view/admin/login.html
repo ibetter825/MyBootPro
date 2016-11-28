@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>欢迎登录后台管理系统</title>
+		<link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body style="background-color:#df7611; background-image:url(/static/a/images/light.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+	    <div id="mainBody">
+	      <div id="cloud1" class="cloud"></div>
+	      <div id="cloud2" class="cloud"></div>
+	    </div>  
+		<div class="logintop">    
+		    <span>欢迎登录后台管理界面平台</span>    
+		    <ul>
+		    <li><a href="#">回首页</a></li>
+		    <li><a href="#">帮助</a></li>
+		    <li><a href="#">关于</a></li>
+		    </ul>    
+	    </div>
+	    <div class="loginbody">
+		    <span class="systemlogo"></span> 
+		    <form id="loginForm" action="/admin/login" method="post" @submit.prevent="submit($event)">
+			    <div class="loginbox loginbox1">
+				    <ul>
+					    <li><input type="text" class="loginuser" name="username" v-model="user.username"/></li>
+					    <li><input type="password" class="loginpwd" name="password" v-model="user.password"/></li>
+					    <li class="yzm">
+					    	<span><input type="text" name="captcha" v-model="user.captcha"/></span><cite>captcha</cite> 
+					    </li>
+					    <li><input type="submit" class="loginbtn" value="登录" v-bind:disabled="disabled"><label><input type="checkbox" name="remember-me" v-model="user.remember"/>记住密码</label><label><a href="#">忘记密码？</a></label></li>
+				    </ul>
+			    </div>
+			 </form>
+	    </div>
+	    <div class="loginbm">版权所有  2014  <a href="http://www.uimaker.com">uimaker.com</a>  仅供学习交流，勿用于任何商业用途</div>
+	</body>
+	<script  src="/static/a/js/jquery.js" type="text/javascript"></script>
+	<!-- 引入jqlite.js -->
+	<!-- <script type="text/javascript" src="/static/c/js/jqlite.min.js"></script> -->
+	<!-- 引入vue.js -->
+	<script src="//cdn.bootcss.com/vue/2.0.6/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+	<!-- <script src="/static/a/js/cloud.js" type="text/javascript"></script> -->
+	
+	<script type="text/javascript">
+		$(function(){
+		    $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+			$(window).resize(function(){  
+			    $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+		    })  
+		});
+		var lf = new Vue({
+			el: '#loginForm',
+			data: {
+				disabled: false,
+				user: {
+					username: 'user',
+					password: '123456',
+					captcha: 'captcha',
+					remember: false
+				},
+				vali: {//验证错误消息
+					username: '',
+					password: '',
+					captcha: ''
+				}
+			},
+			watch: {
+				'user.username': function(val){
+					if(val === '')
+						this.vali.username = '用户名不能为空';
+					else
+						this.vali.username = '';
+				}
+			},
+			methods: {
+				submit: function(e){
+					this.disabled = true;
+					var formData = new FormData(e.target);
+					// GET /someUrl
+				    this.$http.post('/admin/login',formData).then(function(resp){
+				    	var data = resp.body;
+				    	//success
+				    	if(data.success)
+							location.href = data.msg;
+						else
+							alert(data.msg);
+						this.disabled = false;
+				    }, function(resp){
+				    	//error
+				    });
+				}
+			}
+		});
+	</script> 
+</html>

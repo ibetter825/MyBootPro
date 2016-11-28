@@ -1,0 +1,45 @@
+package com.mypro.web.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BaseController {
+	@Autowired  
+	protected  HttpServletRequest request;
+	@Autowired
+	protected HttpServletResponse response;
+	/**
+	 * 验证器存在错误消息的封装
+	 * @param error
+	 * @return
+	 */
+	public Map<String, String> resultErrors(BindingResult error){
+		Map<String, String> res = null;
+		if(error.hasErrors()){
+			res = new HashMap<String, String>();//验证错误结果  filed:message
+			List<ObjectError>  errors = error.getAllErrors();
+			for(ObjectError e : errors){
+				if(e instanceof FieldError)
+					res.put(((FieldError) e).getField(), e.getDefaultMessage());
+			}
+		}
+		return res;
+	}
+	/**
+	 * 获取系统根目录
+	 * @return
+	 */
+	public String getContextPath(String path){
+		return request.getServletContext().getRealPath(path);
+	}
+}

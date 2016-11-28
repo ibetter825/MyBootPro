@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>登录页面</title>
+	<!-- 引入layer样式 -->
+	<link rel="stylesheet" href="/static/c/layer/skin/default/layer.css?v=3.0.1">
+</head>
+<body>
+	<h2>后台登录页面</h2>
+	<form id="loginForm" action="/admin/login" method="post" @submit.prevent="submit($event)">
+	    <div><label> 用户名 : <input type="text" name="username" v-model="user.username"/> </label><span class="vali-error">{{vali.username}}</span></div>
+	    <div><label> 密  码 : <input type="password" name="password" v-model="user.password"/> </label><span class="vali-error">{{vali.password}}</span></div>
+	    <div><label> 验证码 : <input type="text" name="captcha" v-model="user.captcha"/> </label><span class="vali-error">{{vali.captcha}}</span></div>
+	    <input type="checkbox" name="remember-me" v-model="user.remember"/> Remember me
+	    <div><input type="submit" value="登录" v-bind:disabled="disabled"></div>
+	 </form>
+</body>
+<!-- 引入vue.js -->
+<script src="//cdn.bootcss.com/vue/2.0.6/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+<!-- 引入jquery.js -->
+<!-- <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script> -->
+<!-- 引入jqlite.js -->
+<!-- <script type="text/javascript" src="/static/c/js/jqlite.min.js"></script> -->
+<!-- 引入layer.js -->
+<!-- <script type="text/javascript" src="/static/c/layer/layer.js?v=3.0.1"></script> -->
+
+<script type="text/javascript">
+	var lf = new Vue({
+		el: '#loginForm',
+		data: {
+			disabled: false,
+			user: {
+				username: 'user',
+				password: '123456',
+				captcha: 'captcha',
+				remember: false
+			},
+			vali: {//验证错误消息
+				username: '',
+				password: '',
+				captcha: ''
+			}
+		},
+		watch: {
+			'user.username': function(val){
+				if(val === '')
+					this.vali.username = '用户名不能为空';
+				else
+					this.vali.username = '';
+			}
+		},
+		methods: {
+			submit: function(e){
+				this.disabled = true;
+				var formData = new FormData(e.target);
+				// GET /someUrl
+			    this.$http.post('/admin/login',formData).then(function(resp){
+			    	var data = resp.body;
+			    	//success
+			    	if(data.success)
+						location.href = data.msg;
+					else
+						alert(data.msg);
+					this.disabled = false;
+			    }, function(resp){
+			    	//error
+			    });
+			}
+		}
+	});
+</script>
+</html>

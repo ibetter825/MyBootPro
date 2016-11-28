@@ -1,0 +1,14 @@
+#bd{
+	margin-left: 187px;
+}
+
+.leftMenu{
+	float: left;
+	margin-left: -187px;
+	width:187px;
+}
+
+.content-wrap{
+	float: left;
+	width:100%;
+}

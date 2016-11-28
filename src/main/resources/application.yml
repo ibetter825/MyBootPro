@@ -1,0 +1,84 @@
+# yml配置文件是的值属性前面必须有一个空格，如果没有空格，Spring的解析器会忽略此配置项。
+#系统自定义属性配置
+properties:
+    #上传文件根目录
+    uploadRootPath: upload
+#框架需要的属性配置
+# Server settings
+server: 
+    port: 80
+    address: 127.0.0.1
+# 配置 Logback
+logging:
+    #path: /D:/logs 
+    file: ./springboot.log 
+    #config: # location of config file (default classpath:logback.xml for logback) 
+    #level.*= # levels for loggers, e.g. "logging.level.org.springframework=DEBUG" (TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF)
+# 配置mybatis
+mybatis:
+    config: classpath:mybatis-config.xml #本来不需要这个配置文件，但是插件需要在手动配置sqlSessionFactory时设置，自动配置时还没找到方法
+    mapperLocations: classpath*:mapper/*.xml
+    typeAliasesPackage: com.mypro.bean.entity
+# 配置编码及JSP支持
+spring:
+    # HTTP ENCODING 
+    http: 
+        encoding.charset: UTF-8
+        encoding.enable: true
+        encoding.force: true
+    #配置freemarker
+    freemarker:
+        allowRequestOverride: false
+        allowSessionOverride: false
+        cache: true
+        charset: UTF-8
+        checkTemplateLocation: true
+        contentType: text/html
+        enabled: true
+        exposeRequestAttributes: false
+        exposeSessionAttributes: false
+        exposeSpringMacroHelpers: true
+        preferFileSystemAccess: true
+        suffix: .html
+        templateLoaderPath: /view/
+        settings.templateUpdateDelay: 0
+        settings.defaultEncoding: UTF-8
+        settings.classicCompatible: true
+        order: 1
+    # 配置Redis
+    redis:
+        host: localhost
+        password:
+        port: 6379
+    # 数据库配置
+    # DATASOURCE spring.datasource.type旧的spring boot版本是不能识别的。
+    datasource:
+        #主数据源 默认使用的数据源
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/frame?useUnicode=true&characterEncoding=utf-8&useSSL=true
+        username: root
+        password: root
+        #更多数据源
+        #names: ds1 # 多个数据源用","分割
+        #ds1:
+            #driverClassName: com.mysql.jdbc.Driver
+            #url: jdbc:mysql://127.0.0.1:3306/qtblog2?useUnicode=true&characterEncoding=utf-8&useSSL=true
+            #username: root
+            #password: root
+        
+        #连接池配置     在Spring Boot1.4.0中驱动配置信息没有问题，但是连接池的配置信息不再支持这里的配置项，即无法通过配置项直接支持相应的连接池；这里列出的这些配置项可以通过定制化DataSource来实现
+        type: com.alibaba.druid.pool.DruidDataSource
+        initialSize: 5  
+        minIdle: 5  
+        maxActive: 20  
+        maxWait: 60000  
+        timeBetweenEvictionRunsMillis: 60000  
+        minEvictableIdleTimeMillis: 300000  
+        validationQuery: SELECT 1 FROM DUAL  
+        testWhileIdle: true  
+        testOnBorrow: false  
+        testOnReturn: false  
+        poolPreparedStatements: true  
+        maxPoolPreparedStatementPerConnectionSize: 20  
+        filters: stat,wall,log4j  
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
