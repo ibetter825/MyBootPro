@@ -1,17 +1,195 @@
 ﻿<!DOCTYPE>
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>信息管理系统界面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>信息管理系统界面</title>
+    <link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
+    <style>
+        .top {
+            height: 88px;
+            background: url(/static/a/images/topbg.gif) repeat-x;
+        }
+        
+        .left {
+            width: 187px;
+            float: left;
+        }
+        
+        .leftmenu {
+            padding: 0;
+        }
+        
+        .main {
+            margin-left: 187px;
+            margin-right: 0;
+        }
+        
+        .main iframe {
+            width: 100%;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
-<frameset rows="88,*,31" cols="*" frameborder="no" border="0" framespacing="0">
-  <frame src="top.html" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
-  <frameset cols="187,*" frameborder="no" border="0" framespacing="0">
-    <frame src="left.html" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" />
-    <frame src="index.html" name="rightFrame" id="rightFrame" title="rightFrame" />
-  </frameset>
-  <frame src="footer.html" name="bottomFrame" scrolling="No" noresize="noresize" id="bottomFrame" title="bottomFrame" />
-</frameset>
-<noframes><body>
-</body></noframes>
+
+<body>
+    <!--头部-->
+    <header class="top">
+        <div class="topleft">
+            <a href="main.html" target="_parent"><img src="/static/a/images/logo.png" title="系统首页"></a>
+        </div>
+        <ul class="nav">
+            <li>
+                <a href="default.html" target="iframe" class="selected"><img src="/static/a/images/icon01.png" title="工作台">
+                    <h2>工作台</h2>
+                </a>
+            </li>
+            <li>
+                <a href="imgtable.html" target="iframe"><img src="/static/a/images/icon02.png" title="模型管理">
+                    <h2>模型管理</h2>
+                </a>
+            </li>
+            <li>
+                <a href="imglist.html" target="iframe"><img src="/static/a/images/icon03.png" title="模块设计">
+                    <h2>模块设计</h2>
+                </a>
+            </li>
+            <li>
+                <a href="tools.html" target="iframe"><img src="/static/a/images/icon04.png" title="常用工具">
+                    <h2>常用工具</h2>
+                </a>
+            </li>
+            <li>
+                <a href="computer.html" target="iframe"><img src="/static/a/images/icon05.png" title="文件管理">
+                    <h2>文件管理</h2>
+                </a>
+            </li>
+            <li>
+                <a href="tab.html" target="iframe"><img src="/static/a/images/icon06.png" title="系统设置">
+                    <h2>系统设置</h2>
+                </a>
+            </li>
+        </ul>
+        <div class="topright">
+            <ul>
+                <li><span><img src="/static/a/images/help.png" title="帮助" class="helpimg"></span><a href="#">帮助</a></li>
+                <li><a href="#">关于</a></li>
+                <li><a href="login.html" target="_parent">退出</a></li>
+            </ul>
+            <div class="user">
+                <span>admin</span>
+                <i>消息</i>
+                <b>5</b>
+            </div>
+        </div>
+    </header>
+    <!--中间部分-->
+    <section class="middle" id="middle">
+        <!--菜单部分-->
+        <aside class="left">
+            <div class="lefttop"><span></span>通讯录</div>
+            <dl class="leftmenu" id="menus">
+                <dd>
+                    <div class="title">
+                        <span><img src="/static/a/images/leftico01.png"></span>管理信息
+                    </div>
+                    <ul class="menuson">
+                        <li>
+                            <div class="header">
+                                <cite></cite>
+                                <a href="index.html" target="iframe">首页模版</a>
+                                <i></i>
+                            </div>
+                            <ul class="sub-menus">
+                                <li><a href="javascript:;">文件管理</a></li>
+                                <li><a href="javascript:;">模型信息配置</a></li>
+                                <li><a href="javascript:;">基本内容</a></li>
+                                <li><a href="javascript:;">自定义</a></li>
+                            </ul>
+                        </li>
+                        <li class="active">
+                            <div class="header">
+                                <cite></cite>
+                                <a href="right.html" target="iframe">数据列表</a>
+                                <i></i>
+                            </div>
+                            <ul class="sub-menus" style="display: none;">
+                                <li class="active"><a href="javascript:;">文件数据</a></li>
+                                <li><a href="javascript:;">学生数据列表</a></li>
+                                <li class=" "><a href="javascript:;">我的数据列表</a></li>
+                                <li class=" "><a href="javascript:;">自定义</a></li>
+                            </ul>
+                        </li>
+                        <li class=" "><cite></cite><a href="right.html" target="iframe">数据列表</a><i></i></li>
+                        <li><cite></cite><a href="imgtable.html" target="iframe">图片数据表</a><i></i></li>
+                        <li><cite></cite><a href="form.html" target="iframe">添加编辑</a><i></i></li>
+                        <li><cite></cite><a href="imglist.html" target="iframe">图片列表</a><i></i></li>
+                        <li><cite></cite><a href="imglist1.html" target="iframe">自定义</a><i></i></li>
+                        <li><cite></cite><a href="tools.html" target="iframe">常用工具</a><i></i></li>
+                        <li><cite></cite><a href="filelist.html" target="iframe">信息管理</a><i></i></li>
+                        <li><cite></cite><a href="tab.html" target="iframe">Tab页</a><i></i></li>
+                        <li><cite></cite><a href="error.html" target="iframe">404页面</a><i></i></li>
+                    </ul>
+                </dd>
+                <dd>
+                    <div class="title">
+                        <span><img src="/static/a/images/leftico02.png"></span>其他设置
+                    </div>
+                    <ul class="menuson" style="display: none;">
+                        <li><cite></cite><a href="flow.html" target="iframe">流程图</a><i></i></li>
+                        <li><cite></cite><a href="project.html" target="iframe">项目申报</a><i></i></li>
+                        <li><cite></cite><a href="search.html" target="iframe">档案列表显示</a><i></i></li>
+                        <li><cite></cite><a href="tech.html" target="iframe">技术支持</a><i></i></li>
+                    </ul>
+                </dd>
+                <dd>
+                    <div class="title"><span><img src="/static/a/images/leftico03.png"></span>编辑器</div>
+                    <ul class="menuson" style="display: none;">
+                        <li><cite></cite><a href="#">自定义</a><i></i></li>
+                        <li><cite></cite><a href="#">常用资料</a><i></i></li>
+                        <li><cite></cite><a href="#">信息列表</a><i></i></li>
+                        <li><cite></cite><a href="#">其他</a><i></i></li>
+                    </ul>
+                </dd>
+                <dd>
+                    <div class="title"><span><img src="/static/a/images/leftico04.png"></span>日期管理</div>
+                    <ul class="menuson" style="display: none;">
+                        <li><cite></cite><a href="#">自定义</a><i></i></li>
+                        <li><cite></cite><a href="#">常用资料</a><i></i></li>
+                        <li><cite></cite><a href="#">信息列表</a><i></i></li>
+                        <li><cite></cite><a href="#">其他</a><i></i></li>
+                    </ul>
+                </dd>
+            </dl>
+        </aside>
+        <!--内容部分-->
+        <section class="main">
+            <iframe id="iframe" src="index.html" name="iframe" frameborder="no" border="0"></iframe>
+        </section>
+    </section>
+    <!--底部-->
+    <footer class="footer">
+        <span>仅供学习交流，请勿用于任何商业用途</span><i>版权所有 2016 uimaker.com</i>
+    </footer>
+</body>
+<script type="text/javascript">
+    window.resize = function() {
+        let sh = document.documentElement.clientHeight || document.body.clientHeight;
+        // let sw = document.documentElement.clientWidth || document.body.clientWidth;
+        document.getElementById('menus').style.height = sh - 88 - 31 - 40;
+        document.getElementById('iframe').style.height = sh - 88 - 31;
+    }
+    window.onload = function() {
+        resize();
+    };
+    window.onresize = function() {
+        resize();
+    };
+</script>
+
 </html>
