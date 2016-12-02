@@ -15,7 +15,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public SysUser queryUserByName(String user_name) {
 		SysUser user = new SysUser();
-		user.setUser_name(user_name);
+		user.setUserName(user_name);
 		user = sysUserDao.selectOne(user);
 		return user;
 	}

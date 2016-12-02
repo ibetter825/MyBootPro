@@ -28,7 +28,7 @@ public class MyUserDetails extends SysUser implements UserDetails {
 	        }
 	        StringBuilder commaBuilder = new StringBuilder();
 	        for(SysRole role : roles){
-	            commaBuilder.append(role.getRole_no()).append(",");
+	            commaBuilder.append(role.getRoleNo()).append(",");
 	        }
 	        String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
 	        return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
@@ -36,12 +36,12 @@ public class MyUserDetails extends SysUser implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return super.getUser_pwd();
+		return super.getUserPwd();
 	}
 
 	@Override
 	public String getUsername() {
-		return super.getUser_name();
+		return super.getUserName();
 	}
 
 	@Override

@@ -39,7 +39,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         if(user == null)
             throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND);
 
-        String usersalt = user.getUser_salt();
+        String usersalt = user.getUserSalt();
         //加密过程在这里体现
         if (!Md5Util.md5(password+usersalt).equals(user.getPassword()))
             throw new BadCredentialsException(SecurityConstant.WRONG_PASSWORD);

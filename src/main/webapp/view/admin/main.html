@@ -5,46 +5,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>信息管理系统界面</title>
     <link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
-    <style>
-        .top {
-            height: 88px;
-            background: url(/static/a/images/topbg.gif) repeat-x;
-        }
-        
-        .left {
-            width: 187px;
-            float: left;
-        }
-        
-        .leftmenu {
-            padding: 0;
-        }
-        
-        .main {
-            margin-left: 187px;
-            margin-right: 0;
-        }
-        
-        .main iframe {
-            width: 100%;
-        }
-        
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
 </head>
 
-<body>
+<body style="background:#fff3e1;">
     <!--头部-->
     <header class="top">
         <div class="topleft">
-            <a href="main.html" target="_parent"><img src="/static/a/images/logo.png" title="系统首页"></a>
+            <a href="/admin/main" target="_parent"><img src="/static/a/images/logo.png" title="系统首页"></a>
         </div>
         <ul class="nav">
-            <li>
+            <!-- <li>
                 <a href="default.html" target="iframe" class="selected"><img src="/static/a/images/icon01.png" title="工作台">
                     <h2>工作台</h2>
                 </a>
@@ -73,13 +43,13 @@
                 <a href="tab.html" target="iframe"><img src="/static/a/images/icon06.png" title="系统设置">
                     <h2>系统设置</h2>
                 </a>
-            </li>
+            </li> -->
         </ul>
         <div class="topright">
             <ul>
                 <li><span><img src="/static/a/images/help.png" title="帮助" class="helpimg"></span><a href="#">帮助</a></li>
                 <li><a href="#">关于</a></li>
-                <li><a href="login.html" target="_parent">退出</a></li>
+                <li><a href="/admin/logout" target="_parent">退出</a></li>
             </ul>
             <div class="user">
                 <span>admin</span>
@@ -91,85 +61,10 @@
     <!--中间部分-->
     <section class="middle" id="middle">
         <!--菜单部分-->
-        <aside class="left">
-            <div class="lefttop"><span></span>通讯录</div>
-            <dl class="leftmenu" id="menus">
-                <dd>
-                    <div class="title">
-                        <span><img src="/static/a/images/leftico01.png"></span>管理信息
-                    </div>
-                    <ul class="menuson">
-                        <li>
-                            <div class="header">
-                                <cite></cite>
-                                <a href="index.html" target="iframe">首页模版</a>
-                                <i></i>
-                            </div>
-                            <ul class="sub-menus">
-                                <li><a href="javascript:;">文件管理</a></li>
-                                <li><a href="javascript:;">模型信息配置</a></li>
-                                <li><a href="javascript:;">基本内容</a></li>
-                                <li><a href="javascript:;">自定义</a></li>
-                            </ul>
-                        </li>
-                        <li class="active">
-                            <div class="header">
-                                <cite></cite>
-                                <a href="right.html" target="iframe">数据列表</a>
-                                <i></i>
-                            </div>
-                            <ul class="sub-menus" style="display: none;">
-                                <li class="active"><a href="javascript:;">文件数据</a></li>
-                                <li><a href="javascript:;">学生数据列表</a></li>
-                                <li class=" "><a href="javascript:;">我的数据列表</a></li>
-                                <li class=" "><a href="javascript:;">自定义</a></li>
-                            </ul>
-                        </li>
-                        <li class=" "><cite></cite><a href="right.html" target="iframe">数据列表</a><i></i></li>
-                        <li><cite></cite><a href="imgtable.html" target="iframe">图片数据表</a><i></i></li>
-                        <li><cite></cite><a href="form.html" target="iframe">添加编辑</a><i></i></li>
-                        <li><cite></cite><a href="imglist.html" target="iframe">图片列表</a><i></i></li>
-                        <li><cite></cite><a href="imglist1.html" target="iframe">自定义</a><i></i></li>
-                        <li><cite></cite><a href="tools.html" target="iframe">常用工具</a><i></i></li>
-                        <li><cite></cite><a href="filelist.html" target="iframe">信息管理</a><i></i></li>
-                        <li><cite></cite><a href="tab.html" target="iframe">Tab页</a><i></i></li>
-                        <li><cite></cite><a href="error.html" target="iframe">404页面</a><i></i></li>
-                    </ul>
-                </dd>
-                <dd>
-                    <div class="title">
-                        <span><img src="/static/a/images/leftico02.png"></span>其他设置
-                    </div>
-                    <ul class="menuson" style="display: none;">
-                        <li><cite></cite><a href="flow.html" target="iframe">流程图</a><i></i></li>
-                        <li><cite></cite><a href="project.html" target="iframe">项目申报</a><i></i></li>
-                        <li><cite></cite><a href="search.html" target="iframe">档案列表显示</a><i></i></li>
-                        <li><cite></cite><a href="tech.html" target="iframe">技术支持</a><i></i></li>
-                    </ul>
-                </dd>
-                <dd>
-                    <div class="title"><span><img src="/static/a/images/leftico03.png"></span>编辑器</div>
-                    <ul class="menuson" style="display: none;">
-                        <li><cite></cite><a href="#">自定义</a><i></i></li>
-                        <li><cite></cite><a href="#">常用资料</a><i></i></li>
-                        <li><cite></cite><a href="#">信息列表</a><i></i></li>
-                        <li><cite></cite><a href="#">其他</a><i></i></li>
-                    </ul>
-                </dd>
-                <dd>
-                    <div class="title"><span><img src="/static/a/images/leftico04.png"></span>日期管理</div>
-                    <ul class="menuson" style="display: none;">
-                        <li><cite></cite><a href="#">自定义</a><i></i></li>
-                        <li><cite></cite><a href="#">常用资料</a><i></i></li>
-                        <li><cite></cite><a href="#">信息列表</a><i></i></li>
-                        <li><cite></cite><a href="#">其他</a><i></i></li>
-                    </ul>
-                </dd>
-            </dl>
-        </aside>
+        <aside class="left"></aside>
         <!--内容部分-->
         <section class="main">
-            <iframe id="iframe" src="index.html" name="iframe" frameborder="no" border="0"></iframe>
+            <iframe id="iframe" src="/admin/desk" name="iframe" frameborder="no" border="0"></iframe>
         </section>
     </section>
     <!--底部-->
@@ -177,19 +72,226 @@
         <span>仅供学习交流，请勿用于任何商业用途</span><i>版权所有 2016 uimaker.com</i>
     </footer>
 </body>
-<script type="text/javascript">
-    window.resize = function() {
-        let sh = document.documentElement.clientHeight || document.body.clientHeight;
-        // let sw = document.documentElement.clientWidth || document.body.clientWidth;
-        document.getElementById('menus').style.height = sh - 88 - 31 - 40;
-        document.getElementById('iframe').style.height = sh - 88 - 31;
-    }
-    window.onload = function() {
-        resize();
-    };
-    window.onresize = function() {
-        resize();
-    };
-</script>
+	<script src="/static/c/js/vue.js?v=2.0.6"></script>
+	<script src="/static/c/js/vue-resource.min.js?v=1.0.3"></script>
+	<script type="text/javascript">
+	    window.resize = function() {
+	        let sh = document.documentElement.clientHeight || document.body.clientHeight;
+	        // let sw = document.documentElement.clientWidth || document.body.clientWidth;
+	        document.getElementById('menus').style.height = sh - 88 - 31 - 40;
+	        document.getElementById('iframe').style.height = sh - 88 - 31;
+	    }
+	    window.onload = function() {
+	        resize();
+	    };
+	    window.onresize = function() {
+	        resize();
+	    };
+	    
+	    //从 后台获取
+	    let navs = [
+	    	{
+	    		title: '工作台',
+	    		icon: '/static/a/images/icon01.png',
+	    		url: '/admin/desk',
+	    		children: []
+	    	},{
+	    		title: '模型管理',
+	    		icon: '/static/a/images/icon02.png',
+	    		url: 'imgtable.html',
+	    		children: [{
+				title: '管理信息', //二级菜单
+				icon: '/static/a/images/leftico01.png',
+				url: '',
+				children: [
+							{
+								title: '首页模版', //三级菜单
+								icon: '',
+								url: '/admin/desk',
+								children: [
+									{
+										title: '文件数据', //四级菜单
+										icon: '',
+										url: '/admin/desk',
+										children: []
+									},{
+										title: '测试菜单', //四级菜单
+										icon: '',
+										url: '/admin/desk',
+										children: []
+									}
+								]
+							},{
+								title: '首页模版2', //三级菜单
+								icon: '',
+								url: '/admin/desk',
+								children: [
+									{
+										title: '文件数据', //四级菜单
+										icon: '',
+										url: '/admin/desk',
+										children: []
+									},{
+										title: '测试菜单', //四级菜单
+										icon: '',
+										url: '/admin/desk',
+										children: []
+									}
+								]
+							}
+						]
+					},{
+						title: '其他设置', //二级菜单
+						icon: '/static/a/images/leftico02.png',
+						url: '',
+						children: [
+							{
+								title: '首页模版', //三级菜单
+								icon: '',
+								url: '/admin/desk',
+								children: [
+									{
+										title: '文件数据', //四级菜单
+										icon: '',
+										url: '/admin/desk',
+										children: []
+									},{
+										title: '测试菜单', //四级菜单
+										icon: '',
+										url: '/admin/desk',
+										children: []
+									}
+								]
+							}
+						]
+					},{
+						title: '编辑器', //二级菜单
+						icon: '/static/a/images/leftico03.png',
+						url: '',
+						children: []
+					},{
+						title: '日期管理', //二级菜单
+						icon: '/static/a/images/leftico04.png',
+						url: '',
+						children: []
+					}
+				]
+	    	},{
+	    		title: '模块设计',
+	    		icon: '/static/a/images/icon03.png',
+	    		url: 'imglist.html',
+	    		children: []
+	    	},{
+	    		title: '常用工具',
+	    		icon: '/static/a/images/icon04.png',
+	    		url: 'tools.html',
+	    		children: []
+	    	},{
+	    		title: '文件管理',
+	    		icon: '/static/a/images/icon05.png',
+	    		url: 'computer.html',
+	    		children: []
+	    	},{
+	    		title: '系统设置',
+	    		icon: '/static/a/images/icon06.png',
+	    		url: 'tab.html',
+	    		children: []
+	    	}
+	    ];
+	    
+	    let vm_nav = new Vue({
+			el: '.nav',
+			template:`<ul class="nav">
+			            <li v-for="(nav, index) in navs">
+			                <a href="javascript:void(0);" @click.prevent="choose($event, index)" target="iframe" :class="[index == selected ? 'selected' : '']"><img :src="nav.icon" :title="nav.title"><h2>{{ nav.title }}</h2></a>
+			            </li>
+			          </ul>`,
+			data: {
+				navs: navs,
+				selected: 0 //当前选中的nav默认为0
+			},
+			watch: {
+				
+			},
+			methods: {
+				//点击nav
+				choose: function(e, index){
+					let nav = this.navs[index];
+					let children = nav.children;
+					let main = document.getElementsByClassName('main')[0];
+					if(children.length == 0) {
+						document.getElementById('iframe').src = nav.url;
+						vm_menu.show = false;
+						main.style.marginLeft = 0;
+					} else {
+						vm_menu.menus = children;
+						vm_menu.show = true;
+						main.style.marginLeft = 187;
+					}
+					this.selected = index;
+				}
+			}
+		});
+
+		let vm_menu = new Vue({
+			el: '.left',
+			template: `<aside v-show="show" class="left">
+				            <div class="lefttop"><span></span>通讯录</div>
+				            <dl class="leftmenu" id="menus">
+				                <dd v-for="(second, secondi) in menus">
+				                    <div class="title" @click.prevent="choose(2, secondi)">
+				                        <span><img :src="second.icon"></span>{{ second.title }}
+				                    </div>
+				                    <transition name="slide-fade">
+					                    <ul v-if="second.children.length > 0" class="menuson" v-show="secondi == sselected">
+									        <li v-for="(third, thirdi) in second.children" :class="[thirdi == tselected ? 'active' + (third.children.length == 0 ? '':' open') : '']">
+									        	<span v-if="third.children.length == 0"><cite></cite><a href="javascript:void(0);"  @click.prevent="choose(3, thirdi, third)">{{ third.title }}</a><i></i></span>
+									        	<div v-else>
+										        	<div class="header" @click.prevent="choose(3, thirdi)">
+											            <cite></cite>
+											            <a href="javascript:void(0);" target="rightFrame">{{ third.title }}</a>
+											            <i></i>
+										            </div>
+										            <ul class="sub-menus"  v-show="thirdi == tselected">
+											            <li v-for="(fourth, fourthi) in third.children" :class="[fourthi == fselected ? 'active' : '']"><a href="javacript:void(0);"  @click.prevent="choose(4, fourthi, fourth)">{{ fourth.title }}</a></li>
+										            </ul>
+										        </div>
+									        </li>
+								        </ul>
+								    </transition>
+				                </dd>
+				            </dl>
+				        </aside>`,
+			data: {
+				menus: [],
+				show: false,
+				sselected: 0, //当前选中的二级菜单，默认为0
+				tselected: 0, //三级...
+				fselected: 0 //四级...
+			},
+			methods: {
+				choose: function(level, index, menu){
+					if(level == 2){
+						if(this.sselected == index) this.sselected = -1;
+						else{
+							this.sselected = index;
+							this.tselected = 0;
+							this.fselected = 0;
+						}
+					}else if(level == 3){
+						if(this.tselected == index) this.tselected = -1;
+						else{
+							this.tselected = index;
+							this.fselected = 0;
+							if(menu) document.getElementById('iframe').src = menu.url;
+						}
+					}else if(level == 4){
+						this.fselected = index;
+						document.getElementById('iframe').src = menu.url;
+					}
+				}
+			}
+		});
+	</script>
 
 </html>

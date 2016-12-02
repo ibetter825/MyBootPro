@@ -39,9 +39,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             try {
                 List<SysRole> roles = new ArrayList<SysRole>();
                 SysRole role = new SysRole();
-                role.setRole_name("超级管理员");
-                role.setRole_no("super");
-                role.setRole_state((short) 1);
+                role.setRoleName("超级管理员");
+                role.setRoleNo("super");
+                role.setRoleState((short) 1);
                 roles.add(role);
                 return new MyUserDetails(user, roles);
             } catch (Exception e) {

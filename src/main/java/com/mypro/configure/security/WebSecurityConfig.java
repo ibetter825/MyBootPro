@@ -35,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
+        http.headers().frameOptions().sameOrigin()//设置页面可以被同域名下的iframe嵌套iframe嵌套
+        	.and().authorizeRequests()
                 .antMatchers("/", "/static/**", "/tag/*").permitAll()
                 .anyRequest().authenticated()
                 .and()

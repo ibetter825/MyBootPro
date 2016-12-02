@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -41,5 +40,22 @@ public class BaseController {
 	 */
 	public String getContextPath(String path){
 		return request.getServletContext().getRealPath(path);
+	}
+
+	/**
+	 * 添加request请求属性
+	 * @param key
+	 * @param val
+	 */
+	public void setAttr(String key, Object val){
+		request.setAttribute(key, val);
+	}
+	/**
+	 * 获取request请求属性
+	 * @param key
+	 * @return
+	 */
+	public Object getAttr(String key){
+		return request.getAttribute(key);
 	}
 }

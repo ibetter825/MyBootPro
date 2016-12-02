@@ -11,33 +11,40 @@ public class SysRole extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	private String role_no;
-	private String role_name;
-	private String role_desc;
-	private Short role_state;
-	public String getRole_no() {
-		return role_no;
+	private String roleNo;
+	private String roleName;
+	private String rolePno;
+	private String roleDesc;
+	private Short roleState;
+	public String getRoleNo() {
+		return roleNo;
 	}
-	public void setRole_no(String role_no) {
-		this.role_no = role_no;
+	public void setRoleNo(String roleNo) {
+		this.roleNo = roleNo;
 	}
-	public String getRole_name() {
-		return role_name;
+	public String getRoleName() {
+		return roleName;
 	}
-	public void setRole_name(String role_name) {
-		this.role_name = role_name;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
-	public String getRole_desc() {
-		return role_desc;
+	public String getRolePno() {
+		return rolePno;
 	}
-	public void setRole_desc(String role_desc) {
-		this.role_desc = role_desc;
+	public void setRolePno(String rolePno) {
+		this.rolePno = rolePno;
 	}
-	public Short getRole_state() {
-		return role_state;
+	public String getRoleDesc() {
+		return roleDesc;
 	}
-	public void setRole_state(Short role_state) {
-		this.role_state = role_state;
+	public void setRoleDesc(String roleDesc) {
+		this.roleDesc = roleDesc;
+	}
+	public Short getRoleState() {
+		return roleState;
+	}
+	public void setRoleState(Short roleState) {
+		this.roleState = roleState;
 	}
 	
 }

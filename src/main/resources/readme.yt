@@ -1,14 +1,14 @@
 后:
 	1.多数据源
-	2.redis缓存,没有redis则使用ecache代替 
+	2.redis缓存(还没有进行集群配置),没有redis则使用ecache代替 
 	3.MQ消息队列
 	4.文件服务器
 	5.quartz
 	6.线程池
 	7.序列化,集成几种工具的使用
-	8。Google Guava
-	9.权限管理使用 spring shiro
-	10.Session管理使用Spring Session, 配合redis使用
+	8.Google Guava
+	9.权限管理使用 spring security
+	10.Session管理使用Spring Session, 配合redis使用(还没有进行集群配置)
 	11.cglib动态创建类，如果是数据表对应的类，再注入到mybatis的mapper中 x
 前:
 	1.bootstrap.js

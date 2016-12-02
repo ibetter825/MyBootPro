@@ -17,6 +17,18 @@ table{border-collapse:collapse;border-spacing: 0;}
 cite{font-style:normal;}
 h2{font-weight:normal;}
 
+/*common*/
+.hide {display:none;}
+.slide-fade-enter-active {
+  transition: all .5s ease;
+}
+.slide-fade-leave-active {
+  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-active {
+  padding-left: 10px;
+  opacity: 0;
+}
 /*cloud*/
 
 #mainBody {width:100%;height:100%;position:absolute;z-index:-1;}
@@ -71,8 +83,13 @@ h2{font-weight:normal;}
 .loginlist li a:hover{background:url(../images/lbg1.png) no-repeat;}
 .loginlist li a p{font-size:16px; color:#fff; padding-top:10px;}
 
-
-
+/* main.html */
+.top {height: 88px; background: url(/static/a/images/topbg.gif) repeat-x;}
+.left {width: 187px; float: left;}
+.leftmenu {padding: 0;}
+.main {margin-left: 0; margin-right: 0;}
+.main iframe {width: 100%;}
+.footer {position: fixed; bottom: 0; width: 100%;}
 /*top.html*/
 .header{height:88px;}
 .topleft{height:88px;background:url(../images/topleft.jpg) no-repeat;float:left; width:320px;}
@@ -104,8 +121,8 @@ h2{font-weight:normal;}
 .leftmenu{width:187px;padding-bottom: 9999px;margin-bottom: -9999px; overflow:hidden; background:url(../images/leftline.gif) repeat-y right;}
 .leftmenu dd{background:url(../images/leftmenubg.gif) repeat-x;line-height:35px;font-weight:bold;font-size:14px;border-right:solid 1px #ebb683;}
 .leftmenu dd span{float:left;margin:10px 8px 0 12px;}
-.leftmenu dd .menuson{display:none;}
-.leftmenu dd:first-child .menuson{display:block;}
+/* .leftmenu dd .menuson{display:none;}
+.leftmenu dd:first-child .menuson{display:block;} */
 .menuson {line-height:30px; font-weight:normal; }
 .menuson li{cursor:pointer;}
 .menuson li.active{position:relative; background:url(../images/libg.png) repeat-x; line-height:30px; color:#fff;}
@@ -119,7 +136,7 @@ h2{font-weight:normal;}
 
 /**支持二级菜单覆盖样式**/
 .menuson li .header{height:30px;}
-.menuson li .sub-menus{ display:none; background:#FFDCA9;padding:10px 0;border-bottom:1px solid #E8B365;}
+.menuson li .sub-menus{background:#FFDCA9;border-bottom:1px solid #E8B365;}
 .menuson li .sub-menus li{height:25px;line-height:25px;padding-left:48px;border-left:1px solid #d9ebf3;}
 .menuson li .sub-menus li.active{position:relative;right:-1px;border-left:none;background:#fff;}
 .menuson li .sub-menus li a{padding-left:9px;color:#000000; background:url(../images/sub-menu-icon.png) 0 12px no-repeat;}
