@@ -1,18 +1,18 @@
 package com.mypro.configure.mybatis.mapper;
 
-import java.util.Map;
-
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 import com.mypro.configure.mybatis.customer.MySelectProvider;
 
 public interface MySelectMapper<T> {
 	/**
-     * 根据实体中的属性进行查询，只能有一个返回值，有多个结果是抛出异常，查询条件使用等号
+     * 直接查询sql返回map
      *
-     * @param record
+     * @param sql 查询的语句
      * @return
      */
     @SuppressWarnings("rawtypes")
 	@SelectProvider(type = MySelectProvider.class, method = "dynamicSQL")
-    Map selectMap(T rq);
+    List selectBySql(@Param("sql") String sql);
 }

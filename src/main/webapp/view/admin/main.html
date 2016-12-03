@@ -1,85 +1,82 @@
-﻿<!DOCTYPE>
+﻿<!DOCTYPE HTML>
 <html>
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>信息管理系统界面</title>
-    <link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body style="background:#fff3e1;">
-    <!--头部-->
-    <header class="top">
-        <div class="topleft">
-            <a href="/admin/main" target="_parent"><img src="/static/a/images/logo.png" title="系统首页"></a>
-        </div>
-        <ul class="nav">
-            <!-- <li>
-                <a href="default.html" target="iframe" class="selected"><img src="/static/a/images/icon01.png" title="工作台">
-                    <h2>工作台</h2>
-                </a>
-            </li>
-            <li>
-                <a href="imgtable.html" target="iframe"><img src="/static/a/images/icon02.png" title="模型管理">
-                    <h2>模型管理</h2>
-                </a>
-            </li>
-            <li>
-                <a href="imglist.html" target="iframe"><img src="/static/a/images/icon03.png" title="模块设计">
-                    <h2>模块设计</h2>
-                </a>
-            </li>
-            <li>
-                <a href="tools.html" target="iframe"><img src="/static/a/images/icon04.png" title="常用工具">
-                    <h2>常用工具</h2>
-                </a>
-            </li>
-            <li>
-                <a href="computer.html" target="iframe"><img src="/static/a/images/icon05.png" title="文件管理">
-                    <h2>文件管理</h2>
-                </a>
-            </li>
-            <li>
-                <a href="tab.html" target="iframe"><img src="/static/a/images/icon06.png" title="系统设置">
-                    <h2>系统设置</h2>
-                </a>
-            </li> -->
-        </ul>
-        <div class="topright">
-            <ul>
-                <li><span><img src="/static/a/images/help.png" title="帮助" class="helpimg"></span><a href="#">帮助</a></li>
-                <li><a href="#">关于</a></li>
-                <li><a href="/admin/logout" target="_parent">退出</a></li>
-            </ul>
-            <div class="user">
-                <span>admin</span>
-                <i>消息</i>
-                <b>5</b>
-            </div>
-        </div>
-    </header>
-    <!--中间部分-->
-    <section class="middle" id="middle">
-        <!--菜单部分-->
-        <aside class="left"></aside>
-        <!--内容部分-->
-        <section class="main">
-            <iframe id="iframe" src="/admin/desk" name="iframe" frameborder="no" border="0"></iframe>
-        </section>
-    </section>
-    <!--底部-->
-    <footer class="footer">
-        <span>仅供学习交流，请勿用于任何商业用途</span><i>版权所有 2016 uimaker.com</i>
-    </footer>
-</body>
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <title>信息管理系统界面</title>
+	    <link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body style="background:#fff3e1;">
+	    <!--头部-->
+	    <header class="top">
+	        <div class="topleft">
+	            <a href="/admin/main" target="_parent"><img src="/static/a/images/logo.png" title="系统首页"></a>
+	        </div>
+	        <ul class="nav">
+	           <li v-for="(nav, index) in navs">
+	               <a href="javascript:void(0);" @click.prevent="choose($event, index)" target="iframe" :class="[index == selected ? 'selected' : '']"><img :src="nav.icon" :title="nav.title"><h2>{{ nav.title }}</h2></a>
+	           </li>
+	         </ul>
+	        <div class="topright">
+	            <ul>
+	                <li><span><img src="/static/a/images/help.png" title="帮助" class="helpimg"></span><a href="#">帮助</a></li>
+	                <li><a href="#">关于</a></li>
+	                <li><a href="/admin/logout" target="_parent">退出</a></li>
+	            </ul>
+	            <div class="user">
+	                <span>admin</span>
+	                <i>消息</i>
+	                <b>5</b>
+	            </div>
+	        </div>
+	    </header>
+	    <!--中间部分-->
+	    <section class="middle" id="middle">
+	        <!--菜单部分-->
+	        <aside v-show="show" class="left">
+	           <div class="lefttop"><span></span>{{ nav }}</div>
+	           <dl class="leftmenu" id="menus">
+	               <dd v-for="(second, secondi) in menus">
+	                   <div class="title" @click.prevent="choose(2, secondi)">
+	                       <span><img :src="second.icon"></span>{{ second.title }}
+	                   </div>
+	                   <transition name="slide-fade">
+	                    <ul v-if="second.children.length > 0" class="menuson" v-show="secondi == sselected">
+					        <li v-for="(third, thirdi) in second.children" :class="[thirdi == tselected ? 'active' + (third.children.length == 0 ? '':' open') : '']">
+					        	<div v-if="third.children.length == 0"><cite></cite><a href="javascript:void(0);"  @click.prevent="choose(3, thirdi, third)">{{ third.title }}</a><i></i></div>
+					        	<div v-else>
+						        	<div class="header" @click.prevent="choose(3, thirdi)">
+							            <cite></cite>
+							            <a href="javascript:void(0);" target="rightFrame">{{ third.title }}</a>
+							            <i></i>
+						            </div>
+						            <ul class="sub-menus"  v-show="thirdi == tselected">
+							            <li v-for="(fourth, fourthi) in third.children" :class="[fourthi == fselected ? 'active' : '']"><a href="javacript:void(0);"  @click.prevent="choose(4, fourthi, fourth)">{{ fourth.title }}</a></li>
+						            </ul>
+						        </div>
+					        </li>
+				        </ul>
+				    </transition>
+	               </dd>
+	           </dl>
+	       </aside>
+	        <!--内容部分-->
+	        <section class="main">
+	            <iframe id="iframe" src="/admin/desk" name="iframe" frameborder="no" border="0"></iframe>
+	        </section>
+	    </section>
+	    <!--底部-->
+	    <footer class="footer">
+	        <span>仅供学习交流，请勿用于任何商业用途</span><i>版权所有 2016 uimaker.com</i>
+	    </footer>
+	</body>
 	<script src="/static/c/js/vue.js?v=2.0.6"></script>
 	<script src="/static/c/js/vue-resource.min.js?v=1.0.3"></script>
 	<script type="text/javascript">
 	    window.resize = function() {
 	        let sh = document.documentElement.clientHeight || document.body.clientHeight;
 	        // let sw = document.documentElement.clientWidth || document.body.clientWidth;
-	        document.getElementById('menus').style.height = sh - 88 - 31 - 40;
-	        document.getElementById('iframe').style.height = sh - 88 - 31;
+	        document.getElementById('menus').style.height = (sh - 88 - 31 - 40) + 'px';
+	        document.getElementById('iframe').style.height = (sh - 88 - 31) + 'px';
 	    }
 	    window.onload = function() {
 	        resize();
@@ -88,126 +85,10 @@
 	        resize();
 	    };
 	    
-	    //从 后台获取
-	    let navs = [
-	    	{
-	    		title: '工作台',
-	    		icon: '/static/a/images/icon01.png',
-	    		url: '/admin/desk',
-	    		children: []
-	    	},{
-	    		title: '模型管理',
-	    		icon: '/static/a/images/icon02.png',
-	    		url: 'imgtable.html',
-	    		children: [{
-				title: '管理信息', //二级菜单
-				icon: '/static/a/images/leftico01.png',
-				url: '',
-				children: [
-							{
-								title: '首页模版', //三级菜单
-								icon: '',
-								url: '/admin/desk',
-								children: [
-									{
-										title: '文件数据', //四级菜单
-										icon: '',
-										url: '/admin/desk',
-										children: []
-									},{
-										title: '测试菜单', //四级菜单
-										icon: '',
-										url: '/admin/desk',
-										children: []
-									}
-								]
-							},{
-								title: '首页模版2', //三级菜单
-								icon: '',
-								url: '/admin/desk',
-								children: [
-									{
-										title: '文件数据', //四级菜单
-										icon: '',
-										url: '/admin/desk',
-										children: []
-									},{
-										title: '测试菜单', //四级菜单
-										icon: '',
-										url: '/admin/desk',
-										children: []
-									}
-								]
-							}
-						]
-					},{
-						title: '其他设置', //二级菜单
-						icon: '/static/a/images/leftico02.png',
-						url: '',
-						children: [
-							{
-								title: '首页模版', //三级菜单
-								icon: '',
-								url: '/admin/desk',
-								children: [
-									{
-										title: '文件数据', //四级菜单
-										icon: '',
-										url: '/admin/desk',
-										children: []
-									},{
-										title: '测试菜单', //四级菜单
-										icon: '',
-										url: '/admin/desk',
-										children: []
-									}
-								]
-							}
-						]
-					},{
-						title: '编辑器', //二级菜单
-						icon: '/static/a/images/leftico03.png',
-						url: '',
-						children: []
-					},{
-						title: '日期管理', //二级菜单
-						icon: '/static/a/images/leftico04.png',
-						url: '',
-						children: []
-					}
-				]
-	    	},{
-	    		title: '模块设计',
-	    		icon: '/static/a/images/icon03.png',
-	    		url: 'imglist.html',
-	    		children: []
-	    	},{
-	    		title: '常用工具',
-	    		icon: '/static/a/images/icon04.png',
-	    		url: 'tools.html',
-	    		children: []
-	    	},{
-	    		title: '文件管理',
-	    		icon: '/static/a/images/icon05.png',
-	    		url: 'computer.html',
-	    		children: []
-	    	},{
-	    		title: '系统设置',
-	    		icon: '/static/a/images/icon06.png',
-	    		url: 'tab.html',
-	    		children: []
-	    	}
-	    ];
-	    
 	    let vm_nav = new Vue({
 			el: '.nav',
-			template:`<ul class="nav">
-			            <li v-for="(nav, index) in navs">
-			                <a href="javascript:void(0);" @click.prevent="choose($event, index)" target="iframe" :class="[index == selected ? 'selected' : '']"><img :src="nav.icon" :title="nav.title"><h2>{{ nav.title }}</h2></a>
-			            </li>
-			          </ul>`,
 			data: {
-				navs: navs,
+				navs: [],
 				selected: 0 //当前选中的nav默认为0
 			},
 			watch: {
@@ -222,52 +103,35 @@
 					if(children.length == 0) {
 						document.getElementById('iframe').src = nav.url;
 						vm_menu.show = false;
-						main.style.marginLeft = 0;
+						main.style.marginLeft = '0px';
 					} else {
 						vm_menu.menus = children;
 						vm_menu.show = true;
-						main.style.marginLeft = 187;
+						main.style.marginLeft = '187px';
 					}
+					vm_menu.nav = nav.title;
 					this.selected = index;
 				}
+			},
+			created: function () {
+			    this.$http.post('/admin/menu/tree').then(function(resp){
+			    	var data = resp.body;
+			    	this.navs = data;
+			    }, function(resp){
+			    	//error
+			    });
 			}
 		});
 
 		let vm_menu = new Vue({
 			el: '.left',
-			template: `<aside v-show="show" class="left">
-				            <div class="lefttop"><span></span>通讯录</div>
-				            <dl class="leftmenu" id="menus">
-				                <dd v-for="(second, secondi) in menus">
-				                    <div class="title" @click.prevent="choose(2, secondi)">
-				                        <span><img :src="second.icon"></span>{{ second.title }}
-				                    </div>
-				                    <transition name="slide-fade">
-					                    <ul v-if="second.children.length > 0" class="menuson" v-show="secondi == sselected">
-									        <li v-for="(third, thirdi) in second.children" :class="[thirdi == tselected ? 'active' + (third.children.length == 0 ? '':' open') : '']">
-									        	<span v-if="third.children.length == 0"><cite></cite><a href="javascript:void(0);"  @click.prevent="choose(3, thirdi, third)">{{ third.title }}</a><i></i></span>
-									        	<div v-else>
-										        	<div class="header" @click.prevent="choose(3, thirdi)">
-											            <cite></cite>
-											            <a href="javascript:void(0);" target="rightFrame">{{ third.title }}</a>
-											            <i></i>
-										            </div>
-										            <ul class="sub-menus"  v-show="thirdi == tselected">
-											            <li v-for="(fourth, fourthi) in third.children" :class="[fourthi == fselected ? 'active' : '']"><a href="javacript:void(0);"  @click.prevent="choose(4, fourthi, fourth)">{{ fourth.title }}</a></li>
-										            </ul>
-										        </div>
-									        </li>
-								        </ul>
-								    </transition>
-				                </dd>
-				            </dl>
-				        </aside>`,
 			data: {
 				menus: [],
 				show: false,
+				nav: '',//当前选中的模块
 				sselected: 0, //当前选中的二级菜单，默认为0
-				tselected: 0, //三级...
-				fselected: 0 //四级...
+				tselected: -1, //三级...
+				fselected: -1 //四级...
 			},
 			methods: {
 				choose: function(level, index, menu){
