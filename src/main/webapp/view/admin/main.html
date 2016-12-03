@@ -72,11 +72,12 @@
 	<script src="/static/c/js/vue.js?v=2.0.6"></script>
 	<script src="/static/c/js/vue-resource.min.js?v=1.0.3"></script>
 	<script type="text/javascript">
+		let iframe = document.getElementById('iframe');
 	    window.resize = function() {
 	        let sh = document.documentElement.clientHeight || document.body.clientHeight;
 	        // let sw = document.documentElement.clientWidth || document.body.clientWidth;
 	        document.getElementById('menus').style.height = (sh - 88 - 31 - 40) + 'px';
-	        document.getElementById('iframe').style.height = (sh - 88 - 31) + 'px';
+	        iframe.style.height = (sh - 88 - 31) + 'px';
 	    }
 	    window.onload = function() {
 	        resize();
@@ -101,7 +102,7 @@
 					let children = nav.children;
 					let main = document.getElementsByClassName('main')[0];
 					if(children.length == 0) {
-						document.getElementById('iframe').src = nav.url;
+						iframe.src = nav.url;
 						vm_menu.show = false;
 						main.style.marginLeft = '0px';
 					} else {
@@ -143,15 +144,20 @@
 							this.fselected = 0;
 						}
 					}else if(level == 3){
-						if(this.tselected == index) this.tselected = -1;
-						else{
+						if(this.tselected == index){
+							if(menu){
+								this.tselected = index;
+								iframe.src = menu.url;
+							}else
+								this.tselected = -1;
+						}else{
 							this.tselected = index;
 							this.fselected = 0;
-							if(menu) document.getElementById('iframe').src = menu.url;
+							if(menu) iframe.src = menu.url;
 						}
 					}else if(level == 4){
 						this.fselected = index;
-						document.getElementById('iframe').src = menu.url;
+						iframe.src = menu.url;
 					}
 				}
 			}
