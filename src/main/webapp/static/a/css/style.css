@@ -16,6 +16,7 @@ a:hover{color:#EB5409;text-decoration:none;}
 table{border-collapse:collapse;border-spacing: 0;}
 cite{font-style:normal;}
 h2{font-weight:normal;}
+iframe {background: #fff;}
 
 input, textarea, select {outline:none;}
 input:-webkit-autofill,
@@ -26,7 +27,13 @@ select:-webkit-autofill {
 }
 
 /*common*/
+ /* 滚动条 */
+body::-webkit-scrollbar {width: 0.5em;}
+body::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);}
+body::-webkit-scrollbar-thumb {background-color: #DE7B1D;}
+
 .hide {display:none;}
+/* 动画 */
 .slide-fade-enter-active {
   transition: all .5s ease;
 }
@@ -37,6 +44,7 @@ select:-webkit-autofill {
   padding-left: 10px;
   opacity: 0;
 }
+
 /*cloud*/
 
 #mainBody {width:100%;height:100%;position:absolute;z-index:-1;}
@@ -169,11 +177,12 @@ select:-webkit-autofill {
 .toolbar1 li{background:url(../images/toolbg.gif) repeat-x; line-height:33px; height:33px; border:solid 1px #ECCDA1; float:left; padding-right:10px; margin-left:5px;border-radius: 3px; behavior:url(js/pie.htc);}
 .toolbar1 li span{float:left; margin-left:10px; margin-right:5px; margin-top:5px;}
 .tablelist{border:solid 1px #ebb683; width:100%; clear:both;}
-.tablelist th{background:url(../images/th.gif) repeat-x; height:34px; line-height:34px; border-bottom:solid 1px #d7a372; text-indent:11px; text-align:left;}
-.tablelist td{line-height:35px; text-indent:11px; border-right: dotted 1px #F2BF74;}
+.tablelist th{background:url(../images/th.gif) repeat-x; height:34px; line-height:34px; border-bottom:solid 1px #d7a372; padding:0 10px; text-align:left;}
+.tablelist td{line-height:35px; padding:0 10px; border-right: dotted 1px #F2BF74;}
 .tablelink{color:#EB5409;}
 .tablelist tbody tr.odd{background:#FFF7EA;}
 .tablelist tbody tr:hover{background:#FFDCA9;}
+.tablelist tbody tr.selected{background:#FFDCA9;}
 .sort{padding-left:3px;}
 
 /*page*/

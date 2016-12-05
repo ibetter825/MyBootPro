@@ -69,15 +69,14 @@
 	        <span>仅供学习交流，请勿用于任何商业用途</span><i>版权所有 2016 uimaker.com</i>
 	    </footer>
 	</body>
-	<script src="/static/c/js/vue.js?v=2.0.6"></script>
-	<script src="/static/c/js/vue-resource.min.js?v=1.0.3"></script>
+	<#include "/admin/includes/javascript.html"/>
 	<script type="text/javascript">
+		"use strict";
 		let iframe = document.getElementById('iframe');
 	    window.resize = function() {
-	        let sh = document.documentElement.clientHeight || document.body.clientHeight;
-	        // let sw = document.documentElement.clientWidth || document.body.clientWidth;
-	        document.getElementById('menus').style.height = (sh - 88 - 31 - 40) + 'px';
-	        iframe.style.height = (sh - 88 - 31) + 'px';
+	        let ds = tool.dimension();
+	        document.getElementById('menus').style.height = (ds.height - 88 - 31 - 40) + 'px';
+	        iframe.style.height = (ds.height - 88 - 31) + 'px';
 	    }
 	    window.onload = function() {
 	        resize();
