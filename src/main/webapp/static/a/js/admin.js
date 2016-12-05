@@ -143,7 +143,7 @@
 	  */
 	 const CompAdminTools = {
         props: ['props'],
-        template: `<div v-if="tools.length > 0" class="tools">
+        template: `<div v-if="options.tools.length > 0" class="tools">
 			            <ul class="toolbar">
 			                <li v-for="tool in options.tools"><span><img :src="tool.icon" /></span>{{ tool.title }}</li>
 			            </ul>
@@ -337,7 +337,61 @@
 
         }
 	};
-	 
+	
+	let vm_search = null;
+	/**
+	 * 搜索表单
+	 */
+	admin.searchVue = function(searchs){
+		if(vm_search) return;
+		vm_search = new Vue({
+	        el: '.search',
+	        template: `<div class="search">
+							<form action="" method="post">
+								<ul class="seachform1">
+							        <li v-for="(s, index) in searchs">
+							        	<label>{{ s.label }}</label>
+							        	<input v-if="s.type == 'text'" :name="s.name" type="text" class="scinput1">
+							            <div v-else class="vocation">
+								            <div class="uew-select">
+								            	<div class="uew-select-value ue-state-default" style="width: 125px;"><em class="uew-select-text">{{ selected.text }}</em><em class="uew-icon uew-icon-triangle-1-s"></em></div>
+									            	<select class="select3" style="width: 152px;" @change="change(s.options, $event)">
+											            <option v-for="o in s.options" :value="o.value" :selected="iSelected(o)">{{ o.text }}</option>
+										            </select>
+									            </div>
+							            </div>
+							        </li>
+							        <div class="cl"></div>
+						        </ul>
+						        <ul class="seachform1 cl">
+						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" type="submit" class="scbtn1" value="查询">   <input name="" type="reset" class="scbtn" value="重置"></li>  
+						        </ul>
+						    </form>
+				        </div>`,
+	        data: {
+	        	searchs: searchs,
+	        	selected: {value: '', text: '请选择'}
+	        },
+	        methods: {
+	        	iSelected: function(o){
+	        		 if(o['selected']){
+	        			 this.selected = o;
+	        			 return 'selected';
+	        		 }
+	        		 return '';
+	        	},
+	        	change: function(options, e){
+	        		let val = e.target.value;
+	        		for(let i in options){
+	        			if(options[i].value == val){
+	        				this.selected = options[i];
+	        			}
+	        		}
+	        	}
+	        }
+	    });
+	}
+		
 	 /**
      * 静态datagrid vm实例
      * 所有弹出层都调用此实例
@@ -357,7 +411,7 @@
 	            'data-table': CompAdminTable,
 	            'data-pager': CompAdminPager
 	        },
-	        template: `<div class="rightinfo" id="datagrid">
+	        template: `<div id="datagrid">
 	        				<data-tools :props="props"></data-tools>
 	                        <data-table :props="props"></data-table>
 	                        <data-pager :props="props"></data-pager>
@@ -380,11 +434,15 @@
 	        }
 	    });
 	}
-	
+	//datagrid
 	admin.datagrid = function(tools, columns, data, pager){
 		admin.datagridVue();
 		store.commit('a_options', tool.copyAndMerge(admin.datagrid, {tools: tools, columns: columns, data: data, onClickCell: function(index, field, value){
 			layer.msg('当前的值是:'+value);
 		}}));
+	}
+	//搜索表单
+	admin.search = function(searchs){
+		admin.searchVue(searchs);
 	}
 })();
