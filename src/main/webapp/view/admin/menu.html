@@ -5,17 +5,6 @@
 	    <title>无标题文档</title>
 	    <link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
 	    <link href="/static/c/layer/skin/default/layer.css" rel="stylesheet" type="text/css" />
-	    <style type="text/css">
-	    	.tablelist {position: relative;}
-	    	.tablelist th {border: none; background: none;}
-	    	.tablelist thead, .tablelist tbody {display: block;}
-	    	.tablelist thead {position: absolute; width: 100%; box-sizing: border-box; border-bottom: solid 1px #d7a372; border-right:1px solid #EBB683; background: url(/static/a/images/th.gif) repeat-x;}
-	    	.tablelist tbody {margin-top: 35px; height: 300px; overflow: auto;}
-	    	
-	    	.tablelist tbody::-webkit-scrollbar {width: 0.5em; height: 0.5em;}
-			.tablelist tbody::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);}
-			.tablelist tbody::-webkit-scrollbar-thumb {background-color: #DE7B1D;}
-	    </style>
 	</head>
 	<body class="sarchbody">
 	    <div class="place">
@@ -37,7 +26,10 @@
 	var tools = [
 		{
 			title: '添加',
-			icon: '/static/a/images/t01.png'
+			icon: '/static/a/images/t01.png',
+			handler: function(){
+				alert('添加');
+			}
 		},{
 			title: '修改',
 			icon: '/static/a/images/t02.png'
@@ -51,49 +43,34 @@
 	];
 	
 	var columns = [
-		{ checkbox: true, field:'id', title:'', halign: 'center', align: 'center', width: 30},
-		{ field:'id', title:'编号', sortable:true, width: 40, align: 'center' },
-		{ field:'name', title:'标题' },
-		{ field:'user', title:'用户' },
-		{ field:'birthplace', title:'籍贯' },
-		{ field:'time', title:'发布时间', sortable:true },
-		{ field:'isauth', title:'是否审核', sortable:true },
+		{ checkbox: true, field:'menuId', title:'', halign: 'center', align: 'center', width: 30},
+		{ field:'menuId', title:'编号', sortable:true, width: 40, align: 'center' },
+		{ field:'menuName', title:'标题' },
+		{ field:'menuUrl', title:'菜单链接' },
+		{ field:'menuDesc', title:'菜单描述' },
+		{ field:'menuPid', title:'父菜单编号', sortable:true },
+		{ field:'menuState', title:'菜单状态', sortable:true, formatter: function(value, row, index){
+			if(value == 1)
+				return '<font color="green">正常</font>';
+			else if(value == 0)
+				return '<font color="red">不可用</font>';
+			else
+				return '未知状态';
+		}},
+		{ field:'menuSeq', title:'同级排序' },
 		{ field:'id', title:'操作', formatter: function(value, row, index){
 			return '<a href="javascript:alert('+ value +');" class="tablelink">查看</a> <a class="tablelink">删除</a>';
 		} }
 	];
-	
-	var data = {
-		total: 2,
-		rows: [
-		   {id: 1, name: '标题测试1', user: '张三', birthplace: '江苏南京', time: '2016-02-12', isauth: 0},
-		   {id: 2, name: '标题测试2', user: '李四', birthplace: '江苏苏州', time: '2016-05-11', isauth: 1},
-		   {id: 3, name: '标题测试3', user: '王麻子', birthplace: '四川遂宁', time: '2016-11-11', isauth: 0},
-		   {id: 4, name: '标题测试1', user: '张三', birthplace: '江苏南京', time: '2016-02-12', isauth: 0},
-		   {id: 5, name: '标题测试2', user: '李四', birthplace: '江苏苏州', time: '2016-05-11', isauth: 1},
-		   {id: 6, name: '标题测试3', user: '王麻子', birthplace: '四川遂宁', time: '2016-11-11', isauth: 0},
-		   {id: 7, name: '标题测试1', user: '张三', birthplace: '江苏南京', time: '2016-02-12', isauth: 0},
-		   {id: 8, name: '标题测试2', user: '李四', birthplace: '江苏苏州', time: '2016-05-11', isauth: 1},
-		   {id: 9, name: '标题测试3', user: '王麻子', birthplace: '四川遂宁', time: '2016-11-11', isauth: 0},
-		   {id: 10, name: '标题测试1', user: '张三', birthplace: '江苏南京', time: '2016-02-12', isauth: 0},
-		   {id: 11, name: '标题测试2', user: '李四', birthplace: '江苏苏州', time: '2016-05-11', isauth: 1},
-		   {id: 12, name: '标题测试3', user: '王麻子', birthplace: '四川遂宁', time: '2016-11-11', isauth: 0},
-		   {id: 13, name: '标题测试1', user: '张三', birthplace: '江苏南京', time: '2016-02-12', isauth: 0},
-		   {id: 14, name: '标题测试2', user: '李四', birthplace: '江苏苏州', time: '2016-05-11', isauth: 1},
-		   {id: 15, name: '标题测试3', user: '王麻子', birthplace: '四川遂宁', time: '2016-11-11', isauth: 0},
-		   {id: 16, name: '标题测试1', user: '张三', birthplace: '江苏南京', time: '2016-02-12', isauth: 0},
-		   {id: 17, name: '标题测试2', user: '李四', birthplace: '江苏苏州', time: '2016-05-11', isauth: 1},
-		   {id: 18, name: '标题测试3', user: '王麻子', birthplace: '四川遂宁', time: '2016-11-11', isauth: 0}
-		]
-	}
+
 	//datagrid
-	admin.datagrid(tools, columns, data);
+	admin.datagrid({url:'/admin/menu/list', tools: tools, columns});
 	
 	var searchs = [
 		{label: '项目名称', type: 'text', name: 'name', value: ''},
 		{label: '项目编号', type: 'text', name: 'no', value: ''},
 		{label: '项目进度', type: 'select', name: 'jindu', options: [{value:0, text:'还未开始'}, {value:1, text:'正在进行', selected: true}, {value:2, text:'已经完成'}]},
-		{label: '项目状态', type: 'select', name: 'state', options: [{value:0, text:'不正常'}, {value:1, text:'正常', selected: true}]}
+		{label: '项目状态', type: 'select', name: 'state', options: [{value:0, text:'不正常'}, {value:1, text:'正常'}]}
 	];
 	admin.search(searchs);
 	</script>

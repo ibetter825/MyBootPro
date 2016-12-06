@@ -92,20 +92,26 @@
     };
     
 	 window.admin = {};
-	 
+	 window.config = {};
 	 /**
 	  * 默认表格等配置
 	  */
-	 admin.datagrid = {
+	 config.datagrid = {
 		 url: null, //后台请求连接
 		 data: {
 			 total: 0,
 			 rows: [],
-			 footer: null
+			 footer: [],
+			 pageSize: 10,
+			 pageNumber: 1,
+			 totalPages: 1
 		 }, // 数据
 		 tools: [], //弹出层的类型
    		 columns: [], //计数器 默认0
-         pager: {}, //分页栏
+         pagination: true,//是否显示分页工具栏，默认显示
+         pageNumber: 1, //设置分页时初始化页面大小
+         pageSize: 20, //设置分页属性时初始化页面大小
+         pageList: [10, 50, 100, 500], //设置分页属性时初始化页面大小选择列表
          onClickRow: null, //datagrid点击行时的事件, 默认null  参数 index,row,event
          onClickCell: null //单击列
 	 }
@@ -114,7 +120,7 @@
      */
     const s_datagrid = {
         state: {
-            options: admin.datagrid
+            options: config.datagrid
         },
         mutations: {
         	a_options(state, options) {
@@ -149,12 +155,16 @@
      * admin store
      */
     const store = new Vuex.Store({
+    	state: {
+        	client: tool.dimension()//获取当前窗口的宽高 
+    	},
         modules: {
             datagrid: s_datagrid,
             search: s_search
         }
     });
-	 
+    //解决vue-resource异步请求时后台取不到参数的方法
+    Vue.http.options.emulateJSON = true;
 	 /**
 	  * 工具条
 	  */
@@ -162,7 +172,7 @@
         props: ['props'],
         template: `<div v-if="options.tools.length > 0" class="tools">
 			            <ul class="toolbar">
-			                <li v-for="tool in options.tools"><span><img :src="tool.icon" /></span>{{ tool.title }}</li>
+			                <li v-for="tool in options.tools" @click="click(tool)"><span><img :src="tool.icon" /></span>{{ tool.title }}</li>
 			            </ul>
 			        </div>`,
         data: function(){
@@ -171,6 +181,13 @@
         computed: {
         	options(){
         		return this.$store.state.datagrid.options;
+        	}
+        },
+        methods: {
+        	click: function(tool){
+        		let handler = tool['handler'];
+        		if(handler)
+        			handler();
         	}
         },
         watch: {
@@ -213,7 +230,7 @@
         		return this.$store.state.datagrid.options;
         	},
         	client(){
-        		return tool.dimension();//获取当前窗口的宽高
+        		return this.$store.state.client;
         	}
         },
         methods: {
@@ -330,28 +347,32 @@
 	  */
 	 const CompAdminPager = {
         props: ['props'],
-        template: `<div class="pagin">
-				        <div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
+        template: `<div class="pagin" v-if="options.pagination">
+				        <div class="message">共<i class="blue">{{ options.data.total }}</i>条记录，当前显示第&nbsp;<i class="blue">{{ options.data.pageNumber }}&nbsp;</i>页</div>
 				        <ul class="paginList">
-				            <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-				            <li class="paginItem"><a href="javascript:;">1</a></li>
+				            <li v-if="options.data.pageNumber > 1" class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
+				            <li class="paginItem"><a href="javascript:;" @click="change(1)">1</a></li>
 				            <li class="paginItem current"><a href="javascript:;">2</a></li>
 				            <li class="paginItem"><a href="javascript:;">3</a></li>
 				            <li class="paginItem"><a href="javascript:;">4</a></li>
 				            <li class="paginItem"><a href="javascript:;">5</a></li>
 				            <li class="paginItem more"><a href="javascript:;">...</a></li>
-				            <li class="paginItem"><a href="javascript:;">10</a></li>
-				            <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+				            <li class="paginItem"><a href="javascript:;">{{ options.data.totalPages }}</a></li>
+				            <li v-if="options.data.pageNumber < options.data.totalPages" class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
 				        </ul>
 				    </div>`,
         data: function(){
             return {};
         },
         computed: {
-
+        	options(){
+        		return this.$store.state.datagrid.options;
+        	}
         },
-        watch: {
-
+        methods: {
+        	change: function(number){
+        		this.options.data.pageNumber = number;
+        	}
         }
 	};
 	
@@ -367,10 +388,13 @@
 		for(let i in searchs){
 			if(searchs[i].type === 'select'){
 				show[searchs[i].name] = false;
+				selected[searchs[i].name] = {value:'', text:''};
 				opts = searchs[i].options;
 				for(let j in opts){
-					if(opts[j]['selected'])
+					if(opts[j]['selected']){
 						selected[searchs[i].name] = opts[j];
+						break;
+					}
 				}
 			}
 		}
@@ -401,7 +425,7 @@
 							        <div class="cl"></div>
 						        </ul>
 						        <ul class="seachform1 cl">
-						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" type="submit" class="scbtn1" value="查询">   <input name="" type="reset" class="scbtn" value="重置"></li>  
+						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" type="submit" class="scbtn1" value="查询">   <input name="" type="reset" class="scbtn" value="重置"></li><div class="cl"></div>  
 						        </ul>
 						    </form>
 				        </div>`,
@@ -427,6 +451,15 @@
 	        		this.selected[search.name] = option;
 	        		this.show[search.name] = false;
 	        	}
+	        },
+	        mounted: function(){
+	        	//创建好以后修改grid的高度
+	        	let search = document.querySelector('.search');
+	        	let ch = this.$store.state.client.height;//屏幕高度
+	        	let sh = search.clientHeight; //搜索框高度
+	        	let tbody = document.querySelector('.tablelist > tbody');
+	        	//-place -search -formtitle -tools -thead -pagin -formbody 的 padding -与底部的距离
+	        	tbody.style.height = (ch - 40 - 40 - sh - 36 - 35 - 35 - 40) + 'px';
 	        }
 	    });
 	}
@@ -442,9 +475,6 @@
 	        el: '#datagrid',
 	        // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
             store,
-	        data: {
-
-	        },
 	        components: {
 	        	'data-tools': CompAdminTools,
 	            'data-table': CompAdminTable,
@@ -460,13 +490,34 @@
 	            	return {
 	            		
 	    			}
+	            },
+	            options(){
+	            	return store.state.datagrid.options;
 	            }
 	        },
 	        watch: {
-
+	        	'options.data.pageNumber': function(n, o){
+	        		this.loadData(n);
+	        	}
 	        },
 	        methods: {
-
+	        	loadData: function(n){
+	        		let url = this.options.url;
+	        		// GET /someUrl
+				    this.$http.post(url, {'page': n, 'size': 5}).then(function(resp){
+				    	var page = resp.body;
+				    	//success
+				    	this.options.data = page;
+				    }, function(resp){
+				    	//error
+				    });
+	        	}
+	        },
+	        created:　function(){
+	        	let url = this.options.url;
+	        	if(url){
+	        		this.loadData(this.options.data.pageNumber);
+	        	}
 	        },
 	        mounted: function(){
 
@@ -474,11 +525,9 @@
 	    });
 	}
 	//datagrid
-	admin.datagrid = function(tools, columns, data, pager){
+	admin.datagrid = function(options){
+		store.commit('a_options', tool.copyAndMerge(config.datagrid, options));
 		admin.datagridVue();
-		store.commit('a_options', tool.copyAndMerge(admin.datagrid, {tools: tools, columns: columns, data: data, onClickCell: function(index, field, value){
-			layer.msg('当前的值是:'+value);
-		}}));
 	}
 	//搜索表单
 	admin.search = function(searchs){
