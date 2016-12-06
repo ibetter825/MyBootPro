@@ -410,6 +410,7 @@ body::-webkit-scrollbar-thumb {background-color: #DE7B1D;}
 .seachform2 li{margin-bottom:8px;}
 .seachform1 li label,.seachform2 li label{padding-right:10px; float:left; line-height:32px; width:60px; text-align:center;}
 .scinput1{width:150px; height:32px; line-height:32px; border-top:solid 1px #c3ab7d; border-left:solid 1px #c3ab7d; border-right:solid 1px #e7d5ba; border-bottom:solid 1px #e7d5ba; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
+.scinput2{width:122px; height:30px; line-height:30px;}
 .scbtn1{width:95px;height:35px; background:url(../images/btnbg3.png) repeat-x center; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;border-radius:3px; behavior:url(js/pie.htc);}
 .scbtn2{width:85px;height:35px; background:url(../images/btnbg4.png) repeat-x center; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;border-radius:3px; behavior:url(js/pie.htc);}
 
@@ -422,6 +423,11 @@ body::-webkit-scrollbar-thumb {background-color: #DE7B1D;}
 .uew-select-value em{font-style:normal;}
 .uew-select .uew-icon{position:absolute;right:5px;top:10px;}
 .uew-select select{z-index:2;position:absolute;top:3px;_top:6px;cursor:pointer; height:28px;}
+
+.pretty-select {width:152px; font-size:12px; position:absolute; top:34px; z-index: 100;}
+.pretty-select li {margin:0; float:none; padding:5px; border-style:solid; border-color:#E7D5BA; border-width: 0 1px 1px 1px; cursor:pointer;}
+.pretty-select li:hover {background-color:#FFDCA9; color:#E37F1F;}
+.pretty-select .selected {background-color:#FFDCA9; color:#E37F1F;}
 /***** 去除聚焦虚线框 *****/
 a:focus,input[type=checkbox]:focus,input[type=radio]:focus,button:focus,select{outline:none;}
 select{opacity:0;filter:alpha(opacity=0);}

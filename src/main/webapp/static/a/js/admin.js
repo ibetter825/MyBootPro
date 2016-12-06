@@ -128,13 +128,30 @@
             }
         }
     };
-    
+	 /**
+	  * admin search store
+	  */
+	 const s_search = {
+		        state: {
+		            selected: null,
+		            show: null
+		        },
+		        mutations: {
+		        	a_s_selected(state, selected) {
+		                state.selected = selected;
+		            },
+		            a_s_show(state, show) {
+		                state.show = show;
+		            }
+		        }
+		    };
     /**
      * admin store
      */
     const store = new Vuex.Store({
         modules: {
-            datagrid: s_datagrid
+            datagrid: s_datagrid,
+            search: s_search
         }
     });
 	 
@@ -344,8 +361,25 @@
 	 */
 	admin.searchVue = function(searchs){
 		if(vm_search) return;
+		let opts = null;
+		let selected = {};
+		let show = {};
+		for(let i in searchs){
+			if(searchs[i].type === 'select'){
+				show[searchs[i].name] = false;
+				opts = searchs[i].options;
+				for(let j in opts){
+					if(opts[j]['selected'])
+						selected[searchs[i].name] = opts[j];
+				}
+			}
+		}
+		store.commit('a_s_show', show);
+		store.commit('a_s_selected', selected);
+		
 		vm_search = new Vue({
 	        el: '.search',
+	        store,
 	        template: `<div class="search">
 							<form action="" method="post">
 								<ul class="seachform1">
@@ -353,11 +387,14 @@
 							        	<label>{{ s.label }}</label>
 							        	<input v-if="s.type == 'text'" :name="s.name" type="text" class="scinput1">
 							            <div v-else class="vocation">
-								            <div class="uew-select">
-								            	<div class="uew-select-value ue-state-default" style="width: 125px;"><em class="uew-select-text">{{ selected.text }}</em><em class="uew-icon uew-icon-triangle-1-s"></em></div>
-									            	<select class="select3" style="width: 152px;" @change="change(s.options, $event)">
-											            <option v-for="o in s.options" :value="o.value" :selected="iSelected(o)">{{ o.text }}</option>
-										            </select>
+								            <div class="uew-select" @click="sclick(s)" @mouseleave="sleave(s)">
+								            	<div class="uew-select-value ue-state-default" style="width: 125px;">
+							        				<input :name="s.name+'_text'" :value="selected[s.name].text" class="scinput2" readonly="true">
+								            		<input :name="s.name" type="hidden" :value="selected[s.name].value">
+							        				<em class="uew-icon uew-icon-triangle-1-s"></em></div>
+							        				<ul v-show="show[s.name]" class="pretty-select">
+											            <li v-for="o in s.options" :class="[o.value == selected[s.name].value ? 'selected' : '']" @click.stop="schange(o, s)">{{ o.text }}</li>
+										            </ul>
 									            </div>
 							            </div>
 							        </li>
@@ -369,24 +406,26 @@
 						    </form>
 				        </div>`,
 	        data: {
-	        	searchs: searchs,
-	        	selected: {value: '', text: '请选择'}
+	        	searchs: searchs
+	        },
+	        computed: {
+	        	show(){
+	        		return this.$store.state.search.show;
+	        	},
+	        	selected(){
+	        		return this.$store.state.search.selected;
+	        	}
 	        },
 	        methods: {
-	        	iSelected: function(o){
-	        		 if(o['selected']){
-	        			 this.selected = o;
-	        			 return 'selected';
-	        		 }
-	        		 return '';
+	        	sclick: function(select){
+	        		this.show[select.name] = true;
 	        	},
-	        	change: function(options, e){
-	        		let val = e.target.value;
-	        		for(let i in options){
-	        			if(options[i].value == val){
-	        				this.selected = options[i];
-	        			}
-	        		}
+	        	sleave: function(select){
+	        		this.show[select.name] = false;
+	        	},
+	        	schange: function(option, search){
+	        		this.selected[search.name] = option;
+	        		this.show[search.name] = false;
 	        	}
 	        }
 	    });
