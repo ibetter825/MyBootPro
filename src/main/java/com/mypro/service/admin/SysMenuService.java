@@ -1,8 +1,10 @@
 package com.mypro.service.admin;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mypro.bean.entity.SysMenu;
+import com.mypro.bean.rq.QueryRq;
 
 /**
  * 系统菜单 service接口
@@ -15,5 +17,10 @@ public interface SysMenuService {
 	 * @return
 	 */
 	public List<SysMenu> queryMenus();
+	/**
+	 * 通过参数查询菜单
+	 * @return
+	 */
+	List<Map<String, Object>> queryWithParams(QueryRq query);
 	public List queryBySql();
 }

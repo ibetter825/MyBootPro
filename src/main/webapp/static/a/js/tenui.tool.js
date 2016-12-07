@@ -27,15 +27,11 @@
 	        return {width: w, height: h};
     	},
         /**
-         * 合并对象，将子对象合并到父对象中
-         * f: 默认父对象
-         * c: 子对象
+         * 合并对象
          */
         merge: function(f, c){
-            for(let p in c){
-                if(f[p] != undefined)
-                    f[p] = c[p];
-            }
+            for(let p in c) f[p] = c[p];
+            return f;
         },
         /**
          * 复制并合并一个对象
@@ -63,8 +59,12 @@
          */
         copy: function(o){
             let n = {};
-            for(let k in o)
-                n[k] = o[k];
+            for(let k in o){
+            	if(typeof o[k] == "object")
+            		n[k] = this.copy(o[k]);
+            	else
+            		n[k] = o[k];
+            }
             return n;
         },
         /**

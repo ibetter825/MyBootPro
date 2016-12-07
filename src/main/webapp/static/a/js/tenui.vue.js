@@ -19,12 +19,12 @@
 								<ul class="seachform1">
 							        <li v-for="(c, index) in columns">
 							        	<label>{{ c.label }}</label>
-							        	<input v-if="c.type == 'text'" :name="c.name" type="text" class="scinput1">
+							        	<input v-if="c.type == 'text'" :name="c.name" v-model="params[c.name]" type="text" class="scinput1">
 							            <div v-else class="vocation">
 								            <div class="uew-select" @click="sclick(c)" @mouseleave="sleave(c)">
 								            	<div class="uew-select-value ue-state-default" style="width: 125px;">
 							        				<input :name="c.name+'_text'" :value="nodes[c.name].selected.text" class="scinput2" readonly="true">
-								            		<input :name="c.name" type="hidden" :value="nodes[c.name].selected.value">
+								            		<input :name="c.name" type="hidden" v-model="params[c.name]">
 							        				<em class="uew-icon uew-icon-triangle-1-s"></em></div>
 							        				<ul v-show=" nodes[c.name].show" class="pretty-select">
 											            <li v-for="o in c.options" :class="[o.value === nodes[c.name].selected.value ? 'selected' : '']" @click.stop="schange(o, c)">{{ o.text }}</li>
@@ -35,7 +35,7 @@
 							        <div class="cl"></div>
 						        </ul>
 						        <ul class="seachform1 cl">
-						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" @click="submit()" type="button" class="scbtn1" value="查询">   <input name="" type="reset" class="scbtn" value="重置"></li><div class="cl"></div>  
+						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" @click="submit()" type="button" class="scbtn1" value="查询">   <input name="" type="button" @click="reset()" class="scbtn" value="重置"></li><div class="cl"></div>  
 						        </ul>
 						    </form>
 				        </div>`,
@@ -48,6 +48,9 @@
 	        	},
 	        	config(){
 	        		return this.search.config;
+	        	},
+	        	params(){
+	        		return this.search.params;
 	        	},
 	        	columns(){
 	        		return this.config.columns;
@@ -62,11 +65,16 @@
 	        	},
 	        	schange: function(option, column){
 	        		this.nodes[column.name].selected = option;
+	        		this.params[column.name] = option.value;
 	        		this.nodes[column.name].show = false;
 	        	},
 	        	submit: function(){
+	        		store.commit('a_options', [{queryParams: this.params, reload: true}]);//更新datagrid的查询参数
 	        		let func = this.config.submit;
 	        		if(func) func();
+	        	},
+	        	reset: function(){
+	        		store.commit('a_s_reset');
 	        	}
 	        },
 	        mounted: function(){
@@ -137,7 +145,7 @@
 	        		this.options.loading = true;
 	        		this.props.pager.disable = true;
 	        		// GET /someUrl
-				    this.$http.post(url, {'page': this.options.pageNumber, 'size': this.options.pageSize}).then(function(resp){
+				    this.$http.post(url, tool.merge({'page': this.options.pageNumber, 'size': this.options.pageSize}, this.options.queryParams)).then(function(resp){
 				    	var page = resp.body;
 				    	//success
 				    	tool.merge(this.options, page);
@@ -161,24 +169,40 @@
 	        }
 	    });
 	}
-	//datagrid
-	tenui.datagrid = function(options){
+	
+	/**
+	 * datagrid 对象
+	 */
+	tenui.datagrid = {};
+	/*
+	 * 初始化datagrid
+	 */
+	tenui.datagrid.init = function(options){
 		store.commit('a_options', tool.copyAndMerge(tenui.config.datagrid, options));
 		tenui.datagridVue();
 	}
+	/**
+	 * 加载数据
+	 */
+	tenui.datagrid.load = function(args){
+		store.commit('a_options', [{queryParams: args, reload: true}]);
+	}
 	//搜索表单
 	tenui.search = function(search){
-		let opts = null, nodes = {}, columns = search.columns;
+		let opts = null, nodes = {}, columns = search.columns, name = null, params = {};
 		for(let i in columns){
+			name = columns[i].name;
+			params[name] = columns[i].value;
 			if(columns[i].type === 'select'){
-				nodes[columns[i].name] = {};
-				nodes[columns[i].name].selected = {value:'', text:''};
-				nodes[columns[i].name].show = false;
+				nodes[name] = {};
+				nodes[name].selected = {value:'', text:''};
+				nodes[name].show = false;
 				
 				opts = columns[i].options;
 				for(let j in opts){
 					if(opts[j]['selected']){
-						nodes[columns[i].name].selected = opts[j];
+						nodes[name].selected = opts[j];
+						params[name] =  opts[j].value;
 						break;
 					}
 				}
@@ -186,6 +210,7 @@
 		}
 		store.commit('a_s_nodes', nodes);
 		store.commit('a_s_config', search);
+		store.commit('a_s_params', params);
 		tenui.searchVue();
 	}
 })();

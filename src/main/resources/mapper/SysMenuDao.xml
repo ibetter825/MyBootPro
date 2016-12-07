@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
+<mapper namespace="com.mypro.dao.admin.SysMenuDao" >  
+    <select id="selectWithParams" parameterType="java.util.Map" resultType="java.util.Map">
+    	select * from sys_menu 
+    	<trim prefix="WHERE" prefixOverrides="AND|OR">
+	    	<if test="menu_pid != null and menu_pid != ''">
+	    		menu_pid = #{menu_pid, jdbcType=INTEGER}
+	    	</if>
+    	</trim>
+    </select>
+</mapper>  

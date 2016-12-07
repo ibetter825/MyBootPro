@@ -1,5 +1,7 @@
 package com.mypro.dao.admin;
 
+import java.util.List;
+import java.util.Map;
 import com.mypro.bean.entity.SysMenu;
 import com.mypro.dao.BaseDao;
 
@@ -9,5 +11,10 @@ import com.mypro.dao.BaseDao;
  *
  */
 public interface SysMenuDao extends BaseDao<SysMenu> {
-
+	/**
+	 * 通过参数查询
+	 * @param rq
+	 * @return
+	 */
+	public List<Map<String, Object>> selectWithParams(Map<String, Object> rq);
 }

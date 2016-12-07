@@ -11,6 +11,7 @@
 	  */
 	 tenui.config.datagrid = {
 		 url: null, //后台请求连接
+		 queryParams: {}, //请求后台的参数
 		 total: 0,
 		 rows: [],
 		 footer: [],
@@ -51,7 +52,9 @@
 	 const s_search = {
 		        state: {
 		            nodes: null, //格式 {name: {selected: {}, show: true}}
-		            config: null
+		            params: null, //格式 {field:''}
+		            config: null,
+		            init: {}, //存储初始化数据
 		        },
 		        mutations: {
 		        	a_s_config(state, config) {
@@ -59,13 +62,22 @@
 		            },
 		            a_s_nodes(state, nodes) {
 		                state.nodes = nodes;
+		                state.init.nodes = tool.copy(nodes);
+		            },
+		            a_s_params(state, params) {
+		                state.params = params;
+		                state.init.params = tool.copy(params);
+		            },
+		            a_s_reset(state) {//重置表单数据
+		                state.params = tool.copy(state.init.params);
+		                state.nodes = tool.copy(state.init.nodes);
 		            }
 		        }
 		    };
     /**
      * tenui store
      */
-	 window.tenui.store = new Vuex.Store({
+	 tenui.store = new Vuex.Store({
     	state: {
         	client: tool.dimension()//获取当前窗口的宽高 
     	},
@@ -79,7 +91,7 @@
 	 /**
 	  * 工具条
 	  */
-    window.tenui.CompTenuiTools = {
+    tenui.CompTenuiTools = {
         props: ['props'],
         template: `<div v-if="options.tools.length > 0" class="tools">
 			            <ul class="toolbar">
@@ -109,7 +121,7 @@
 	 /**
 	  * 列表
 	  */
-    window.tenui.CompTenuiTable = {
+    tenui.CompTenuiTable = {
         props: ['props'],
         template: `
         			<div class="tablecont">
@@ -257,7 +269,7 @@
 	 /**
 	  * 分页
 	  */
-    window.tenui.CompTenuiPager = {
+    tenui.CompTenuiPager = {
         props: ['props'],
         template: `<div class="pagin" v-if="options.pagination">
 				        <div class="message">共<i class="blue">{{ options.total }}</i>条记录，当前显示第&nbsp;<i class="blue">{{ options.pageNumber }}&nbsp;</i>页，每页显示

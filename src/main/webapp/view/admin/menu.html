@@ -44,12 +44,12 @@
 	
 	var columns = [
 		{ checkbox: true, field:'menuId', title:'', halign: 'center', align: 'center', width: 30},
-		{ field:'menuId', title:'编号', sortable:true, width: 40, align: 'center' },
-		{ field:'menuName', title:'标题' },
-		{ field:'menuUrl', title:'菜单链接' },
-		{ field:'menuDesc', title:'菜单描述' },
-		{ field:'menuPid', title:'父菜单编号', sortable:true },
-		{ field:'menuState', title:'菜单状态', sortable:true, formatter: function(value, row, index){
+		{ field:'menu_id', title:'编号', sortable:true, width: 40, align: 'center' },
+		{ field:'menu_name', title:'标题' },
+		{ field:'menu_url', title:'菜单链接' },
+		{ field:'menu_desc', title:'菜单描述' },
+		{ field:'menu_pid', title:'父菜单编号', sortable:true },
+		{ field:'menu_state', title:'菜单状态', sortable:true, formatter: function(value, row, index){
 			if(value == 1)
 				return '<font color="green">正常</font>';
 			else if(value == 0)
@@ -57,24 +57,24 @@
 			else
 				return '未知状态';
 		}},
-		{ field:'menuSeq', title:'同级排序' },
+		{ field:'menu_seq', title:'同级排序' },
 		{ field:'id', title:'操作', formatter: function(value, row, index){
 			return '<a href="javascript:alert('+ value +');" class="tablelink">查看</a> <a class="tablelink">删除</a>';
 		} }
 	];
 
 	//datagrid
-	tenui.datagrid({url:'/admin/menu/list', tools: tools, columns});
+	tenui.datagrid.init({url:'/admin/menu/list', tools: tools, columns: columns});
 	
 	var search = {
 		columns: [
-				{label: '菜单名称', type: 'text', name: 'menuName', value: ''},
+				{label: '菜单名称', type: 'text', name: "rq['menu_pid']", value: ''},
 				{label: '菜单编号', type: 'text', name: 'menuId', value: ''},
-				{label: '菜单状态', type: 'select', name: 'menuState', options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
+				{label: '菜单状态', type: 'select', name: "rq['menu_state']", options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
 		],
 		action: '', //action
 		submit: function(){
-			alert(1);
+			//alert('重新查询');
 		}, //function 查询按钮的回调函数
 		reset: null //function重置按钮的回调函数
 	}
