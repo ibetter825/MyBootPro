@@ -163,7 +163,7 @@
 	}
 	//datagrid
 	tenui.datagrid = function(options){
-		store.commit('a_options', tool.copyAndMerge(config.datagrid, options));
+		store.commit('a_options', tool.copyAndMerge(tenui.config.datagrid, options));
 		tenui.datagridVue();
 	}
 	//搜索表单

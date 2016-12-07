@@ -5,11 +5,11 @@
 !(function(){
 	"use strict";
 	 window.tenui = {};
-	 window.config = {};
+	 tenui.config = {};
 	 /**
 	  * 默认表格等配置
 	  */
-	 config.datagrid = {
+	 tenui.config.datagrid = {
 		 url: null, //后台请求连接
 		 total: 0,
 		 rows: [],
@@ -31,7 +31,7 @@
      */
     const s_datagrid = {
         state: {
-            options: config.datagrid
+            options: tenui.config.datagrid
         },
         mutations: {
         	a_options(state, options) {
