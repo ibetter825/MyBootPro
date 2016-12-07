@@ -98,20 +98,18 @@
 	  */
 	 config.datagrid = {
 		 url: null, //后台请求连接
-		 data: {
-			 total: 0,
-			 rows: [],
-			 footer: [],
-			 pageSize: 10,
-			 pageNumber: 1,
-			 totalPages: 1
-		 }, // 数据
+		 total: 0,
+		 rows: [],
+		 footer: [],
+		 pageSize: 20,
+		 pageNumber: 1,
+		 totalPages: 1,
 		 tools: [], //弹出层的类型
    		 columns: [], //计数器 默认0
+   		 loading: false, //是否显示加载中gif
+   		 reload: false, //重新加载当前页面
          pagination: true,//是否显示分页工具栏，默认显示
-         pageNumber: 1, //设置分页时初始化页面大小
-         pageSize: 20, //设置分页属性时初始化页面大小
-         pageList: [10, 50, 100, 500], //设置分页属性时初始化页面大小选择列表
+         pageList: [10, 20, 50, 100, 500], //设置分页属性时初始化页面大小选择列表
          onClickRow: null, //datagrid点击行时的事件, 默认null  参数 index,row,event
          onClickCell: null //单击列
 	 }
@@ -139,15 +137,15 @@
 	  */
 	 const s_search = {
 		        state: {
-		            selected: null,
-		            show: null
+		            nodes: null, //格式 {name: {selected: {}, show: true}}
+		            config: null
 		        },
 		        mutations: {
-		        	a_s_selected(state, selected) {
-		                state.selected = selected;
+		        	a_s_config(state, config) {
+		                state.config = config;
 		            },
-		            a_s_show(state, show) {
-		                state.show = show;
+		            a_s_nodes(state, nodes) {
+		                state.nodes = nodes;
 		            }
 		        }
 		    };
@@ -200,24 +198,28 @@
 	  */
 	 const CompAdminTable = {
         props: ['props'],
-        template: `<table class="tablelist">
-			            <thead>
-		                <tr>
-		                    <th v-for="col in options.columns" :style="style(col, 'th')">
-		                    	<input v-if="col.checkbox" name="checkedAll" @click.stop="checkAll()" type="checkbox" value="" v-model="checkedAll"/>
-		                    	{{ col.title }}	<i v-if="col.sortable" class="sort"><img src="/static/a/images/px.gif" /></i>
-		                    </th>
-		                </tr>
-		            </thead>
-		            <tbody>
-		                <tr v-for="(row, ri) in options.data.rows" @click.stop="clickRow(ri, row, $event)" :class="[ri % 2 == 0 ? 'odd' : '', selecteds[ri]]">
-		                	<td v-for="(col, ci) in options.columns" :style="style(col, 'td')">
-		                		<span v-if="col.checkbox"><input :name="col.field" type="checkbox" :value="row[col.field]" v-model="checkeds" /></span>
-		                		<span v-else @click.stop="clickCell(ri, col.field, row[col.field], $event, row)" v-html="formatter(row[col.field], row, ri, ci)"></span>
-		                	</td>
-		                </tr>
-		            </tbody>
-		        </table>`,
+        template: `
+        			<div class="tablecont">
+	        			<table class="tablelist" :style="props.table.bg">
+				            <thead>
+				                <tr>
+				                    <th v-for="col in options.columns" :style="style(col, 'th')">
+				                    	<input v-if="col.checkbox" name="checkedAll" @click.stop="checkAll()" type="checkbox" value="" v-model="checkedAll"/>
+				                    	{{ col.title }}	<i v-if="col.sortable" class="sort"><img src="/static/a/images/px.gif" /></i>
+				                    </th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                <tr v-for="(row, ri) in options.rows" @click.stop="clickRow(ri, row, $event)" :class="[ri % 2 == 0 ? 'odd' : '', selecteds[ri]]">
+				                	<td v-for="(col, ci) in options.columns" :style="style(col, 'td')">
+				                		<span v-if="col.checkbox"><input :name="col.field" type="checkbox" :value="row[col.field]" v-model="checkeds" /></span>
+				                		<span v-else @click.stop="clickCell(ri, col.field, row[col.field], $event, row)" v-html="formatter(row[col.field], row, ri, ci)"></span>
+				                	</td>
+				                </tr>
+				            </tbody>
+				        </table>
+				        <div v-show="options.loading" class="loading"></div>
+			        </div>`,
         data: function(){
             return {
             	checkedAll: false,
@@ -228,9 +230,6 @@
         computed: {
         	options(){
         		return this.$store.state.datagrid.options;
-        	},
-        	client(){
-        		return this.$store.state.client;
         	}
         },
         methods: {
@@ -285,7 +284,7 @@
         			this.selecteds = [];
         		}else{
         			this.checkedAll = true;
-        			let rows = this.options.data.rows;
+        			let rows = this.options.rows;
         			this.checkeds = [];
         			let col = this.options.columns[0];
         			for(let i in rows){
@@ -305,7 +304,7 @@
         		let col = this.options.columns[0];
         		let cb = col.checkbox;
         		if(cb){
-        			let size = this.options.data.rows.length;
+        			let size = this.options.rows.length;
         			let pk = row[col.field]; //复选框的字段
         			let checkeds = this.checkeds;
             		let i = checkeds.indexOf(pk);
@@ -348,17 +347,22 @@
 	 const CompAdminPager = {
         props: ['props'],
         template: `<div class="pagin" v-if="options.pagination">
-				        <div class="message">共<i class="blue">{{ options.data.total }}</i>条记录，当前显示第&nbsp;<i class="blue">{{ options.data.pageNumber }}&nbsp;</i>页</div>
+				        <div class="message">共<i class="blue">{{ options.total }}</i>条记录，当前显示第&nbsp;<i class="blue">{{ options.pageNumber }}&nbsp;</i>页，每页显示
+				        &nbsp;<select v-model="options.pageSize">
+				        		<option v-for="l in options.pageList" :value="l" :selected="[l == options.pageSize ? 'selected' : '']">{{ l }}</option>
+				        	</select>&nbsp;条记录
+				        </div>
 				        <ul class="paginList">
-				            <li v-if="options.data.pageNumber > 1" class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-				            <li class="paginItem"><a href="javascript:;" @click="change(1)">1</a></li>
-				            <li class="paginItem current"><a href="javascript:;">2</a></li>
-				            <li class="paginItem"><a href="javascript:;">3</a></li>
-				            <li class="paginItem"><a href="javascript:;">4</a></li>
-				            <li class="paginItem"><a href="javascript:;">5</a></li>
-				            <li class="paginItem more"><a href="javascript:;">...</a></li>
-				            <li class="paginItem"><a href="javascript:;">{{ options.data.totalPages }}</a></li>
-				            <li v-if="options.data.pageNumber < options.data.totalPages" class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+				        	<li class="paginItem"><a href="javascript:;" @click="refresh()"><span class="pagerefresh"></span></a></li>
+				            <li v-if="options.pageNumber > 1" class="paginItem"><a href="javascript:;" @click="change(0, -1)"><span class="pagepre"></span></a></li>
+				            <li v-if="options.pageNumber > 3" class="paginItem"><a href="javascript:;" @click="change(1)">首页</a></li>
+				            <li v-if="options.pageNumber > 3" class="paginItem more"><a href="javascript:;">...</a></li>
+				            <li class="paginItem" v-for="n in count.front"><a href="javascript:;" @click="change(n)">{{ n }}</a></li>
+				            <li class="paginItem current"><a href="javascript:;" @click="change(count.middle)">{{ count.middle }}</a></li>
+				            <li class="paginItem" v-for="n in count.back"><a href="javascript:;" @click="change(n)">{{ n }}</a></li>
+				            <li v-if="options.pageNumber < options.totalPages - 2" class="paginItem more"><a href="javascript:;">...</a></li>
+				            <li v-if="options.pageNumber < options.totalPages - 2" class="paginItem"><a href="javascript:;" @click="change(options.totalPages)">末页</a></li>
+				            <li v-if="options.pageNumber < options.totalPages" class="paginItem"><a href="javascript:;" @click="change(0, 1)"><span class="pagenxt"></span></a></li>
 				        </ul>
 				    </div>`,
         data: function(){
@@ -367,11 +371,47 @@
         computed: {
         	options(){
         		return this.$store.state.datagrid.options;
+        	},
+        	count(){
+        		let pn = this.options.pageNumber;
+        		let tp = this.options.totalPages;
+        		let start = pn - 2 < 1 ? 1 : pn - 2, end = pn + 2 > tp ? tp : pn + 2;
+        		if(tp >= 5){
+        			let dv = end - start;
+        			let c = 0;
+            		switch(dv){
+            			case 2:
+            				c = 2;
+            				break;
+            			case 3:
+            				c = 1;
+            				break;
+            		}
+            		if(start == 1) end = end + c > tp ? tp : end + c;
+    				else if(end == tp) start = start - c < 1 ? 1 : start - c;
+        		}
+        		
+        		let front = [], back = [];
+        		for(let i = start; i < pn; i++)
+        			front.push(i);
+        		for(let i = pn + 1; i <= end; i++)
+        			back.push(i);
+        		return {
+        			front: front,
+        			back: back,
+        			middle: pn
+        		};
         	}
         },
         methods: {
-        	change: function(number){
-        		this.options.data.pageNumber = number;
+        	change: function(number, d){
+        		if(!this.props.pager.disable){
+        			if(number != 0) this.options.pageNumber = number;
+        			else this.options.pageNumber += d;
+        		}
+        	},
+        	refresh(){
+        		this.options.reload = true;//重新加载
         	}
         }
 	};
@@ -380,44 +420,25 @@
 	/**
 	 * 搜索表单
 	 */
-	admin.searchVue = function(searchs){
+	admin.searchVue = function(){
 		if(vm_search) return;
-		let opts = null;
-		let selected = {};
-		let show = {};
-		for(let i in searchs){
-			if(searchs[i].type === 'select'){
-				show[searchs[i].name] = false;
-				selected[searchs[i].name] = {value:'', text:''};
-				opts = searchs[i].options;
-				for(let j in opts){
-					if(opts[j]['selected']){
-						selected[searchs[i].name] = opts[j];
-						break;
-					}
-				}
-			}
-		}
-		store.commit('a_s_show', show);
-		store.commit('a_s_selected', selected);
-		
 		vm_search = new Vue({
 	        el: '.search',
 	        store,
 	        template: `<div class="search">
-							<form action="" method="post">
+							<form :action="config.action" method="post">
 								<ul class="seachform1">
-							        <li v-for="(s, index) in searchs">
-							        	<label>{{ s.label }}</label>
-							        	<input v-if="s.type == 'text'" :name="s.name" type="text" class="scinput1">
+							        <li v-for="(c, index) in columns">
+							        	<label>{{ c.label }}</label>
+							        	<input v-if="c.type == 'text'" :name="c.name" type="text" class="scinput1">
 							            <div v-else class="vocation">
-								            <div class="uew-select" @click="sclick(s)" @mouseleave="sleave(s)">
+								            <div class="uew-select" @click="sclick(c)" @mouseleave="sleave(c)">
 								            	<div class="uew-select-value ue-state-default" style="width: 125px;">
-							        				<input :name="s.name+'_text'" :value="selected[s.name].text" class="scinput2" readonly="true">
-								            		<input :name="s.name" type="hidden" :value="selected[s.name].value">
+							        				<input :name="c.name+'_text'" :value="nodes[c.name].selected.text" class="scinput2" readonly="true">
+								            		<input :name="c.name" type="hidden" :value="nodes[c.name].selected.value">
 							        				<em class="uew-icon uew-icon-triangle-1-s"></em></div>
-							        				<ul v-show="show[s.name]" class="pretty-select">
-											            <li v-for="o in s.options" :class="[o.value == selected[s.name].value ? 'selected' : '']" @click.stop="schange(o, s)">{{ o.text }}</li>
+							        				<ul v-show=" nodes[c.name].show" class="pretty-select">
+											            <li v-for="o in c.options" :class="[o.value === nodes[c.name].selected.value ? 'selected' : '']" @click.stop="schange(o, c)">{{ o.text }}</li>
 										            </ul>
 									            </div>
 							            </div>
@@ -425,31 +446,38 @@
 							        <div class="cl"></div>
 						        </ul>
 						        <ul class="seachform1 cl">
-						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" type="submit" class="scbtn1" value="查询">   <input name="" type="reset" class="scbtn" value="重置"></li><div class="cl"></div>  
+						        	<li class="sarchbtn"><label>&nbsp;</label><input name="" @click="submit()" type="button" class="scbtn1" value="查询">   <input name="" type="reset" class="scbtn" value="重置"></li><div class="cl"></div>  
 						        </ul>
 						    </form>
 				        </div>`,
-	        data: {
-	        	searchs: searchs
-	        },
 	        computed: {
-	        	show(){
-	        		return this.$store.state.search.show;
+	        	search(){
+	        		return this.$store.state.search;
 	        	},
-	        	selected(){
-	        		return this.$store.state.search.selected;
+	        	nodes(){
+	        		return this.search.nodes;
+	        	},
+	        	config(){
+	        		return this.search.config;
+	        	},
+	        	columns(){
+	        		return this.config.columns;
 	        	}
 	        },
 	        methods: {
-	        	sclick: function(select){
-	        		this.show[select.name] = true;
+	        	sclick: function(column){
+	        		this.nodes[column.name].show = true;
 	        	},
-	        	sleave: function(select){
-	        		this.show[select.name] = false;
+	        	sleave: function(column){
+	        		this.nodes[column.name].show = false;
 	        	},
-	        	schange: function(option, search){
-	        		this.selected[search.name] = option;
-	        		this.show[search.name] = false;
+	        	schange: function(option, column){
+	        		this.nodes[column.name].selected = option;
+	        		this.nodes[column.name].show = false;
+	        	},
+	        	submit: function(){
+	        		let func = this.config.submit;
+	        		if(func) func();
 	        	}
 	        },
 	        mounted: function(){
@@ -488,35 +516,55 @@
 	        computed: {
 	            props(){//传递给子组件的属性值
 	            	return {
-	            		
+	            		table: {
+	            			loading: false
+	            		},
+	            		pager: {
+	            			disable: false
+	            		}
 	    			}
 	            },
 	            options(){
-	            	return store.state.datagrid.options;
+	            	return this.$store.state.datagrid.options;
 	            }
 	        },
 	        watch: {
-	        	'options.data.pageNumber': function(n, o){
-	        		this.loadData(n);
-	        	}
+	        	'options.pageNumber': function(n, o){
+	        		this.loadData();
+	        	},
+	        	'options.pageSize': function(){
+	        		this.loadData();
+	        	},
+	        	'options.reload': function(n){
+	        		if(n) {
+	        			this.loadData();
+	        			this.options.reload = false;
+	        		}
+	        	},
 	        },
 	        methods: {
 	        	loadData: function(n){
 	        		let url = this.options.url;
+	        		this.options.loading = true;
+	        		this.props.pager.disable = true;
 	        		// GET /someUrl
-				    this.$http.post(url, {'page': n, 'size': 5}).then(function(resp){
+				    this.$http.post(url, {'page': this.options.pageNumber, 'size': this.options.pageSize}).then(function(resp){
 				    	var page = resp.body;
 				    	//success
-				    	this.options.data = page;
+				    	tool.merge(this.options, page);
+				    	this.props.table.bg = '';
+				    	this.props.pager.disable = false;
+				    	this.options.loading = false;
 				    }, function(resp){
 				    	//error
+				    	this.props.pager.disable = false;
 				    });
 	        	}
 	        },
 	        created:　function(){
 	        	let url = this.options.url;
 	        	if(url){
-	        		this.loadData(this.options.data.pageNumber);
+	        		this.loadData(this.options.pageNumber);
 	        	}
 	        },
 	        mounted: function(){
@@ -530,7 +578,25 @@
 		admin.datagridVue();
 	}
 	//搜索表单
-	admin.search = function(searchs){
-		admin.searchVue(searchs);
+	admin.search = function(search){
+		let opts = null, nodes = {}, columns = search.columns;
+		for(let i in columns){
+			if(columns[i].type === 'select'){
+				nodes[columns[i].name] = {};
+				nodes[columns[i].name].selected = {value:'', text:''};
+				nodes[columns[i].name].show = false;
+				
+				opts = columns[i].options;
+				for(let j in opts){
+					if(opts[j]['selected']){
+						nodes[columns[i].name].selected = opts[j];
+						break;
+					}
+				}
+			}
+		}
+		store.commit('a_s_nodes', nodes);
+		store.commit('a_s_config', search);
+		admin.searchVue();
 	}
 })();

@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.mypro.bean.constant.QueryConstant;
 import com.mypro.bean.entity.SysMenu;
 import com.mypro.bean.model.PageModel;
+import com.mypro.bean.rq.PagerRq;
 import com.mypro.service.admin.SysMenuService;
 
 @RestController
@@ -38,12 +39,14 @@ public class MenuController extends BaseAdminController {
 	 * @return
 	 */
 	@RequestMapping(value="/menu/list")
-	public PageModel list(
-			@RequestParam(name = "page", defaultValue = QueryConstant.DEFAULT_PAGENUMBER)
+	public PageModel list(PagerRq page){
+		/*
+		    @RequestParam(name = "page", defaultValue = QueryConstant.DEFAULT_PAGENUMBER)
 			Integer page,
 			@RequestParam(name = "size", defaultValue = QueryConstant.DEFAULT_PAGESIZE)
-			Integer size){
-		Page<SysMenu> pager = PageHelper.startPage(page, size);//分页插件
+			Integer size
+		 */
+		Page<SysMenu> pager = PageHelper.startPage(page.getPage(), page.getSize());//分页插件
 		sysMenuService.queryMenus();
 		return new PageModel(pager);
 	}

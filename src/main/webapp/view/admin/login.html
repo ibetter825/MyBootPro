@@ -65,9 +65,9 @@
 			methods: {
 				submit: function(e){
 					this.disabled = true;
-					var formData = new FormData(e.target);
+					//var formData = new FormData(e.target);
 					// GET /someUrl
-				    this.$http.post('/admin/login',formData).then(function(resp){
+				    this.$http.post('/admin/login', this.user).then(function(resp){
 				    	var data = resp.body;
 				    	//success
 				    	if(data.success)

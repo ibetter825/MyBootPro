@@ -66,12 +66,19 @@
 	//datagrid
 	admin.datagrid({url:'/admin/menu/list', tools: tools, columns});
 	
-	var searchs = [
-		{label: '项目名称', type: 'text', name: 'name', value: ''},
-		{label: '项目编号', type: 'text', name: 'no', value: ''},
-		{label: '项目进度', type: 'select', name: 'jindu', options: [{value:0, text:'还未开始'}, {value:1, text:'正在进行', selected: true}, {value:2, text:'已经完成'}]},
-		{label: '项目状态', type: 'select', name: 'state', options: [{value:0, text:'不正常'}, {value:1, text:'正常'}]}
-	];
-	admin.search(searchs);
+	var search = {
+		columns: [
+				{label: '菜单名称', type: 'text', name: 'menuName', value: ''},
+				{label: '菜单编号', type: 'text', name: 'menuId', value: ''},
+				{label: '菜单状态', type: 'select', name: 'menuState', options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
+		],
+		action: '', //action
+		submit: function(){
+			alert(1);
+		}, //function 查询按钮的回调函数
+		reset: null //function重置按钮的回调函数
+	}
+	
+	admin.search(search);
 	</script>
 </html>
