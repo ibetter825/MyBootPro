@@ -213,6 +213,7 @@ body::-webkit-scrollbar-thumb {background-color: #DE7B1D;}
 .pagin select {border:1px solid #EBB683;}
 .pagepre{background:url(../images/pre.gif) no-repeat center center; width:31px; height:28px;}
 .pagenxt{background:url(../images/next.gif) no-repeat center center; width:31px; height:28px;}
+.pagerfrh{background:url(../images/refresh.gif) no-repeat center center; width:31px; height:28px;}
 
 /*index*/
 .mainindex{padding:20px; overflow:hidden;}
