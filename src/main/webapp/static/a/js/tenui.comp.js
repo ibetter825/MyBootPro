@@ -380,4 +380,34 @@
         	}
         }
 	};
+    
+	 /**
+	  * select
+	  */
+    tenui.CompTenuiSelect = {
+        props: ['select', 'column'],
+        template: `<div class="uew-select" @click="sclick(column)" @mouseleave="sleave(column)">
+				    	<div class="uew-select-value ue-state-default" style="width: 125px;">
+						<input :name="column.name+'_text'" :value="select.nodes[column.name].selected.text" class="scinput2" readonly="true">
+						<input :name="column.name" type="hidden" v-model="select.params[column.name]">
+						<em class="uew-icon uew-icon-triangle-1-s"></em>
+					</div>
+					<ul v-show=" select.nodes[column.name].show" class="pretty-select">
+				        <li v-for="o in column.options" :class="[o.value === select.nodes[column.name].selected.value ? 'selected' : '']" @click.stop="schange(o, column)">{{ o.text }}</li>
+				    </ul>
+				</div>`,
+        methods: {
+        	sclick: function(column){
+        		this.select.nodes[column.name].show = true;
+        	},
+        	sleave: function(column){
+        		this.select.nodes[column.name].show = false;
+        	},
+        	schange: function(option, column){
+        		this.select.nodes[column.name].selected = option;
+        		this.select.params[column.name] = option.value;
+        		this.select.nodes[column.name].show = false;
+        	}
+        }
+	};
 })();

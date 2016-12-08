@@ -21,15 +21,7 @@
 							        	<label>{{ c.label }}</label>
 							        	<input v-if="c.type == 'text'" :name="c.name" v-model="params[c.name]" type="text" class="scinput1">
 							            <div v-else class="vocation">
-								            <div class="uew-select" @click="sclick(c)" @mouseleave="sleave(c)">
-								            	<div class="uew-select-value ue-state-default" style="width: 125px;">
-							        				<input :name="c.name+'_text'" :value="nodes[c.name].selected.text" class="scinput2" readonly="true">
-								            		<input :name="c.name" type="hidden" v-model="params[c.name]">
-							        				<em class="uew-icon uew-icon-triangle-1-s"></em></div>
-							        				<ul v-show=" nodes[c.name].show" class="pretty-select">
-											            <li v-for="o in c.options" :class="[o.value === nodes[c.name].selected.value ? 'selected' : '']" @click.stop="schange(o, c)">{{ o.text }}</li>
-										            </ul>
-									            </div>
+								            <search-select :select="select" :column='c'></search-select>
 							            </div>
 							        </li>
 							        <div class="cl"></div>
@@ -39,6 +31,9 @@
 						        </ul>
 						    </form>
 				        </div>`,
+            components: {
+	        	'search-select': tenui.CompTenuiSelect
+	        },
 	        computed: {
 	        	search(){
 	        		return this.$store.state.search;
@@ -54,20 +49,15 @@
 	        	},
 	        	columns(){
 	        		return this.config.columns;
+	        	},
+	        	select(){
+	        		return {
+	        			nodes: this.nodes,
+	        			params: this.params
+	        		}
 	        	}
 	        },
 	        methods: {
-	        	sclick: function(column){
-	        		this.nodes[column.name].show = true;
-	        	},
-	        	sleave: function(column){
-	        		this.nodes[column.name].show = false;
-	        	},
-	        	schange: function(option, column){
-	        		this.nodes[column.name].selected = option;
-	        		this.params[column.name] = option.value;
-	        		this.nodes[column.name].show = false;
-	        	},
 	        	submit: function(){
 	        		store.commit('a_options', [{queryParams: this.params, reload: true}]);//更新datagrid的查询参数
 	        		let func = this.config.submit;
