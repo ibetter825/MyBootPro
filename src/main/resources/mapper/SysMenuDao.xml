@@ -7,6 +7,9 @@
 	    	<if test="menu_pid != null and menu_pid != ''">
 	    		menu_pid = #{menu_pid, jdbcType=INTEGER}
 	    	</if>
+	    	<if test="menu_state != null and menu_state != ''">
+	    		menu_state = #{menu_state, jdbcType=INTEGER}
+	    	</if>
     	</trim>
     </select>
 </mapper>  

@@ -42,7 +42,7 @@ public class MenuController extends BaseAdminController {
 	@RequestMapping(value="/menu/list")
 	public PageModel list(PagerRq page, QueryRq query){
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());//分页插件
-		//sysMenuService.queryMenus();
+		PageHelper.orderBy(query.getOrder());
 		sysMenuService.queryWithParams(query);
 		return new PageModel(pager);
 	}

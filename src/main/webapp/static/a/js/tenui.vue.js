@@ -15,7 +15,7 @@
 	        el: '.search',
 	        store,
 	        template: `<div class="search">
-							<form :action="config.action" method="post">
+							<form :action="config.action" method="post" @keyup.stop.enter="submit()">
 								<ul class="seachform1">
 							        <li v-for="(c, index) in columns">
 							        	<label>{{ c.label }}</label>
@@ -78,13 +78,7 @@
 	        	}
 	        },
 	        mounted: function(){
-	        	//创建好以后修改grid的高度
-	        	let search = document.querySelector('.search');
-	        	let ch = this.$store.state.client.height;//屏幕高度
-	        	let sh = search.clientHeight; //搜索框高度
-	        	let tbody = document.querySelector('.tablelist > tbody');
-	        	//-place -search -formtitle -tools -thead -pagin -formbody 的 padding -与底部的距离
-	        	tbody.style.height = (ch - 40 - 40 - sh - 36 - 35 - 35 - 40) + 'px';
+	        	
 	        }
 	    });
 	}
@@ -126,9 +120,6 @@
 	            }
 	        },
 	        watch: {
-	        	'options.pageNumber': function(n, o){
-	        		this.loadData();
-	        	},
 	        	'options.pageSize': function(){
 	        		this.loadData();
 	        	},
@@ -141,11 +132,15 @@
 	        },
 	        methods: {
 	        	loadData: function(n){
+	        		store.commit('a_depot_reset');
 	        		let url = this.options.url;
 	        		this.options.loading = true;
 	        		this.props.pager.disable = true;
+	        		let page = {'page': this.options.pageNumber, 'size': this.options.pageSize};
+	        		let params = tool.merge(page, this.options.queryParams);
+	        		tool.merge(params, this.options.order);
 	        		// GET /someUrl
-				    this.$http.post(url, tool.merge({'page': this.options.pageNumber, 'size': this.options.pageSize}, this.options.queryParams)).then(function(resp){
+				    this.$http.post(url, params).then(function(resp){
 				    	var page = resp.body;
 				    	//success
 				    	tool.merge(this.options, page);
@@ -165,7 +160,13 @@
 	        	}
 	        },
 	        mounted: function(){
-
+	        	//创建好以后修改grid的高度
+	        	let search = document.querySelector('.search');
+	        	let ch = this.$store.state.client.height;//屏幕高度
+	        	let sh = search.clientHeight; //搜索框高度
+	        	let tbody = document.querySelector('.tablelist > tbody');
+	        	//-place -search -formtitle -tools -thead -pagin -formbody 的 padding -与底部的距离
+	        	tbody.style.height = (ch - 40 - 40 - sh - 36 - 35 - 35 - 40) + 'px';
 	        }
 	    });
 	}

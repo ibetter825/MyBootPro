@@ -23,6 +23,21 @@
 	</body>
 	<#include "/admin/includes/javascript.html"/>
 	<script type="text/javascript">
+	var search = {
+		columns: [
+				{label: '父级菜单', type: 'text', name: "rq['menu_pid']", value: ''},
+				{label: '菜单编号', type: 'text', name: 'menuId', value: ''},
+				{label: '菜单状态', type: 'select', name: "rq['menu_state']", options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
+		],
+		action: '', //action
+		submit: function(){
+			//alert('重新查询');
+		}, //function 查询按钮的回调函数
+		reset: null //function重置按钮的回调函数
+	}
+	
+	tenui.search(search);
+	
 	var tools = [
 		{
 			title: '添加',
@@ -43,7 +58,7 @@
 	];
 	
 	var columns = [
-		{ checkbox: true, field:'menuId', title:'', halign: 'center', align: 'center', width: 30},
+		{ checkbox: true, field:'menu_id', title:'', halign: 'center', align: 'center', width: 30},
 		{ field:'menu_id', title:'编号', sortable:true, width: 40, align: 'center' },
 		{ field:'menu_name', title:'标题' },
 		{ field:'menu_url', title:'菜单链接' },
@@ -66,19 +81,5 @@
 	//datagrid
 	tenui.datagrid.init({url:'/admin/menu/list', tools: tools, columns: columns});
 	
-	var search = {
-		columns: [
-				{label: '菜单名称', type: 'text', name: "rq['menu_pid']", value: ''},
-				{label: '菜单编号', type: 'text', name: 'menuId', value: ''},
-				{label: '菜单状态', type: 'select', name: "rq['menu_state']", options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
-		],
-		action: '', //action
-		submit: function(){
-			//alert('重新查询');
-		}, //function 查询按钮的回调函数
-		reset: null //function重置按钮的回调函数
-	}
-	
-	tenui.search(search);
 	</script>
 </html>

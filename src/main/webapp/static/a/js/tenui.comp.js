@@ -11,15 +11,18 @@
 	  */
 	 tenui.config.datagrid = {
 		 url: null, //后台请求连接
+		 method: 'post', //请求远程数据的方法
 		 queryParams: {}, //请求后台的参数
 		 total: 0,
+		 order: {}, //{'or["menu_id"]': 'desc', 'or["menu_seq"]': 'desc'}
 		 rows: [],
 		 footer: [],
 		 pageSize: 20,
 		 pageNumber: 1,
 		 totalPages: 1,
 		 tools: [], //弹出层的类型
-   		 columns: [], //计数器 默认0
+   		 columns: [], //字段
+   		 singleSelect: false, //是否只允许选择一行
    		 loading: false, //是否显示加载中gif
    		 reload: false, //重新加载当前页面
          pagination: true,//是否显示分页工具栏，默认显示
@@ -32,7 +35,12 @@
      */
     const s_datagrid = {
         state: {
-            options: tenui.config.datagrid
+            options: tenui.config.datagrid,
+            depot: {
+            	checkedAll: false,
+            	checkeds: [],
+            	selecteds: []
+            } //存储数据
         },
         mutations: {
         	a_options(state, options) {
@@ -43,6 +51,13 @@
                         state.options[k] = opt[k];
                 }else
                     state.options = options;
+            },
+            a_depot_reset(state) {
+                state.depot = {
+                	checkedAll: false,
+                	checkeds: [],
+                	selecteds: []
+                }
             }
         }
     };
@@ -129,15 +144,15 @@
 				            <thead>
 				                <tr>
 				                    <th v-for="col in options.columns" :style="style(col, 'th')">
-				                    	<input v-if="col.checkbox" name="checkedAll" @click.stop="checkAll()" type="checkbox" value="" v-model="checkedAll"/>
-				                    	{{ col.title }}	<i v-if="col.sortable" class="sort"><img src="/static/a/images/px.gif" /></i>
+				                    	<input v-if="col.checkbox && !options.singleSelect" name="checkedAll" @click.stop="checkAll()" type="checkbox" value="" v-model="depot.checkedAll"/>
+				                    	{{ col.title }}	<i v-if="col.sortable" class="sort" @click="order(col.field)"><img src="/static/a/images/px.gif" /></i>
 				                    </th>
 				                </tr>
 				            </thead>
 				            <tbody>
-				                <tr v-for="(row, ri) in options.rows" @click.stop="clickRow(ri, row, $event)" :class="[ri % 2 == 0 ? 'odd' : '', selecteds[ri]]">
+				                <tr v-for="(row, ri) in options.rows" @click.stop="clickRow(ri, row, $event)" :class="[ri % 2 == 0 ? 'odd' : '', depot.selecteds[ri]]">
 				                	<td v-for="(col, ci) in options.columns" :style="style(col, 'td')">
-				                		<span v-if="col.checkbox"><input :name="col.field" type="checkbox" :value="row[col.field]" v-model="checkeds" /></span>
+				                		<span v-if="col.checkbox"><input :name="col.field" type="checkbox" :value="row[col.field]" v-model="depot.checkeds" /></span>
 				                		<span v-else @click.stop="clickCell(ri, col.field, row[col.field], $event, row)" v-html="formatter(row[col.field], row, ri, ci)"></span>
 				                	</td>
 				                </tr>
@@ -147,14 +162,15 @@
 			        </div>`,
         data: function(){
             return {
-            	checkedAll: false,
-            	checkeds:　[],
-            	selecteds: []
+            	
             };
         },
         computed: {
         	options(){
         		return this.$store.state.datagrid.options;
+        	},
+        	depot(){
+        		return this.$store.state.datagrid.depot;
         	}
         },
         methods: {
@@ -199,22 +215,40 @@
         		return column.width == undefined ? '' : column.width;
         	},
         	/**
+        	 * 排序
+        	 */
+        	order: function(field){
+        		let order = this.options.order;
+        		let key = 'or[\'' + field + '\']';
+        		let val = order[key];
+        		if(val === 'asc')
+        			delete order[key];
+        		else{
+        			if(val == undefined)
+            			val = 'desc';
+            		else if(val === 'desc')
+            			val = 'asc';
+        			order[key] = val;
+        		}
+        		this.options.reload = true;//重新加载
+        	},
+        	/**
         	 * 全选
         	 */
         	checkAll:　function(){
-        		let checkedAll = this.checkedAll;
+        		let checkedAll = this.depot.checkedAll;
         		if(checkedAll){
-        			this.checkedAll = false;
-        			this.checkeds = []; 
-        			this.selecteds = [];
+        			this.depot.checkedAll = false;
+        			this.depot.checkeds = []; 
+        			this.depot.selecteds = [];
         		}else{
-        			this.checkedAll = true;
+        			this.depot.checkedAll = true;
         			let rows = this.options.rows;
-        			this.checkeds = [];
+        			this.depot.checkeds = [];
         			let col = this.options.columns[0];
         			for(let i in rows){
-        				this.checkeds.push(rows[i][col.field]);
-        				this.selecteds[i] = 'selected';
+        				this.depot.checkeds.push(rows[i][col.field]);
+        				this.depot.selecteds[i] = 'selected';
         			}
         		}
         	},
@@ -231,17 +265,22 @@
         		if(cb){
         			let size = this.options.rows.length;
         			let pk = row[col.field]; //复选框的字段
-        			let checkeds = this.checkeds;
+        			if(this.options.singleSelect){
+        				this.depot.checkeds = [];
+        				this.depot.selecteds = [];
+            			this.depot.checkedAll = false;
+        			}
+        			let checkeds = this.depot.checkeds;
             		let i = checkeds.indexOf(pk);
             		if(i == -1){
             			checkeds.push(pk);
-            			this.selecteds[index] = 'selected';
+            			this.depot.selecteds[index] = 'selected';
             			if(size <= checkeds.length)
             				this.checkedAll = true;
             		} else {
             			checkeds.splice(i, 1);
-            			this.selecteds[index] = '';
-            			this.checkedAll = false;
+            			this.depot.selecteds[index] = '';
+            			this.depot.checkedAll = false;
             		}
         		}
         	},
@@ -256,7 +295,7 @@
         	}
         },
         watch: {
-        	
+
         },
         beforeCreate: function(){
         	console.log('实例创建之前');
@@ -333,6 +372,7 @@
         		if(!this.props.pager.disable){
         			if(number != 0) this.options.pageNumber = number;
         			else this.options.pageNumber += d;
+        			this.options.reload = true;//重新加载
         		}
         	},
         	refresh(){
