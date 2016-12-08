@@ -27,7 +27,8 @@
 		columns: [
 				{label: '父级菜单', type: 'text', name: "rq['menu_pid']", value: ''},
 				{label: '菜单编号', type: 'text', name: 'menuId', value: ''},
-				{label: '菜单状态', type: 'select', name: "rq['menu_state']", options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
+				{label: '菜单状态', type: 'select', name: "rq['menu_state']", options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]},
+				{label: 'tree', type: 'tree', name: "rq['menu_states']", options: [{value:'', text:'请选择', selected: true}, {value:1, text:'有效'}, {value:0, text:'无效'}]}
 		],
 		action: '', //action
 		submit: function(){

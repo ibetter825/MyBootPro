@@ -410,4 +410,49 @@
         	}
         }
 	};
+	 /**
+	  * tree
+	  */
+    tenui.CompTenuiTree = {
+        props: ['props'],
+        template: `<div class="uew-select">
+				    	<div class="uew-select-value ue-state-default" style="width: 125px;">
+						<input class="scinput2" readonly="true">
+						<input type="hidden">
+						<em class="uew-icon uew-icon-triangle-1-s"></em>
+					</div>
+					<ul class="pretty-tree">
+				        <li class="tree-root">
+				        	<p><span class="tree-icon tree-expanded">
+				        		</span><span class="tree-icon tree-folder">
+				        		</span><span class="tree-icon tree-checkbox0">
+				        		</span><span class="tree-title">Parent
+				        		</span>
+				        	</p>
+				        	<ul>
+				        		<li>
+				        			<p><input type="checkbox"/><span>Child01</span></p>
+				        			<ul>
+						        		<li>
+						        			<p><input type="checkbox"/><span>Child01_01</span></p>
+						        		</li>
+						        		<li>
+						        			<p><input type="checkbox"/><span>Child01_02</span></p>
+						        		</li>
+						        	</ul>
+				        		</li>
+				        		<li>
+				        			<p><input type="checkbox"/><span>Child02</span></p>
+				        		</li>
+				        	</ul>
+				        </li>
+				        <li class="tree-root">
+				        	<p><input type="checkbox"/><span>Parent</span></p>
+				        </li>
+				    </ul>
+				</div>`,
+        methods: {
+        	
+        }
+	};
 })();

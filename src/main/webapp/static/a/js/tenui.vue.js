@@ -21,7 +21,8 @@
 							        	<label>{{ c.label }}</label>
 							        	<input v-if="c.type == 'text'" :name="c.name" v-model="params[c.name]" type="text" class="scinput1">
 							            <div v-else class="vocation">
-								            <search-select :select="select" :column='c'></search-select>
+								            <search-select v-if="c.type == 'select'" :select="select" :column='c'></search-select>
+								            <search-tree v-if="c.type == 'tree'"></search-tree>
 							            </div>
 							        </li>
 							        <div class="cl"></div>
@@ -32,7 +33,8 @@
 						    </form>
 				        </div>`,
             components: {
-	        	'search-select': tenui.CompTenuiSelect
+	        	'search-select': tenui.CompTenuiSelect,
+	        	'search-tree': tenui.CompTenuiTree
 	        },
 	        computed: {
 	        	search(){
