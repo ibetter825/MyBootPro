@@ -21,8 +21,8 @@
 							        	<label>{{ c.label }}</label>
 							        	<input v-if="c.type == 'text'" :name="c.name" v-model="params[c.name]" type="text" class="scinput1">
 							            <div v-else class="vocation">
-								            <search-select v-if="c.type == 'select'" :select="select" :column='c'></search-select>
-								            <search-tree v-if="c.type == 'tree'"></search-tree>
+								            <search-select v-if="c.type == 'select'" :props="props" :column='c'></search-select>
+								            <search-tree v-if="c.type == 'tree'" :props="props" :column='c'></search-tree>
 							            </div>
 							        </li>
 							        <div class="cl"></div>
@@ -41,18 +41,18 @@
 	        		return this.$store.state.search;
 	        	},
 	        	nodes(){
-	        		return this.search.nodes;
+	        		return this.search.nodes; //用于存储某字段已选择的内容，或者是否显示其内容节点
 	        	},
 	        	config(){
 	        		return this.search.config;
 	        	},
 	        	params(){
-	        		return this.search.params;
+	        		return this.search.params; //用于存储查询数据的参数
 	        	},
 	        	columns(){
 	        		return this.config.columns;
 	        	},
-	        	select(){
+	        	props(){ //传给子组件的属性
 	        		return {
 	        			nodes: this.nodes,
 	        			params: this.params

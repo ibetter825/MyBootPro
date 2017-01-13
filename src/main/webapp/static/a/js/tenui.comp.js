@@ -385,28 +385,28 @@
 	  * select
 	  */
     tenui.CompTenuiSelect = {
-        props: ['select', 'column'],
+        props: ['props', 'column'],
         template: `<div class="uew-select" @click="sclick(column)" @mouseleave="sleave(column)">
 				    	<div class="uew-select-value ue-state-default" style="width: 125px;">
-						<input :name="column.name+'_text'" :value="select.nodes[column.name].selected.text" class="scinput2" readonly="true">
-						<input :name="column.name" type="hidden" v-model="select.params[column.name]">
+						<input :name="column.name+'_text'" :value="props.nodes[column.name].selected.text" class="scinput2" readonly="true">
+						<input :name="column.name" type="hidden" v-model="props.params[column.name]">
 						<em class="uew-icon uew-icon-triangle-1-s"></em>
 					</div>
-					<ul v-show=" select.nodes[column.name].show" class="pretty-select">
-				        <li v-for="o in column.options" :class="[o.value === select.nodes[column.name].selected.value ? 'selected' : '']" @click.stop="schange(o, column)">{{ o.text }}</li>
+					<ul v-show=" props.nodes[column.name].show" class="pretty-select">
+				        <li v-for="o in column.options" :class="[o.value === props.nodes[column.name].selected.value ? 'selected' : '']" @click.stop="schange(o, column)">{{ o.text }}</li>
 				    </ul>
 				</div>`,
         methods: {
         	sclick: function(column){
-        		this.select.nodes[column.name].show = true;
+        		this.props.nodes[column.name].show = true;
         	},
         	sleave: function(column){
-        		this.select.nodes[column.name].show = false;
+        		this.props.nodes[column.name].show = false;
         	},
         	schange: function(option, column){
-        		this.select.nodes[column.name].selected = option;
-        		this.select.params[column.name] = option.value;
-        		this.select.nodes[column.name].show = false;
+        		this.props.nodes[column.name].selected = option;
+        		this.props.params[column.name] = option.value;
+        		this.props.nodes[column.name].show = false;
         	}
         }
 	};
@@ -414,7 +414,7 @@
 	  * tree
 	  */
     tenui.CompTenuiTree = {
-        props: ['props'],
+        props: ['props', 'column'],
         template: `<div class="uew-select">
 				    	<div class="uew-select-value ue-state-default" style="width: 125px;">
 						<input class="scinput2" readonly="true">
@@ -423,36 +423,61 @@
 					</div>
 					<ul class="pretty-tree">
 				        <li class="tree-root">
-				        	<p><span class="tree-icon tree-expanded">
-				        		</span><span class="tree-icon tree-folder">
-				        		</span><span class="tree-icon tree-checkbox0">
-				        		</span><span class="tree-title">Parent
+				        	<p><i class="tree-icon tree-expanded">
+				        		</i><i class="tree-icon tree-folder-open">
+				        		</i><i class="tree-icon tree-checkbox0">
+				        		</i><span class="tree-title">Parent
 				        		</span>
 				        	</p>
 				        	<ul>
 				        		<li>
-				        			<p><input type="checkbox"/><span>Child01</span></p>
+				        			<p><i class="tree-indent"></i><i class="tree-icon tree-expanded">
+					        		</i><i class="tree-icon tree-folder-open">
+					        		</i><i class="tree-icon tree-checkbox0">
+				        			</i><span class="tree-title">Child01</span></p>
 				        			<ul>
 						        		<li>
-						        			<p><input type="checkbox"/><span>Child01_01</span></p>
+						        			<p><i class="tree-indent"></i><i class="tree-indent"></i><i class="tree-icon tree-file">
+						        			</i><i class="tree-icon tree-checkbox0">
+						        			</i><span class="tree-title">Child01_01</span></p>
 						        		</li>
 						        		<li>
-						        			<p><input type="checkbox"/><span>Child01_02</span></p>
+						        			<p><i class="tree-indent"></i><i class="tree-indent"></i><i class="tree-icon tree-file">
+						        			</i><i class="tree-icon tree-checkbox0">
+						        			</i><span class="tree-title">Child01_02uuuuuuuuu</span></p>
 						        		</li>
 						        	</ul>
 				        		</li>
 				        		<li>
-				        			<p><input type="checkbox"/><span>Child02</span></p>
+				        			<p><i class="tree-indent"></i><i class="tree-icon tree-file">
+				        			</i><i class="tree-icon tree-checkbox0">
+				        			</i><span class="tree-title">Child02</span></p>
 				        		</li>
 				        	</ul>
 				        </li>
 				        <li class="tree-root">
-				        	<p><input type="checkbox"/><span>Parent</span></p>
+				        	<p><i class="tree-icon tree-file">
+		        			</i><i class="tree-icon tree-checkbox0">
+				        	</i><span class="tree-title">Parent</span></p>
 				        </li>
 				    </ul>
 				</div>`,
         methods: {
-        	
-        }
+        	loadData: function(n){
+        		store.commit('a_depot_reset');
+        		let url = this.options.url;
+        		// GET /someUrl
+			    this.$http.post(url, params).then(function(resp){
+			    	var data = resp.body;
+			    	//success
+			    }, function(resp){
+			    	//error
+			    });
+        	}
+        },
+        created:　function(){
+        	let url = this.column['url'];
+        	if(url) this.loadData();
+        },
 	};
 })();
