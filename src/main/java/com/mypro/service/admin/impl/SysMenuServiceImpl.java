@@ -3,6 +3,8 @@ package com.mypro.service.admin.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,14 @@ import com.mypro.service.admin.SysMenuService;
 
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
-
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	@Autowired
 	private SysMenuDao sysMenuDao;
 
 	@Override
 	//@Cacheable(value = "system", key = "'menus'")
 	public List<SysMenu> queryMenus() {
+		logger.debug("查询所有菜单");
 		return sysMenuDao.selectAll();
 	}
 	public List<Map<String, Object>> queryWithParams(QueryRq query){

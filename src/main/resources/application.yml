@@ -12,7 +12,7 @@ server:
 logging:
     #path: /D:/logs 
     file: D:/logs/MyBootPro/springboot.log 
-    #config: # location of config file (default classpath:logback.xml for logback) 
+    config: classpath:logback.xml # location of config file (default classpath:logback.xml for logback) 
     #level.*= # levels for loggers, e.g. "logging.level.org.springframework=DEBUG" (TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF)
 # 配置mybatis
 mybatis:
