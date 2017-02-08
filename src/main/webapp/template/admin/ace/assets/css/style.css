@@ -1,0 +1,5 @@
+/*main*/
+#iframe {width: 100%; height: 100%;}
+/*login*/
+.captcha {width: 50%; float: left; border-right: none;}
+.captcha-img {width: 50%; height:34px; display: block; float: right;}
