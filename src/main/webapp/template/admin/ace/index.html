@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -543,8 +543,8 @@
 					</div>
 					<!-- #nav-search -->
 				</div>
-				<div class="page-content">
-					<iframe id="iframe" name="iframe" src="https://www.baidu.com" security="restricted" scrolling="auto" frameborder="0" allowTransparency="true"></iframe>
+				<div class="iframe-container">
+					<iframe id="iframe" name="iframe" src="dashboard.html" security="restricted" scrolling="auto" frameborder="0" allowTransparency="true"></iframe>
 				</div>
 				<!-- /.page-content -->
 			</div>
@@ -580,7 +580,7 @@
 	<script src="assets/js/ace-extra.min.js"></script>
 
 	<script type="text/javascript">
-		var $cnt = $('.page-content'), $window = $(window)
+		var $cnt = $('.iframe-container'), $window = $(window)
 		function resizeCnt() {
 			$cnt.height($window.height() - 90);
 		}
