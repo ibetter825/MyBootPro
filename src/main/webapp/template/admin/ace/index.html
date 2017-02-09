@@ -264,6 +264,7 @@
 				<span class="menu-text"></span>
 			</a>
 			<div class="sidebar sidebar-fixed" id="sidebar">
+				
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<button class="btn btn-success">
@@ -287,7 +288,10 @@
 					</div>
 				</div>
 				<!-- #sidebar-shortcuts -->
-				<ul class="nav nav-list">
+				<div class="sidebar-collapse" id="sidebar-collapse">
+					<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+				</div>
+				<ul class="nav nav-list" id="menus">
 					<li class="active">
 						<a href="index.html">
 							<i class="icon-dashboard"></i>
@@ -514,9 +518,7 @@
 					</li>
 				</ul>
 				<!-- /.nav-list -->
-				<div class="sidebar-collapse" id="sidebar-collapse">
-					<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
-				</div>
+				
 				<script type="text/javascript">
 					try {
 						ace.settings.check('sidebar', 'collapsed')
@@ -571,6 +573,7 @@
 	</script>
 	<![endif]-->
 	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/jquery.nicescroll.min.js"></script>
 	<script src="assets/plugin/layer/layer.js"></script>
 	<!-- page specific plugin scripts -->
 	<!-- ace scripts -->
@@ -580,11 +583,13 @@
 	<script src="assets/js/ace-extra.min.js"></script>
 
 	<script type="text/javascript">
-		var $cnt = $('.iframe-container'), $window = $(window)
+		var $cnt = $('.iframe-container'), $window = $(window), $menus = $('#menus');
 		function resizeCnt() {
 			$cnt.height($window.height() - 90);
+			$menus.height($window.height() - 113);
 		}
 		resizeCnt();
+		$menus.niceScroll();
 		$window.resize(function () {
 			resizeCnt();
 		});
