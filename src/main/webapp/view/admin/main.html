@@ -1,166 +1,597 @@
-﻿<!DOCTYPE html>
-<html>
-	<head>
-	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	    <title>信息管理系统界面</title>
-	    <link href="/static/a/css/style.css" rel="stylesheet" type="text/css" />
-	</head>
-	<body style="background:#fff3e1;">
-	    <!--头部-->
-	    <header class="top">
-	        <div class="topleft">
-	            <a href="/admin/main" target="_parent"><img src="/static/a/images/logo.png" title="系统首页"></a>
-	        </div>
-	        <ul class="nav">
-	           <li v-for="(nav, index) in navs">
-	               <a href="javascript:void(0);" @click.prevent="choose($event, index)" target="iframe" :class="[index == selected ? 'selected' : '']"><img :src="nav.icon" :title="nav.title"><h2>{{ nav.title }}</h2></a>
-	           </li>
-	         </ul>
-	        <div class="topright">
-	            <ul>
-	                <li><span><img src="/static/a/images/help.png" title="帮助" class="helpimg"></span><a href="#">帮助</a></li>
-	                <li><a href="#">关于</a></li>
-	                <li><a href="/admin/logout" target="_parent">退出</a></li>
-	            </ul>
-	            <div class="user">
-	                <span>admin</span>
-	                <i>消息</i>
-	                <b>5</b>
-	            </div>
-	        </div>
-	    </header>
-	    <!--中间部分-->
-	    <section class="middle" id="middle">
-	        <!--菜单部分-->
-	        <aside v-show="show" class="left">
-	           <div class="lefttop"><span></span>{{ nav }}</div>
-	           <dl class="leftmenu" id="menus">
-	               <dd v-for="(second, secondi) in menus">
-	                   <div class="title" @click.prevent="choose(2, secondi)">
-	                       <span><img :src="second.icon"></span>{{ second.title }}
-	                   </div>
-	                   <transition name="slide-fade">
-	                    <ul v-if="second.children.length > 0" class="menuson" v-show="secondi == sselected">
-					        <li v-for="(third, thirdi) in second.children" :class="[thirdi == tselected ? 'active' + (third.children.length == 0 ? '':' open') : '']">
-					        	<div v-if="third.children.length == 0"><cite></cite><a href="javascript:void(0);"  @click.prevent="choose(3, thirdi, third)">{{ third.title }}</a><i></i></div>
-					        	<div v-else>
-						        	<div class="header" @click.prevent="choose(3, thirdi)">
-							            <cite></cite>
-							            <a href="javascript:void(0);" target="rightFrame">{{ third.title }}</a>
-							            <i></i>
-						            </div>
-						            <ul class="sub-menus"  v-show="thirdi == tselected">
-							            <li v-for="(fourth, fourthi) in third.children" :class="[fourthi == fselected ? 'active' : '']"><a href="javacript:void(0);"  @click.prevent="choose(4, fourthi, fourth)">{{ fourth.title }}</a></li>
-						            </ul>
-						        </div>
-					        </li>
-				        </ul>
-				    </transition>
-	               </dd>
-	           </dl>
-	       </aside>
-	        <!--内容部分-->
-	        <section class="main">
-	            <iframe id="iframe" src="/admin/desk" name="iframe" frameborder="no" border="0"></iframe>
-	        </section>
-	    </section>
-	    <!--底部-->
-	    <footer class="footer">
-	        <span>仅供学习交流，请勿用于任何商业用途</span><i>版权所有 2016 uimaker.com</i>
-	    </footer>
-	</body>
-	<#include "/admin/includes/javascript.html"/>
-	<script type="text/javascript">
-		"use strict";
-		let iframe = document.getElementById('iframe');
-	    window.resize = function() {
-	        let ds = tool.dimension();
-	        document.getElementById('menus').style.height = (ds.height - 88 - 31 - 40) + 'px';
-	        iframe.style.height = (ds.height - 88 - 31) + 'px';
-	    }
-	    window.onload = function() {
-	        resize();
-	    };
-	    window.onresize = function() {
-	        resize();
-	    };
-	    
-	    let vm_nav = new Vue({
-			el: '.nav',
-			data: {
-				navs: [],
-				selected: 0 //当前选中的nav默认为0
-			},
-			watch: {
-				
-			},
-			methods: {
-				//点击nav
-				choose: function(e, index){
-					let nav = this.navs[index];
-					let children = nav.children;
-					let main = document.getElementsByClassName('main')[0];
-					if(children.length == 0) {
-						iframe.src = nav.url;
-						vm_menu.show = false;
-						main.style.marginLeft = '0px';
-					} else {
-						vm_menu.menus = children;
-						vm_menu.show = true;
-						main.style.marginLeft = '187px';
-					}
-					vm_menu.nav = nav.title;
-					this.selected = index;
-				}
-			},
-			created: function () {
-			    this.$http.post('/admin/menu/tree').then(function(resp){
-			    	var data = resp.body;
-			    	this.navs = data;
-			    }, function(resp){
-			    	//error
-			    });
-			}
-		});
+<!DOCTYPE html>
+<html lang="en">
 
-		let vm_menu = new Vue({
-			el: '.left',
-			data: {
-				menus: [],
-				show: false,
-				nav: '',//当前选中的模块
-				sselected: 0, //当前选中的二级菜单，默认为0
-				tselected: -1, //三级...
-				fselected: -1 //四级...
-			},
-			methods: {
-				choose: function(level, index, menu){
-					if(level == 2){
-						if(this.sselected == index) this.sselected = -1;
-						else{
-							this.sselected = index;
-							this.tselected = 0;
-							this.fselected = 0;
-						}
-					}else if(level == 3){
-						if(this.tselected == index){
-							if(menu){
-								this.tselected = index;
-								iframe.src = menu.url;
-							}else
-								this.tselected = -1;
-						}else{
-							this.tselected = index;
-							this.fselected = 0;
-							if(menu) iframe.src = menu.url;
-						}
-					}else if(level == 4){
-						this.fselected = index;
-						iframe.src = menu.url;
-					}
-				}
-			}
+<head>
+	<meta charset="utf-8" />
+	<title>控制台</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- basic styles -->
+	<link href="/static/a/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="/static/a/css/font-awesome.min.css" />
+	<!--[if IE 7]>
+		  <link rel="stylesheet" href="/static/a/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+	<!-- page specific plugin styles -->
+	<link rel="stylesheet" href="/static/a/plugin/layer/skin/default/layer.css" />
+	<link rel="stylesheet" href="/static/a/css/style.css" />
+	<!-- ace styles -->
+	<link rel="stylesheet" href="/static/a/css/ace.min.css" />
+	<!--<link rel="stylesheet" href="/static/a/css/ace-rtl.min.css" />-->
+	<!--<link rel="stylesheet" href="/static/a/css/ace-skins.min.css" />-->
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="/static/a/css/ace-ie.min.css" />
+	<![endif]-->
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="/static/a/js/html5shiv.js"></script>
+		<script src="/static/a/js/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body class="navbar-fixed breadcrumbs-fixed">
+	<div class="navbar navbar-default navbar-fixed-top" id="navbar">
+		<div class="navbar-container" id="navbar-container">
+			<div class="navbar-header pull-left">
+				<a href="#" class="navbar-brand">
+					<small>
+							<i class="icon-leaf"></i>
+							ACE后台管理系统模板
+						</small>
+				</a>
+				<!-- /.brand -->
+			</div>
+			<!-- /.navbar-header -->
+			<div class="navbar-header pull-right" role="navigation">
+				<ul class="nav ace-nav">
+					<li class="grey">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+							<i class="icon-tasks"></i>
+							<span class="badge badge-grey">4</span>
+						</a>
+						<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+							<li class="dropdown-header">
+								<i class="icon-ok"></i> 还有4个任务完成
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">软件更新</span>
+										<span class="pull-right">65%</span>
+									</div>
+									<div class="progress progress-mini ">
+										<div style="width:65%" class="progress-bar "></div>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">硬件更新</span>
+										<span class="pull-right">35%</span>
+									</div>
+									<div class="progress progress-mini ">
+										<div style="width:35%" class="progress-bar progress-bar-danger"></div>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">单元测试</span>
+										<span class="pull-right">15%</span>
+									</div>
+									<div class="progress progress-mini ">
+										<div style="width:15%" class="progress-bar progress-bar-warning"></div>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">错误修复</span>
+										<span class="pull-right">90%</span>
+									</div>
+									<div class="progress progress-mini progress-striped active">
+										<div style="width:90%" class="progress-bar progress-bar-success"></div>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+										查看任务详情
+										<i class="icon-arrow-right"></i>
+									</a>
+							</li>
+						</ul>
+					</li>
+					<li class="purple">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+							<i class="icon-bell-alt icon-animated-bell"></i>
+							<span class="badge badge-important">8</span>
+						</a>
+						<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+							<li class="dropdown-header">
+								<i class="icon-warning-sign"></i> 8条通知
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-pink icon-comment"></i>
+												新闻评论
+											</span>
+										<span class="pull-right badge badge-info">+12</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="btn btn-xs btn-primary icon-user"></i> 切换为编辑登录..
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
+												新订单
+											</span>
+										<span class="pull-right badge badge-success">+8</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<div class="clearfix">
+										<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
+												粉丝
+											</span>
+										<span class="pull-right badge badge-info">+11</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+										查看所有通知
+										<i class="icon-arrow-right"></i>
+									</a>
+							</li>
+						</ul>
+					</li>
+					<li class="green">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+							<i class="icon-envelope icon-animated-vertical"></i>
+							<span class="badge badge-success">5</span>
+						</a>
+						<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+							<li class="dropdown-header">
+								<i class="icon-envelope-alt"></i> 5条消息
+							</li>
+							<li>
+								<a href="#">
+									<img src="/static/a/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+									<span class="msg-body">
+											<span class="msg-title">
+												<span class="blue">Alex:</span> 不知道写啥 ...
+									</span>
+									<span class="msg-time">
+												<i class="icon-time"></i>
+												<span>1分钟以前</span>
+									</span>
+									</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<img src="/static/a/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
+									<span class="msg-body">
+											<span class="msg-title">
+												<span class="blue">Susan:</span> 不知道翻译...
+									</span>
+									<span class="msg-time">
+												<i class="icon-time"></i>
+												<span>20分钟以前</span>
+									</span>
+									</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<img src="/static/a/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
+									<span class="msg-body">
+											<span class="msg-title">
+												<span class="blue">Bob:</span> 到底是不是英文 ...
+									</span>
+									<span class="msg-time">
+												<i class="icon-time"></i>
+												<span>下午3:15</span>
+									</span>
+									</span>
+								</a>
+							</li>
+							<li>
+								<a href="inbox.html">
+										查看所有消息
+										<i class="icon-arrow-right"></i>
+									</a>
+							</li>
+						</ul>
+					</li>
+					<li class="light-blue">
+						<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+							<img class="nav-user-photo" src="/static/a/avatars/user.jpg" alt="Jason's Photo" />
+							<span class="user-info">
+									<small>欢迎光临,</small>
+									Jason
+								</span>
+							<i class="icon-caret-down"></i>
+						</a>
+						<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+							<li>
+								<a href="#">
+									<i class="icon-cog"></i> 设置
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="icon-user"></i> 个人资料
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="#">
+									<i class="icon-off"></i> 退出
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<!-- /.ace-nav -->
+			</div>
+			<!-- /.navbar-header -->
+		</div>
+		<!-- /.container -->
+	</div>
+	<div class="main-container" id="main-container">
+		<div class="main-container-inner">
+			<a class="menu-toggler" id="menu-toggler" href="#">
+				<span class="menu-text"></span>
+			</a>
+			<div class="sidebar sidebar-fixed" id="sidebar">
+				
+				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+						<button class="btn btn-success">
+								<i class="icon-signal"></i>
+							</button>
+						<button class="btn btn-info">
+								<i class="icon-pencil"></i>
+							</button>
+						<button class="btn btn-warning">
+								<i class="icon-group"></i>
+							</button>
+						<button class="btn btn-danger">
+								<i class="icon-cogs"></i>
+							</button>
+					</div>
+					<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+						<span class="btn btn-success"></span>
+						<span class="btn btn-info"></span>
+						<span class="btn btn-warning"></span>
+						<span class="btn btn-danger"></span>
+					</div>
+				</div>
+				<!-- #sidebar-shortcuts -->
+				<div class="sidebar-collapse" id="sidebar-collapse">
+					<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+				</div>
+				<ul class="nav nav-list" id="menus">
+					<li class="active">
+						<a href="index.html">
+							<i class="icon-dashboard"></i>
+							<span class="menu-text"> 控制台 </span>
+						</a>
+					</li>
+					<li>
+						<a href="typography.html">
+							<i class="icon-text-width"></i>
+							<span class="menu-text"> 文字排版 </span>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle">
+							<i class="icon-desktop"></i>
+							<span class="menu-text"> UI 组件 </span>
+							<b class="arrow icon-angle-down"></b>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="elements.html">
+									<i class="icon-double-angle-right"></i> 组件
+								</a>
+							</li>
+							<li>
+								<a href="buttons.html">
+									<i class="icon-double-angle-right"></i> 按钮 &amp; 图表
+								</a>
+							</li>
+							<li>
+								<a href="treeview.html">
+									<i class="icon-double-angle-right"></i> 树菜单
+								</a>
+							</li>
+							<li>
+								<a href="jquery-ui.html">
+									<i class="icon-double-angle-right"></i> jQuery UI
+								</a>
+							</li>
+							<li>
+								<a href="nestable-list.html">
+									<i class="icon-double-angle-right"></i> 可拖拽列表
+								</a>
+							</li>
+							<li>
+								<a href="#" class="dropdown-toggle">
+									<i class="icon-double-angle-right"></i> 三级菜单
+									<b class="arrow icon-angle-down"></b>
+								</a>
+								<ul class="submenu">
+									<li>
+										<a href="#">
+											<i class="icon-leaf"></i> 第一级
+										</a>
+									</li>
+									<li>
+										<a href="#" class="dropdown-toggle">
+											<i class="icon-pencil"></i> 第四级
+											<b class="arrow icon-angle-down"></b>
+										</a>
+										<ul class="submenu">
+											<li>
+												<a href="#">
+													<i class="icon-plus"></i> 添加产品
+												</a>
+											</li>
+											<li>
+												<a href="#">
+													<i class="icon-eye-open"></i> 查看商品
+												</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle">
+							<i class="icon-list"></i>
+							<span class="menu-text"> 表格 </span>
+							<b class="arrow icon-angle-down"></b>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="tables.html">
+									<i class="icon-double-angle-right"></i> 简单 &amp; 动态
+								</a>
+							</li>
+							<li>
+								<a href="jqgrid.html">
+									<i class="icon-double-angle-right"></i> jqGrid plugin
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle">
+							<i class="icon-edit"></i>
+							<span class="menu-text"> 表单 </span>
+							<b class="arrow icon-angle-down"></b>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="form-elements.html">
+									<i class="icon-double-angle-right"></i> 表单组件
+								</a>
+							</li>
+							<li>
+								<a href="form-wizard.html">
+									<i class="icon-double-angle-right"></i> 向导提示 &amp; 验证
+								</a>
+							</li>
+							<li>
+								<a href="wysiwyg.html">
+									<i class="icon-double-angle-right"></i> 编辑器
+								</a>
+							</li>
+							<li>
+								<a href="dropzone.html">
+									<i class="icon-double-angle-right"></i> 文件上传
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="widgets.html">
+							<i class="icon-list-alt"></i>
+							<span class="menu-text"> 插件 </span>
+						</a>
+					</li>
+					<li>
+						<a href="calendar.html">
+							<i class="icon-calendar"></i>
+							<span class="menu-text">
+									日历
+									<span class="badge badge-transparent tooltip-error" title="2&nbsp;Important&nbsp;Events">
+										<i class="icon-warning-sign red bigger-130"></i>
+									</span>
+							</span>
+						</a>
+					</li>
+					<li>
+						<a href="gallery.html">
+							<i class="icon-picture"></i>
+							<span class="menu-text"> 相册 </span>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle">
+							<i class="icon-tag"></i>
+							<span class="menu-text"> 更多页面 </span>
+							<b class="arrow icon-angle-down"></b>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="profile.html">
+									<i class="icon-double-angle-right"></i> 用户信息
+								</a>
+							</li>
+							<li>
+								<a href="inbox.html">
+									<i class="icon-double-angle-right"></i> 收件箱
+								</a>
+							</li>
+							<li>
+								<a href="pricing.html">
+									<i class="icon-double-angle-right"></i> 售价单
+								</a>
+							</li>
+							<li>
+								<a href="invoice.html">
+									<i class="icon-double-angle-right"></i> 购物车
+								</a>
+							</li>
+							<li>
+								<a href="timeline.html">
+									<i class="icon-double-angle-right"></i> 时间轴
+								</a>
+							</li>
+							<li>
+								<a href="login.html">
+									<i class="icon-double-angle-right"></i> 登录 &amp; 注册
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" class="dropdown-toggle">
+							<i class="icon-file-alt"></i>
+							<span class="menu-text">
+									其他页面
+									<span class="badge badge-primary ">5</span>
+							</span>
+							<b class="arrow icon-angle-down"></b>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="faq.html">
+									<i class="icon-double-angle-right"></i> 帮助
+								</a>
+							</li>
+							<li>
+								<a href="error-404.html">
+									<i class="icon-double-angle-right"></i> 404错误页面
+								</a>
+							</li>
+							<li>
+								<a href="error-500.html">
+									<i class="icon-double-angle-right"></i> 500错误页面
+								</a>
+							</li>
+							<li>
+								<a href="grid.html">
+									<i class="icon-double-angle-right"></i> 网格
+								</a>
+							</li>
+							<li>
+								<a href="blank.html">
+									<i class="icon-double-angle-right"></i> 空白页面
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<!-- /.nav-list -->
+				
+				<script type="text/javascript">
+					try {
+						ace.settings.check('sidebar', 'collapsed')
+					} catch (e) {}
+				</script>
+			</div>
+			<div class="main-content">
+				<div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+					<ul class="breadcrumb">
+						<li>
+							<i class="icon-home home-icon"></i>
+							<a href="#">首页</a>
+						</li>
+						<li class="active">控制台</li>
+					</ul>
+					<!-- .breadcrumb -->
+					<div class="nav-search" id="nav-search">
+						<form class="form-search">
+							<span class="input-icon">
+									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+						</form>
+					</div>
+					<!-- #nav-search -->
+				</div>
+				<div class="iframe-container">
+					<iframe id="iframe" name="iframe" src="dashboard.html" security="restricted" scrolling="auto" frameborder="0" allowTransparency="true"></iframe>
+				</div>
+				<!-- /.page-content -->
+			</div>
+			<!-- /.main-content -->
+		</div>
+		<!-- /.main-container-inner -->
+	</div>
+	<!-- /.main-container -->
+	<!-- basic scripts -->
+	<!--[if !IE]> -->
+	<script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+	<!-- <![endif]-->
+	<!--[if IE]>
+		<script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+		<![endif]-->
+	<!--[if !IE]> -->
+	<script type="text/javascript">
+		window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js'>" + "<" + "script>");
+	</script>
+	<!-- <![endif]-->
+	<!--[if IE]>
+	<script type="text/javascript">
+		window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js'>"+"<"+"script>");
+	</script>
+	<![endif]-->
+	<script src="/static/a/js/bootstrap.min.js"></script>
+	<script src="/static/a/js/jquery.nicescroll.min.js"></script>
+	<script src="/static/a/plugin/layer/layer.js"></script>
+	<!-- page specific plugin scripts -->
+	<!-- ace scripts -->
+	<!--<script src="/static/a/js/ace-elements.min.js"></script>-->
+	<script src="/static/a/js/ace.min.js"></script>
+	<!-- ace settings handler -->
+	<script src="/static/a/js/ace-extra.min.js"></script>
+
+	<script type="text/javascript">
+		var $cnt = $('.iframe-container'), $window = $(window), $menus = $('#menus');
+		function resizeCnt() {
+			$cnt.height($window.height() - 90);
+			$menus.height($window.height() - 113);
+		}
+		resizeCnt();
+		//$menus.niceScroll();
+		$window.resize(function () {
+			resizeCnt();
 		});
 	</script>
+</body>
 
 </html>
