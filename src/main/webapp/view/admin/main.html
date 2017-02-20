@@ -591,6 +591,41 @@
 		$window.resize(function () {
 			resizeCnt();
 		});
+		
+		//获取菜单
+		$.post('/admin/menu/tree', function(data){
+			$menus.empty().append(getMenuHtml(data));
+			$menus.find('.cmenu').on('click', function(){
+				$('.active').removeClass('active');
+				$('.open').removeClass('open');
+				$(this).addClass('active').parents('.fmenu').addClass('active open');
+			})
+		});
+		
+		function getMenuHtml(data){
+			var html = new Array(), menu = null;
+			for(var i = 0, l = data.length; i < l; i++){
+				menu = data[i];
+				if(menu.children && menu.children.length > 0){
+					html.push('<li class="fmenu">');
+					html.push('<a href="#" class="dropdown-toggle">');
+					html.push('<i class="'+menu.icon+'"></i>');
+					html.push('<span class="menu-text"> '+menu.title+' </span>');
+					html.push('<b class="arrow icon-angle-down"></b>');
+					html.push('</a>');
+					html.push('<ul class="submenu">');
+					html.push(getMenuHtml(menu.children));
+					html.push('</ul></li>');
+				}else{
+					html.push('<li class="cmenu">');
+					html.push('<a target="iframe" href="'+menu.url+'">');
+					html.push('<i class="'+menu.icon+'"></i>');
+					html.push('<span class="menu-text"> '+menu.title+'</span>');
+					html.push('</a></li>');
+				}
+			}
+			return html.join('');
+		}
 	</script>
 </body>
 
