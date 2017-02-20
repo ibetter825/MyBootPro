@@ -592,14 +592,15 @@
 			resizeCnt();
 		});
 		
+		//给菜单添加点击事件
+		$menus.on('click', '.cmenu', function(){
+			$('.active').removeClass('active');
+			$('.open').removeClass('open');
+			$(this).addClass('active').parents('.fmenu').addClass('active open');
+		});
 		//获取菜单
 		$.post('/admin/menu/tree', function(data){
 			$menus.empty().append(getMenuHtml(data));
-			$menus.find('.cmenu').on('click', function(){
-				$('.active').removeClass('active');
-				$('.open').removeClass('open');
-				$(this).addClass('active').parents('.fmenu').addClass('active open');
-			})
 		});
 		
 		function getMenuHtml(data){
