@@ -29,6 +29,8 @@ public class MyPersistentTokenRepository implements PersistentTokenRepository {
 	
 	@Override
 	public void createNewToken(PersistentRememberMeToken token) {
+		//新建的时候先查询如果存在则需要先删除老的数据
+		removeUserTokens(token.getUsername());
 		SysPersistentLogins record = new SysPersistentLogins();
 		record.setSeries(token.getSeries());
 		record.setToken(token.getTokenValue());

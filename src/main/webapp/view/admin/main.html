@@ -2,33 +2,8 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8" />
-	<title>控制台</title>
-	<meta name="keywords" content="" />
-	<meta name="description" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!-- basic styles -->
-	<link href="/static/a/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="/static/a/css/font-awesome.min.css" />
-	<!--[if IE 7]>
-		  <link rel="stylesheet" href="/static/a/css/font-awesome-ie7.min.css" />
-		<![endif]-->
-	<!-- page specific plugin styles -->
-	<link rel="stylesheet" href="/static/a/plugin/layer/skin/default/layer.css" />
-	<link rel="stylesheet" href="/static/a/css/style.css" />
-	<!-- ace styles -->
-	<link rel="stylesheet" href="/static/a/css/ace.min.css" />
-	<!--<link rel="stylesheet" href="/static/a/css/ace-rtl.min.css" />-->
-	<!--<link rel="stylesheet" href="/static/a/css/ace-skins.min.css" />-->
-	<!--[if lte IE 8]>
-		<link rel="stylesheet" href="/static/a/css/ace-ie.min.css" />
-	<![endif]-->
-	
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="/static/a/js/html5shiv.js"></script>
-		<script src="/static/a/js/respond.min.js"></script>
-		<![endif]-->
+	<#assign title="后台系统管理">
+	<#include "/admin/includes/header.html"/>
 </head>
 
 <body class="navbar-fixed breadcrumbs-fixed">
@@ -243,7 +218,7 @@
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="#">
+								<a href="/admin/logout">
 									<i class="icon-off"></i> 退出
 								</a>
 							</li>
@@ -544,7 +519,7 @@
 					<!-- #nav-search -->
 				</div>
 				<div class="iframe-container">
-					<iframe id="iframe" name="iframe" src="dashboard.html" security="restricted" scrolling="auto" frameborder="0" allowTransparency="true"></iframe>
+					<iframe id="iframe" name="iframe" src="/admin/forward/desk" security="restricted" scrolling="auto" frameborder="0" allowTransparency="true"></iframe>
 				</div>
 				<!-- /.page-content -->
 			</div>
@@ -554,34 +529,10 @@
 	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
-	<!--[if !IE]> -->
-	<script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
-	<!-- <![endif]-->
-	<!--[if IE]>
-		<script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-		<![endif]-->
-	<!--[if !IE]> -->
-	<script type="text/javascript">
-		window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js'>" + "<" + "script>");
-	</script>
-	<!-- <![endif]-->
-	<!--[if IE]>
-	<script type="text/javascript">
-		window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js'>"+"<"+"script>");
-	</script>
-	<![endif]-->
-	<script src="/static/a/js/bootstrap.min.js"></script>
-	<script src="/static/a/js/jquery.nicescroll.min.js"></script>
-	<script src="/static/a/plugin/layer/layer.js"></script>
-	<!-- page specific plugin scripts -->
-	<!-- ace scripts -->
-	<!--<script src="/static/a/js/ace-elements.min.js"></script>-->
-	<script src="/static/a/js/ace.min.js"></script>
-	<!-- ace settings handler -->
-	<script src="/static/a/js/ace-extra.min.js"></script>
+	<#include "/admin/includes/footer.html"/>
 
 	<script type="text/javascript">
-		var $cnt = $('.iframe-container'), $window = $(window), $menus = $('#menus');
+		var $cnt = $('.iframe-container'), $window = $(window), $menus = $('#menus'), $ifr = $('#iframe')[0];
 		function resizeCnt() {
 			$cnt.height($window.height() - 90);
 			$menus.height($window.height() - 113);
@@ -592,8 +543,21 @@
 			resizeCnt();
 		});
 		
+		//iframe加载完成后去掉正在加载弹出层
+		if($ifr.attachEvent){
+			$ifr.attachEvent('onload', function(){
+				layer.closeAll('loading');
+			});
+		}else{
+			$ifr.onload = function(){
+				layer.closeAll('loading');
+			};
+		}
+		
 		//给菜单添加点击事件
 		$menus.on('click', '.cmenu', function(){
+			//切换页面时的加载层
+			layer.load(2, {shade: 0, offset: [$window.height() / 2 + 'px', ($window.width() / 2 + ($menus.width() + 1) / 2 - 16 - 32) + 'px']});
 			$('.active').removeClass('active');
 			$('.open').removeClass('open');
 			$(this).addClass('active').parents('.fmenu').addClass('active open');
@@ -607,6 +571,8 @@
 			var html = new Array(), menu = null;
 			for(var i = 0, l = data.length; i < l; i++){
 				menu = data[i];
+				if(menu.level === 1)
+					menu.icon = 'icon-double-angle-right';
 				if(menu.children && menu.children.length > 0){
 					html.push('<li class="fmenu">');
 					html.push('<a href="#" class="dropdown-toggle">');
