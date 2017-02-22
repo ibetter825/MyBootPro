@@ -1,4 +1,4 @@
-package com.mypro.configure.Redis;
+package com.mypro.configure.redis;
 
 import java.lang.reflect.Method;
 import org.springframework.cache.CacheManager;
