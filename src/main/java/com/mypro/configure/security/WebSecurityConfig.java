@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .logoutSuccessUrl("/admin/login")
             .addLogoutHandler(new MyLogOutHandler())
                 .permitAll()
+                .invalidateHttpSession(true)
                 .and()
                 .rememberMe()
                 .tokenRepository(myPersistentTokenRepository)//用于持久化cookie到数据库
