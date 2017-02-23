@@ -6,7 +6,8 @@
 	<#include "/admin/includes/header.html"/>
 </head>
 
-<body class="login-layout">
+<body class="login-layout login">
+	<img class="login-bg"/>
 	<div class="main-container">
 		<div class="main-content">
 			<div class="row">
@@ -193,12 +194,15 @@
 			<!-- /.row -->
 		</div>
 	</div>
+	
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
 	<!-- page specific plugin scripts -->
 	<!-- ace scripts -->
 	<script type="text/javascript">
+		var $bg = $('.login-bg').attr('src', '/static/a/images/login/bg_'+ new Date().getDay() +'.jpg');
+
 		function show_box(id) {
 			jQuery('.widget-box.visible').removeClass('visible');
 			jQuery('#' + id).addClass('visible');
