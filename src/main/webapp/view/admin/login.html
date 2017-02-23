@@ -2,26 +2,8 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8" />
-	<title>登录页面</title>
-	<meta name="keywords" content="登录页面" />
-	<meta name="description" content="登录页面" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!-- basic styles -->
-	<link href="/static/a/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="/static/a/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="/static/a/css/style.css" />
-	<!--[if IE 7]>
-		  <link rel="stylesheet" href="/static/a/css/font-awesome-ie7.min.css" />
-		<![endif]-->
-	<link rel="stylesheet" href="/static/a/css/ace.min.css" />
-	<!--[if lte IE 8]>
-		  <link rel="stylesheet" href="/static/a/css/ace-ie.min.css" />
-		<![endif]-->
-	<!--[if lt IE 9]>
-		<script src="/static/a/js/html5shiv.js"></script>
-		<script src="/static/a/js/respond.min.js"></script>
-		<![endif]-->
+	<#assign title="后台登陆页面">
+	<#include "/admin/includes/header.html"/>
 </head>
 
 <body class="login-layout">
@@ -73,7 +55,7 @@
 															<input type="checkbox" name="remember-me" class="ace"/>
 															<span class="lbl"> 记住密码</span>
 														</label>
-													<button type="button" onclick="login();" class="width-35 pull-right btn btn-sm btn-primary">
+													<button id="submit" type="submit" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="icon-key"></i>
 															登&emsp;录
 														</button>
@@ -213,24 +195,7 @@
 	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
-	<!--[if !IE]> -->
-	<script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
-	<!-- <![endif]-->
-	<!--[if IE]>
-			<script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-			<![endif]-->
-	<!--[if !IE]> -->
-	<script type="text/javascript">
-		window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js'>" + "<" + "script>");
-	</script>
-	<!-- <![endif]-->
-	<!--[if IE]>
-		<script type="text/javascript">
-			window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js'>"+"<"+"script>");
-		</script>
-		<![endif]-->
-	<script src="/static/a/js/bootstrap.min.js"></script>
-	<script src="/static/a/plugin/layer/layer.js"></script>
+	<#include "/admin/includes/footer.html"/>
 	<!-- page specific plugin scripts -->
 	<!-- ace scripts -->
 	<script type="text/javascript">
@@ -248,7 +213,9 @@
 				if(data.success)
 					location.href = data.msg;
 				else
-					layer.msg(data.msg)
+					layer.tips(data.msg, '#submit', {
+						  tips: [1, 'red']
+					});
 			});
 			return false;
 		}

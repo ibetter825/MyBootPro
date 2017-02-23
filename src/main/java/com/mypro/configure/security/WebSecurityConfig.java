@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .formLogin()
             	//.failureUrl("/admin/login?error")
-                .loginPage("/admin/login")
+                .loginPage(SecurityConstant.LOGIN_PAGE_URL)
                 //.defaultSuccessUrl("/admin/main")
                 .successHandler(new MyLoginSuccessHandler())//登录成功后处理
                 .failureHandler(new MyLoginFailureHandler())//登录失败后处理
@@ -54,23 +54,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
-            //注销失败跳转到登录页面
-            .logoutSuccessUrl("/admin/login")
+            .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstant.LOGOUT_PAGE_URL))
+            //注销跳转到登录页面
+            .logoutSuccessUrl(SecurityConstant.LOGIN_PAGE_URL)
             .addLogoutHandler(new MyLogOutHandler())
                 .permitAll()
                 .invalidateHttpSession(true)
                 .and()
                 //并发控制，一个用户同时只能登陆一次，第二次登陆不成功，这样配置后如果有自定义验证方法，需要重写MyUserDetails的toString, hashCode, equals 方法才会生效
                 .sessionManagement()
-                .maximumSessions(1)
-                .expiredUrl("/admin/login?expired")
+                .maximumSessions(SecurityConstant.MAXIMUM_SESSIONS)
+                .expiredUrl(SecurityConstant.EXPIRED_URL)
                 .sessionRegistry(sessionRegistry())
                 .maxSessionsPreventsLogin(true)
                 
                 .and()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .invalidSessionUrl("/admin/login?timeout")
+                .invalidSessionUrl(SecurityConstant.INVALID_SESSION_URL)
                 .and()
                 .rememberMe()
                 .tokenRepository(myPersistentTokenRepository)//用于持久化cookie到数据库

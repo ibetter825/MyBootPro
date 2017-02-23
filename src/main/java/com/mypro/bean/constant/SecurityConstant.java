@@ -22,6 +22,23 @@ public class SecurityConstant {
 	 */
 	public final static String LOGIN_FAILURE_DEFAULT_TARGET_URL = "/admin/login";
 	/**
+	 * 登陆URL地址
+	 */
+	public final static String LOGIN_PAGE_URL = "/admin/login";
+	/**
+	 * 登出URL地址
+	 */
+	public final static String LOGOUT_PAGE_URL = "/admin/logout";
+	/**
+	 * SESSION失效跳转的页面
+	 */
+	public final static String	INVALID_SESSION_URL = "/admin/login?e=timeout";
+	public final static String	EXPIRED_URL = "/admin/login?e=expired";
+	/**
+	 * 用户同时登陆的次数
+	 */
+	public final static int MAXIMUM_SESSIONS = 1;
+	/**
 	 * 用户名不存在
 	 */
 	public final static String USER_NAME_NOT_FOUND = "用户不存在";
