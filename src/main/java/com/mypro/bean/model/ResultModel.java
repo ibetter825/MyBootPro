@@ -25,7 +25,7 @@ public class ResultModel implements Serializable {
 	/**
 	 * 操作失败消息，前缀
 	 */
-	public static final String FAIL_MSG_PREFIX = "操作失败，原因：";
+	public static final String FAIL_MSG_PREFIX = "操作失败：";
 	/**
 	 * 操作失败代码，默认为-1，<=-1都为操作失败
 	 */

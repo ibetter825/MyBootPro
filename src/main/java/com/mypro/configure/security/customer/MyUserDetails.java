@@ -64,4 +64,19 @@ public class MyUserDetails extends SysUser implements UserDetails {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return getUsername();
+	}
+
+	@Override
+	public int hashCode() {
+		return getUsername().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this.toString().equals(obj.toString());
+	}
+
 }

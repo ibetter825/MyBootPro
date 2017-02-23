@@ -8,7 +8,7 @@
 	7.序列化,集成几种工具的使用
 	8.Google Guava
 	9.权限管理使用 spring security
-	10.Session管理使用Spring Session, 配合redis使用(还没有进行集群配置)
+	10.Session管理使用Spring Session, 配合redis使用(还没有进行集群配置),超时设置
 	11.cglib动态创建类，如果是数据表对应的类，再注入到mybatis的mapper中 x
 前:
 	1.bootstrap.js

@@ -2,6 +2,7 @@ package com.mypro.configure.security;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,6 +10,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -57,6 +61,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .invalidateHttpSession(true)
                 .and()
+                //并发控制，一个用户同时只能登陆一次，第二次登陆不成功，这样配置后如果有自定义验证方法，需要重写MyUserDetails的toString, hashCode, equals 方法才会生效
+                .sessionManagement()
+                .maximumSessions(1)
+                .expiredUrl("/admin/login?expired")
+                .sessionRegistry(sessionRegistry())
+                .maxSessionsPreventsLogin(true)
+                
+                .and()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .invalidSessionUrl("/admin/login?timeout")
+                .and()
                 .rememberMe()
                 .tokenRepository(myPersistentTokenRepository)//用于持久化cookie到数据库
                 .userDetailsService(userDetailsService)//由于使用了自定义的UserDetailsService 需要在此覆盖默认的UserDetailsService
@@ -73,4 +88,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	//将验证过程交给自定义验证工具
         auth.authenticationProvider(provider);
     }
+	
+	@Bean    
+	public SessionRegistry sessionRegistry(){    
+	    return new SessionRegistryImpl();    
+	}   
 }
