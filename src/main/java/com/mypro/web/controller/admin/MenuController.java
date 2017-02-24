@@ -7,12 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mypro.bean.constant.QueryConstant;
 import com.mypro.bean.entity.SysMenu;
 import com.mypro.bean.model.PageModel;
 import com.mypro.bean.rq.PagerRq;
@@ -39,6 +36,7 @@ public class MenuController extends BaseAdminController {
 	 * 查询所有菜单
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/menu/list")
 	public PageModel list(PagerRq page, QueryRq query){
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());//分页插件
