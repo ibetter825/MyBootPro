@@ -9,11 +9,12 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * Spring Session 配置
  * 这样简单配置后Session会自动存入Redis
  * Redis集群这样配置也可
+ * maxInactiveIntervalInSeconds: session在redis中的超时时间默认30分钟
  * @author user
  *
  */
 @Configuration
-@EnableRedisHttpSession
+@EnableRedisHttpSession//(maxInactiveIntervalInSeconds = 60)
 public class SpringSessionConfig {
 	
     @Bean  

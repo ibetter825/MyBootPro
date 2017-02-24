@@ -15,4 +15,8 @@ public class LoginController extends BaseAdminController {
 	public ModelAndView logout(){
 		return new ModelAndView("admin/login");
 	}
+	@RequestMapping("/timeout")
+	public ModelAndView timeout(){
+		return new ModelAndView("admin/timeout");
+	}
 }
