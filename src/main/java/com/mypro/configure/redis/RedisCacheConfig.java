@@ -1,6 +1,8 @@
 package com.mypro.configure.redis;
 
 import java.lang.reflect.Method;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -8,19 +10,34 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * Redis缓存简单配置
+ * 未使用Redis集群时使用该配置
  * 配置好以后，@Cacheable等注解与Ehcache使用一样
  * @author user
  *
  */
-@Configuration
-@EnableCaching//启用缓存，这个注解很重要
+//@Configuration
+//@EnableCaching//启用缓存，这个注解很重要
 public class RedisCacheConfig {
+	@Value("${spring.redis.host}")  
+    private String host;
+      
+    @Value("${spring.redis.port}")
+    private Integer port;
+    
+	@Bean  
+    public JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+        connectionFactory.setHostName(host);
+        connectionFactory.setPort(port);
+        return connectionFactory;
+    }
 	
 	@Bean  
     public KeyGenerator keyGenerator(){

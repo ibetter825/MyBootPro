@@ -49,7 +49,25 @@ spring:
     redis:
         host: localhost
         password:
-        port: 6379
+        port: 7000
+        #下面为redis集群配置属性
+        clusterNodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005
+        timeout: 5000
+        blockWhenExhausted: true
+        jmxEnabled: true
+        testOnReturn: true
+        lifo: true
+        maxIdle: 8
+        maxTotal: 8
+        maxWaitMillis: -1
+        minEvictableIdleTimeMillis: 1800000
+        minIdle: 0
+        numTestsPerEvictionRun: 3
+        softMinEvictableIdleTimeMillis: 1800000
+        testOnBorrow: false
+        testWhileIdle: false
+        timeBetweenEvictionRunsMillis: -1
+                
     # 数据库配置
     # DATASOURCE spring.datasource.type旧的spring boot版本是不能识别的。
     datasource:
