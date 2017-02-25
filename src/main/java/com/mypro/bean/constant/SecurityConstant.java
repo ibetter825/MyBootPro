@@ -33,7 +33,7 @@ public class SecurityConstant {
 	 * SESSION失效跳转的页面
 	 */
 	public final static String	INVALID_SESSION_URL = "/admin/timeout";
-	public final static String	EXPIRED_URL = "/admin/expired";
+	public final static String	EXPIRED_SESSION_URL = "/admin/expired";
 	/**
 	 * 用户同时登陆的次数
 	 */
