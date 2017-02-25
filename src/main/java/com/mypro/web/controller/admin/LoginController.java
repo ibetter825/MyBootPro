@@ -19,4 +19,8 @@ public class LoginController extends BaseAdminController {
 	public ModelAndView timeout(){
 		return new ModelAndView("admin/timeout");
 	}
+	@RequestMapping("/expired")
+	public ModelAndView expired(){
+		return new ModelAndView("admin/expired");
+	}
 }
