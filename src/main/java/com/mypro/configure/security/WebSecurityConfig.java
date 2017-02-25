@@ -64,9 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //并发控制，一个用户同时只能登陆一次，第二次登陆不成功，这样配置后如果有自定义验证方法，需要重写MyUserDetails的toString, hashCode, equals 方法才会生效
                 .sessionManagement()
                 .maximumSessions(SecurityConstant.MAXIMUM_SESSIONS)
-                .expiredUrl(SecurityConstant.EXPIRED_URL)
+                .expiredUrl(SecurityConstant.EXPIRED_SESSION_URL)
                 .sessionRegistry(sessionRegistry())
-                .maxSessionsPreventsLogin(true)
+                .maxSessionsPreventsLogin(false)//true: 使上一次登录失效, false: 第二次登录会失败
                 
                 .and()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
