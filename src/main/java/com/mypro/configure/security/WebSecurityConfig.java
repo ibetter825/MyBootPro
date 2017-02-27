@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().sameOrigin()//设置页面可以被同域名下的iframe嵌套iframe嵌套
         	.and().authorizeRequests()
-                .antMatchers("/", "/static/**", "/tag/*", "/admin/timeout").permitAll()
+                .antMatchers("/", "/static/**", "/tag/*", "/admin/timeout", "/admin/expired").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
