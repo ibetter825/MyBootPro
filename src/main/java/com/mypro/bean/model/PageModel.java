@@ -7,11 +7,12 @@ import com.github.pagehelper.Page;
 
 /**
  * 列表结果
+ * 默认插件格式
  * @author user
  *
  */
 public class PageModel implements Serializable {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 	
 	private Long total;
 	private Integer pageSize;

@@ -39,8 +39,13 @@ public class MenuController extends BaseAdminController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/menu/list")
 	public PageModel list(PagerRq page, QueryRq query){
+		/*
+		 * 查询排序提供两种方法
+		 * 1, grid插件使用page中的sort, order字段排序
+		 * 2, 自定义查询使用query对象中的方法
+		*/
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());//分页插件
-		PageHelper.orderBy(query.getOrder());
+		PageHelper.orderBy(page.getOrder());
 		sysMenuService.queryWithParams(query);
 		return new PageModel(pager);
 	}

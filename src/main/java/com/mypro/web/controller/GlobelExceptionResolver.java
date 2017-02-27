@@ -24,6 +24,7 @@ public class GlobelExceptionResolver implements HandlerExceptionResolver {
 		if(WebUtil.isAjax(req)){
 			PrintWriter writer = null;
 			try {
+				resp.reset();
 				writer = resp.getWriter();
 				resp.setStatus(403);
 				resp.setContentType("text/html;charset=UTF-8");
