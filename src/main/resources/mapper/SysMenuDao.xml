@@ -4,6 +4,12 @@
     <select id="selectWithParams" parameterType="java.util.Map" resultType="java.util.Map">
     	select * from sys_menu 
     	<trim prefix="WHERE" prefixOverrides="AND|OR">
+    		<if test="menu_id != null and menu_id != ''">
+	    		menu_id = #{menu_id, jdbcType=INTEGER}
+	    	</if>
+	    	<if test="menu_name != null and menu_name != ''">
+	    		menu_name = #{menu_name, jdbcType=STRING}
+	    	</if>
 	    	<if test="menu_pid != null and menu_pid != ''">
 	    		menu_pid = #{menu_pid, jdbcType=INTEGER}
 	    	</if>

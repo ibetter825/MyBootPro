@@ -28,6 +28,10 @@
 								<div class="col-sm-2">
 									<input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']">
 								</div>
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-2"> 菜单名称: </label>
+								<div class="col-sm-2">
+									<input type="text" placeholder="菜单名称" class="col-sm-12" name="rq['menu_name']">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -68,21 +72,25 @@
 	
 	<script type="text/javascript">
 	//计算表格高度
-	var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
+	var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230, gridSelector = '#grid-table', pagerSelector = '#grid-pager';
 	
 	//查询数据
 	function search(){
-		var params = $('#search-form').serialize();
-		console.log(params)
-		//jQuery("#grid-table").jqGrid('getGridParam', 'rowNum');
-		jQuery("#grid-table").jqGrid('setGridParam',{postData: params}).trigger("reloadGrid");
-		return false;	
+		var pd = $(gridSelector).jqGrid('getGridParam','postData');
+		//直接传入下面的参数不行，需要先将pd这个对象找出来
+		var params = $('#search-form').serializeArray();
+		$(params).each(function(){
+			pd[this.name] = this.value
+		});
+		//传入查询条件参数  
+        $(gridSelector).jqGrid("setGridParam",{postData: pd}).trigger("reloadGrid");
+		return false;
 	}
 	
-	jQuery('#grid-table').jqGrid({
+	jQuery(gridSelector).jqGrid({
 		//direction: "rtl",
 		url : '/admin/menu/list',//?plugin=JqGrid
-		postData: {},
+		//postData: {},
 		mtype: 'POST',
         datatype : "json",
         jsonReader: { 
@@ -110,7 +118,7 @@
 		viewrecords : true,
 		rowNum: 10,
 		rowList: [10,30,50,100],
-		pager : '#grid-pager',
+		pager : pagerSelector,
 		recordpos: 'left',
 		pagerpos: 'right',
 		recordtext: '显示 {0} - {1} 共 {2} 条',
