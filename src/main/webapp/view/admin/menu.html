@@ -88,8 +88,7 @@
 	}
 	
 	jQuery(gridSelector).jqGrid({
-		//direction: "rtl",
-		url : '/admin/menu/list',//?plugin=JqGrid
+		url : '/admin/menu/list',
 		//postData: {},
 		mtype: 'POST',
         datatype : "json",
@@ -119,18 +118,17 @@
 		rowNum: 10,
 		rowList: [10,30,50,100],
 		pager : pagerSelector,
-		recordpos: 'left',
+		recordpos: 'center',
 		pagerpos: 'right',
 		recordtext: '显示 {0} - {1} 共 {2} 条',
 		pgtext : '第 {0} 页， 共 {1} 页',
 		loadtext: '正在请求数据...',
 		altRows: true,
-		//toppager: true,
 		
 		//multiSort: true,
 		multiselect: true,
 		//multikey: "ctrlKey",
-        multiboxonly: true,
+        multiboxonly: false,
 
 		loadComplete : function() {
 			var table = this;
@@ -147,7 +145,24 @@
 		editurl:'',//nothing is saved
 		autowidth: true
 	});
-
+	//按钮自定义样式
+	jQuery(gridSelector).jqGrid('navGrid', pagerSelector,
+	        {     //navbar options
+	            edit: true,
+	            editicon : 'icon-pencil blue',
+	            add: true,
+	            addicon : 'icon-plus-sign purple',
+	            del: true,
+	            delicon : 'icon-trash red',
+	            search: true,
+	            searchicon : 'icon-search orange',
+	            refresh: true,
+	            refreshicon : 'icon-refresh green',
+	            view: true,
+	            viewicon : 'icon-zoom-in grey'
+	        }
+	    );
+	
 	function updatePagerIcons(table) {
 		var replacement = 
 		{
