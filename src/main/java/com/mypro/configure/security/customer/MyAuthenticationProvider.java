@@ -29,7 +29,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		MyWebAuthenticationDetails details = (MyWebAuthenticationDetails) authentication.getDetails();
 		String captcha = details.getCaptcha();//验证码
 		if(!"captcha".equals(captcha))
-			throw new WrongCaptchaException(SecurityConstant.WRONG_CAPTCHA);
+			throw new WrongCaptchaException(SecurityConstant.WRONG_CAPTCHA_MSG);
 		
 	 	String username = authentication.getName();
         String password = (String) authentication.getCredentials();
@@ -37,12 +37,12 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         //在此方法中加入登录判断，用户名， 密码，验证码等等
         
         if(user == null)
-            throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND);
+            throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND_MSG);
 
         String usersalt = user.getUserSalt();
         //加密过程在这里体现
         if (!Md5Util.md5(password+usersalt).equals(user.getPassword()))
-            throw new BadCredentialsException(SecurityConstant.WRONG_PASSWORD);
+            throw new BadCredentialsException(SecurityConstant.WRONG_PASSWORD_MSG);
 
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         return new UsernamePasswordAuthenticationToken(user, password, authorities);

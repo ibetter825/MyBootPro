@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mypro.bean.constant.SecurityConstant;
+import com.mypro.common.utils.WebUtil;
+
 @Controller
 public class LoginController extends BaseAdminController {
 	
@@ -17,10 +20,14 @@ public class LoginController extends BaseAdminController {
 	}
 	@RequestMapping("/timeout")
 	public ModelAndView timeout(){
+		if(WebUtil.isAjax(request))
+			WebUtil.writeJson(response, SecurityConstant.TIME_OUT_SESSION_MSG);
 		return new ModelAndView("admin/error/timeout");
 	}
 	@RequestMapping("/expired")
 	public ModelAndView expired(){
+		if(WebUtil.isAjax(request))
+			WebUtil.writeJson(response, SecurityConstant.EXPIRED_SESSION_MSG);
 		return new ModelAndView("admin/error/expired");
 	}
 }

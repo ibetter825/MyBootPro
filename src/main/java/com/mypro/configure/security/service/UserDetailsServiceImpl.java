@@ -31,10 +31,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         try {
             user = sysUserService.queryUserByName(user_name);
         } catch (Exception e) {
-            throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND);
+            throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND_MSG);
         }
         if(user == null){
-            throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND);
+            throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND_MSG);
         } else {
             try {
                 List<SysRole> roles = new ArrayList<SysRole>();

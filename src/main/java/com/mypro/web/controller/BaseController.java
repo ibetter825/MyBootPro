@@ -25,7 +25,7 @@ public class BaseController {
 	public Map<String, String> resultErrors(BindingResult error){
 		Map<String, String> res = null;
 		if(error.hasErrors()){
-			res = new HashMap<String, String>();//验证错误结果  filed:message
+			res = new HashMap<String, String>();//验证错误结果  failed:message
 			List<ObjectError>  errors = error.getAllErrors();
 			for(ObjectError e : errors){
 				if(e instanceof FieldError)

@@ -201,6 +201,7 @@
 	<!-- page specific plugin scripts -->
 	<!-- ace scripts -->
 	<script type="text/javascript">
+		if (window != top) top.location.href = location.href; //跳出框架
 		var $bg = $('.login-bg').attr('src', '/static/a/images/login/bg_'+ new Date().getDay() +'.jpg');
 
 		function show_box(id) {

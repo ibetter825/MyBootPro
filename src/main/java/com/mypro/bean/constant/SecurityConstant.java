@@ -41,25 +41,33 @@ public class SecurityConstant {
 	/**
 	 * 用户名不存在
 	 */
-	public final static String USER_NAME_NOT_FOUND = "用户不存在";
+	public final static String USER_NAME_NOT_FOUND_MSG = "用户不存在";
 	/**
 	 * 密码错误
 	 */
-	public final static String WRONG_PASSWORD = "用户名或者密码错误";
+	public final static String WRONG_PASSWORD_MSG = "用户名或者密码错误";
 	/**
 	 * 账户被锁
 	 */
-	public final static String USER_LOCKED = "账户已被锁定";
+	public final static String USER_LOCKED_MSG = "账户已被锁定";
 	/**
 	 * 账户被禁用
 	 */
-	public final static String USER_DISABLED = "账户被禁用";
+	public final static String USER_DISABLED_MSG = "账户被禁用";
 	/**
 	 * 密码过期
 	 */
-	public final static String TIME_OUT_PASSWORD = "密码过期";
+	public final static String TIME_OUT_PASSWORD_MSG = "密码过期";
+	/**
+	 * 登录过期
+	 */
+	public final static String TIME_OUT_SESSION_MSG = "登录过期";
+	/**
+	 * 多次登录
+	 */
+	public final static String EXPIRED_SESSION_MSG = "您的账户已在另一地点登录";
 	/**
 	 * 验证码错误
 	 */
-	public final static String WRONG_CAPTCHA = "验证码错误";
+	public final static String WRONG_CAPTCHA_MSG = "验证码错误";
 }
