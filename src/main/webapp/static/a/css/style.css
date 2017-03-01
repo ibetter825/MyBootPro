@@ -6,8 +6,9 @@
 .custom .page-header .form-group {margin-bottom: 0;}
 /* common */
 .hide {display: none;}
-body .dto-form  .layui-layer-title{background:#307ECC; color:#fff; border: none;}
-body .dto-form  .layui-layer-btn a {border-radius: 0;}
+body .dto-form {max-height: 70%;}
+body .dto-form .layui-layer-title{background:#307ECC; color:#fff; border: none;}
+body .dto-form .layui-layer-btn a {border-radius: 0;}
 /* list page */
 .form-btns {margin-top: 12px; text-align:right;}
 /*main*/
