@@ -10,7 +10,7 @@
 	<div class="page-content">
 		<div class="page-header">
 			<div class="widget-box">
-				<form id="search-form" class="form-horizontal" role="form" onsubmit="return search();">
+				<form id="search-form" class="form-horizontal" role="form" onsubmit="return admin.search();">
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-search"></i>搜索</h6>
 						<div class="widget-toolbar">
@@ -54,8 +54,8 @@
 						<div class="widget-toolbox">
 							<div class="btn-toolbar">
 								<div class="btn-group">
-									<button class="btn btn-sm btn-success" onclick="addDto();"><i class="icon-plus"></i> 新增
-									</button><button class="btn btn-sm btn-danger" onclick="editDto();"><i class="icon-edit"></i> 编辑</button>
+									<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
+									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button>
 								</div>
 							</div>
 						</div>
@@ -70,26 +70,24 @@
 		<!-- /row -->
 		<!-- PAGE CONTENT ENDS -->
 		<div id="dto-model" class="hide">
-			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return submitDtoModelForm();">
+			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return admin.submitDtoModelForm();">
 				<div class="widget-box no-border">
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-search"></i>搜索</h6>
 					</div>
 					<div class="widget-body">
 						<div class="widget-main">
-							
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-									<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-									<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-								</div>
-							
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
 						</div>
 						<div class="widget-toolbox padding-8 clearfix">
-							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="closeDtoModel();">
+							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
 								<i class="icon-trash"></i><span class="bigger-110"> 取&nbsp;消</span>
 							</button>
 							<button type="submit" class="btn btn-sm btn-primary pull-right">
@@ -109,139 +107,7 @@
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
 		var gridSelector = '#grid-table', pagerSelector = '#grid-pager', $grid = $(gridSelector), $pager = $(pagerSelector);
-		
-		//查询数据
-		function search(){
-			var pd = $(gridSelector).jqGrid('getGridParam','postData');
-			//直接传入下面的参数不行，需要先将pd这个对象找出来
-			var params = $('#search-form').serializeArray();
-			$(params).each(function(){
-				pd[this.name] = this.value
-			});
-			//传入查询条件参数  
-	        $(gridSelector).jqGrid("setGridParam",{postData: pd}).trigger("reloadGrid");
-			return false;
-		}
-		
-		$grid.jqGrid({
-			url : '/admin/menu/list',
-			mtype: 'POST',
-	        datatype : "json",
-	        jsonReader: { 
-	            page: "pageNumber",   // json中代表当前页码的数据  
-	            total: "totalPages", // json中代表页码总数的数据  
-	            records: "total" // json中代表数据行总数的数据  
-	        },
-	        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
-			height: $height,
-			colNames:['菜单编号', '菜单名称','菜单地址', '操作'],
-			colModel:[
-				{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: true},
-				{name:'menu_name',index:'menu_name',width:90, editable:true},
-				{name:'menu_url',index:'menu_url', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{
-						keys:true
-					}
-				}
-			], 
-			rownumbers: false,//显示行编号
-			viewrecords : true,
-			rowNum: 10,
-			rowList: [10,30,50,100],
-			pager : pagerSelector,
-			recordpos: 'center',
-			pagerpos: 'right',
-			recordtext: '显示 {0} - {1} 共 {2} 条',
-			pgtext : '第 {0} 页， 共 {1} 页',
-			loadtext: '正在请求数据...',
-			altRows: true,
-			
-			//multiSort: true,
-			multiselect: true,
-			//multikey: "ctrlKey",
-	        multiboxonly: false,
-	
-			loadComplete : function() {
-				var table = this;
-				setTimeout(function(){
-					//styleCheckbox(table);
-					//updateActionIcons(table);
-					updatePagerIcons(table);
-				}, 0);
-			},
-			beforeRequest: function(){
-				//jQuery("#grid-table").jqGrid('setGridParam',{loadui: 'block'});//显示正在加载提示
-			},
-			editurl:'',//nothing is saved
-			autowidth: true
-		});
-		//按钮自定义样式
-		$grid.jqGrid('navGrid', pagerSelector,
-		        {   //navbar options
-		            edit: false,
-		            editicon : 'icon-pencil blue',
-		            add: false,
-		            addicon : 'icon-plus-sign purple',
-		            del: false,
-		            delicon : 'icon-trash red',
-		            search: false,
-		            searchicon : 'icon-search orange',
-		            refresh: true,
-		            refreshicon : 'icon-refresh green',
-		            view: false,
-		            viewicon : 'icon-eye-open grey'
-		        }
-		    );
-		//替换分页插件的按钮图标
-		function updatePagerIcons(table) {
-			var replacement = {
-				'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
-				'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
-				'ui-icon-seek-next' : 'icon-angle-right bigger-140',
-				'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
-			};
-			$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-				var icon = $(this);
-				var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-				if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-			});
-		}
-		
-		//添加
-		function addDto(){
-			layer.msg('添加');
-		}
-		//编辑
-		function editDto(){
-			var gr = $grid.jqGrid('getGridParam', 'selrow');
-		    if (gr != null){
-		    	var row = $grid.jqGrid('getRowData', gr);
-		    	console.log(row);
-		    	layer.open({
-		    		  type: 1,
-		    		  title: false,
-		    		  move: '.widget-header',
-		    		  closeBtn: 0,
-		    		  skin: 'dto-form',
-		    		  shadeClose: true,
-		    		  area: ['460px'],
-		    		  content: $('#dto-model').html()
-	    		});
-		    }else
-		      layer.msg('请选择一条记录');
-		}
-		
-		//提交编辑框表单
-		function submitDtoModelForm(){
-			alert('tijiao');
-			return false;
-		}
-		//关闭摸态框
-		function closeDtoModel(){
-			layer.closeAll('page');
-		}
+		admin.initGrid();
 	</script>
 </body>
 
