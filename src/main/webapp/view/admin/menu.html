@@ -5,8 +5,9 @@
 	<#assign title="菜单管理">
 	<#include "/admin/includes/header.html"/>
 	<link rel="stylesheet" href="/static/a/css/validationEngine.jquery.css" />
+	<link rel="stylesheet" href="/static/a/css/daterangepicker.css" />
 	<style>
-		.dto-model-hide {position: absolute; top: -100%; left: -100%;}
+		.formError-small .formErrorContent {border-color: #fff; border-radius: 0;}
 	</style>
 </head>
 
@@ -38,6 +39,21 @@
 									<label class="col-sm-4 control-label no-padding-right" for="s-menu_name"> 菜单名称: </label>
 									<div class="col-sm-8">
 										<input type="text" id="s-menu_name" placeholder="菜单名称" class="col-sm-12" name="rq['menu_name']">
+									</div>
+								</div>
+								<div class="col-sm-3 no-padding-left">
+									<label class="col-sm-4 control-label no-padding-right" for="s-menu_state"> 菜单状态: </label>
+									<div class="col-sm-8">
+										<select id="s-menu_state" class="col-sm-12" name="rq['menu_state']">
+											<option value=""></option>
+											<option value="AL">Alabama</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-3 no-padding-left">
+									<label class="col-sm-4 control-label no-padding-right" for="s-menu_date"> 数据日期: </label>
+									<div class="col-sm-8">
+										<input class="auto-bind-timepicker col-sm-12" id="s-menu_date" data-constraint="rq['menu_date']" type="text" />
 									</div>
 								</div>
 							</div>
@@ -89,6 +105,10 @@
 								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
 								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
 						</div>
 						<div class="widget-toolbox padding-8 clearfix">
 							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
@@ -107,7 +127,9 @@
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
 	<script src="/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2"></script>
-	<script src="/static/a/js/validation/jquery.validationEngine.min.js?v=2.6.2"></script>
+	<script src="/static/a/js/validation/jquery.validationEngine.js?v=2.6.2"></script>
+	<script src="/static/a/js/date-time/moment.min.js?v=2.0.0"></script>
+	<script src="/static/a/js/date-time/daterangepicker.js"></script>
 	<script type="text/javascript">
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
@@ -116,6 +138,37 @@
 		admin.initGrid();
 		admin.attachVali($search);//给搜索表单绑定验证
 		admin.attachVali($dtoForm);//给dto表单绑定验证
+		$('.auto-bind-timepicker').each(function(i){
+			var id = this.id;
+			var constraint = $(this).attr('data-constraint');
+			$(this).after('<input id="'+id+'_hidden" name="'+constraint+'" type="text" style="display:none;"/>');
+			bindDateTimePicker('#'+id);
+		});
+		function bindDateTimePicker(selecter){
+			$(selecter).daterangepicker({
+		    	"singleDatePicker": true,
+		    	"autoUpdateInput": false,
+		    	"showDropdowns": true,
+		    	 "opens": 'left',
+		    	 locale : {  
+                     applyLabel : '确定',  
+                     cancelLabel : '取消',  
+                     fromLabel : '起始时间',  
+                     toLabel : '结束时间',  
+                     customRangeLabel : '自定义',  
+                     daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
+                     monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
+                     firstDay : 1  
+                 }
+		    },function(start, end, label) {
+		    	var time = start.format('YYYY-MM-DD');
+			  	$(selecter).val(time);
+			  	$(selecter+'_hidden').val(strToTime(time));
+			});
+		};
+		function strToTime(str){
+			return new Date(str.replace(/-/g,'/')).getTime();
+		};
 	</script>
 </body>
 

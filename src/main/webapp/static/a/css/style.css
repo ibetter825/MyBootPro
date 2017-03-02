@@ -16,11 +16,12 @@ body::-webkit-scrollbar-corner, div::-webkit-scrollbar-corner {background:rgba(0
 .custom .page-header .form-group {margin-bottom: 0;}
 .custom .page-header .form-group>div{margin-top: 8px;}
 .custom .page-header .form-group label[class*="col-"] {padding-top:4px; margin-bottom:4px;}
+.custom select {height: 28px;}
 /* common */
 .hide {display: none;}
-body .dto-form {max-height: 70%;}
-body .dto-form .widget-main {padding-top: 20px;}
+body .dto-form .widget-main {padding-top: 18px; padding-bottom: 0; max-height: 280px; overflow: auto;}
 body .dto-form .widget-box {margin: 0;}
+.dto-model-hide {position: absolute; top: -100%; left: -100%;}
 /* list page */
 .form-btns {margin-top: 12px; text-align:right;}
 /*main*/

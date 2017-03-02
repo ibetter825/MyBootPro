@@ -124,6 +124,7 @@ var admin = {};
 	 * dto天假
 	 */
 	admin.addDto = function(){
+		$dtoForm.validationEngine('hideAll');
 		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-plus"></i> 新增');
 		layer.open({
   		  type: 1,
@@ -143,9 +144,10 @@ var admin = {};
 	 * 编辑dto
 	 */
 	admin.editDto = function(){
-		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
 		var gr = $grid.jqGrid('getGridParam', 'selrow');
 	    if (gr != null){
+	    	$dtoForm.validationEngine('hideAll');
+	    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
 	    	var row = $grid.jqGrid('getRowData', gr);
 	    	layer.open({
 	    		  type: 1,
