@@ -94,33 +94,59 @@ var admin = {};
 		}
 	}
 	/**
+	 * 绑定验证
+	 */
+	admin.attachVali = function($obj){
+		$obj.validationEngine('attach', {
+			maxErrorsPerField: 1,
+			showOneMessage: true,
+			promptPosition: 'bottomLeft',
+			addPromptClass: 'formError-small'
+		});
+	}
+	/**
 	 * 搜索表单查询
 	 */
 	admin.search = function(){
-		var pd = $(gridSelector).jqGrid('getGridParam','postData');
+		var vali = $search.validationEngine('validate');
+		if(!vali) return false;
+		var pd = $grid.jqGrid('getGridParam','postData');
 		//直接传入下面的参数不行，需要先将pd这个对象找出来
 		var params = $('#search-form').serializeArray();
 		$(params).each(function(){
 			pd[this.name] = this.value
 		});
 		//传入查询条件参数  
-        $(gridSelector).jqGrid("setGridParam",{postData: pd}).trigger("reloadGrid");
+        $grid.jqGrid("setGridParam",{postData: pd}).trigger("reloadGrid");
 		return false;
 	}
 	/**
 	 * dto天假
 	 */
 	admin.addDto = function(){
-		layer.msg('添加');
+		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-plus"></i> 新增');
+		layer.open({
+  		  type: 1,
+  		  title: false,
+  		  move: '.widget-header',
+  		  closeBtn: 0,
+  		  skin: 'dto-form',
+  		  shadeClose: true,
+  		  area: ['460px'],
+  		  content: $dtoModel,
+  		  end: function(){
+  			$dtoModel.addClass('dto-model-hide');
+  		  }
+		});
 	}
 	/**
 	 * 编辑dto
 	 */
 	admin.editDto = function(){
+		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
 		var gr = $grid.jqGrid('getGridParam', 'selrow');
 	    if (gr != null){
 	    	var row = $grid.jqGrid('getRowData', gr);
-	    	console.log(row);
 	    	layer.open({
 	    		  type: 1,
 	    		  title: false,
@@ -129,7 +155,10 @@ var admin = {};
 	    		  skin: 'dto-form',
 	    		  shadeClose: true,
 	    		  area: ['460px'],
-	    		  content: $('#dto-model').html()
+	    		  content: $dtoModel,
+    	  		  end: function(){
+    	  			$dtoModel.addClass('dto-model-hide');
+    	  		  }
     		});
 	    }else
 	      layer.msg('请选择一条记录');
@@ -138,7 +167,8 @@ var admin = {};
 	 * 提交dto编辑框表单
 	 */
 	admin.submitDtoModelForm = function(){
-		alert('tijiao');
+		var vali = $dtoForm.validationEngine('validate');
+		if(!vali) return false;
 		return false;
 	}
 	/**

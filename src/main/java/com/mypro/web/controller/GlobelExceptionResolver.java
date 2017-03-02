@@ -39,6 +39,7 @@ public class GlobelExceptionResolver implements HandlerExceptionResolver {
 			}
 		}
 		System.err.println("全局错误解析器");
+		ex.printStackTrace();
 		return null;//跳转到500错误页面，可以分别处理
 	}
 	

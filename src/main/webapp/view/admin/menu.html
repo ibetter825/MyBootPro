@@ -4,6 +4,10 @@
 <head>
 	<#assign title="菜单管理">
 	<#include "/admin/includes/header.html"/>
+	<link rel="stylesheet" href="/static/a/css/validationEngine.jquery.css" />
+	<style>
+		.dto-model-hide {position: absolute; top: -100%; left: -100%;}
+	</style>
 </head>
 
 <body class="custom">
@@ -25,15 +29,15 @@
 						<div class="widget-main">
 							<div class="form-group">
 								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+									<label class="col-sm-4 control-label no-padding-right" for="s-menu_id"> 菜单编号: </label>
 									<div class="col-sm-8">
-										<input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']">
+										<input id="s-menu_id" type="text" placeholder="菜单编号" class="col-sm-12 validate[custom[integer]]" name="rq['menu_id']">
 									</div>
 								</div>
 								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="form-field-2"> 菜单名称: </label>
+									<label class="col-sm-4 control-label no-padding-right" for="s-menu_name"> 菜单名称: </label>
 									<div class="col-sm-8">
-										<input type="text" placeholder="菜单名称" class="col-sm-12" name="rq['menu_name']">
+										<input type="text" id="s-menu_name" placeholder="菜单名称" class="col-sm-12" name="rq['menu_name']">
 									</div>
 								</div>
 							</div>
@@ -69,7 +73,7 @@
 		</div>
 		<!-- /row -->
 		<!-- PAGE CONTENT ENDS -->
-		<div id="dto-model" class="hide">
+		<div id="dto-model" class="dto-model-hide">
 			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return admin.submitDtoModelForm();">
 				<div class="widget-box no-border">
 					<div class="widget-header header-color-blue">
@@ -78,8 +82,8 @@
 					<div class="widget-body">
 						<div class="widget-main">
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-menu_id"> 菜单编号: </label>
+								<div class="col-sm-6"><input id="d-menu_id" type="text" placeholder="菜单编号" class="col-sm-12 validate[required]" name="rq['menu_id']"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
@@ -102,12 +106,16 @@
 	
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
-	
+	<script src="/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2"></script>
+	<script src="/static/a/js/validation/jquery.validationEngine.min.js?v=2.6.2"></script>
 	<script type="text/javascript">
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
-		var gridSelector = '#grid-table', pagerSelector = '#grid-pager', $grid = $(gridSelector), $pager = $(pagerSelector);
+		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
+		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 		admin.initGrid();
+		admin.attachVali($search);//给搜索表单绑定验证
+		admin.attachVali($dtoForm);//给dto表单绑定验证
 	</script>
 </body>
 

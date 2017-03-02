@@ -8,7 +8,7 @@
 	    		menu_id = #{menu_id, jdbcType=INTEGER}
 	    	</if>
 	    	<if test="menu_name != null and menu_name != ''">
-	    		menu_name = #{menu_name, jdbcType=STRING}
+	    		menu_name like concat('%', #{menu_name, jdbcType=VARCHAR}, '%')
 	    	</if>
 	    	<if test="menu_pid != null and menu_pid != ''">
 	    		menu_pid = #{menu_pid, jdbcType=INTEGER}
