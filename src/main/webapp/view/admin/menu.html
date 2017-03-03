@@ -53,7 +53,7 @@
 								<div class="col-sm-3 no-padding-left">
 									<label class="col-sm-4 control-label no-padding-right" for="s-menu_date"> 数据日期: </label>
 									<div class="col-sm-8">
-										<input class="auto-bind-timepicker col-sm-12" id="s-menu_date" data-constraint="rq['menu_date']" type="text" />
+										<input type="text" class="auto-bind-timepicker col-sm-12" id="s-menu_date" data-constraint="rq['menu_date']" autocomplete="off"/>
 									</div>
 								</div>
 							</div>
@@ -126,48 +126,31 @@
 	
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
-	<script src="/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2"></script>
-	<script src="/static/a/js/validation/jquery.validationEngine.js?v=2.6.2"></script>
-	<script src="/static/a/js/date-time/moment.min.js?v=2.0.0"></script>
-	<script src="/static/a/js/date-time/daterangepicker.js"></script>
+	
 	<script type="text/javascript">
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
-		admin.initGrid();
-		admin.attachVali($search);//给搜索表单绑定验证
-		admin.attachVali($dtoForm);//给dto表单绑定验证
-		$('.auto-bind-timepicker').each(function(i){
-			var id = this.id;
-			var constraint = $(this).attr('data-constraint');
-			$(this).after('<input id="'+id+'_hidden" name="'+constraint+'" type="text" style="display:none;"/>');
-			bindDateTimePicker('#'+id);
-		});
-		function bindDateTimePicker(selecter){
-			$(selecter).daterangepicker({
-		    	"singleDatePicker": true,
-		    	"autoUpdateInput": false,
-		    	"showDropdowns": true,
-		    	 locale : {  
-                     applyLabel : '确定',
-                     cancelLabel : '取消',  
-                     fromLabel : '起始时间',  
-                     toLabel : '结束时间',  
-                     customRangeLabel : '自定义',  
-                     daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
-                     monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
-                     firstDay : 1  
-                 }
-		    },function(start, end, label) {
-		    	var time = start.format('YYYY-MM-DD');
-			  	$(selecter).val(time);
-			  	$(selecter+'_hidden').val(strToTime(time));
-			});
-		};
-		function strToTime(str){
-			return new Date(str.replace(/-/g,'/')).getTime();
-		};
+		
+		loadJS('jqGrid_js', function(){
+			loadJS('jqGrid-zh_CN_js', function(){
+				admin.initGrid();
+			}, '/static/a/js/jqGrid/i18n/grid.locale-cn.js?v=4.5.2');
+		}, '/static/a/js/jqGrid/jquery.jqGrid.min.js?v=4.5.2');
+		
+		loadJS('validationEngine-zh_CN_js', function(){
+			loadJS('validationEngine_js', function(){
+				admin.attachVali($search);//给搜索表单绑定验证
+				admin.attachVali($dtoForm);//给dto表单绑定验证
+			}, '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2');
+		}, '/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2');
+		
+		loadJS('moment_js', function(){
+			loadJS('daterangepicker_js', function(){
+				admin.attachTimepicker();
+			}, '/static/a/js/datepicker/daterangepicker.js');
+		}, '/static/a/js/datepicker/moment.min.js?v=2.0.0');
 	</script>
 </body>
 

@@ -1,6 +1,31 @@
 /**
 * @preserve admin v1.0.0
 */
+var loadJS = function(id, callback, url){
+	var script = document.getElementById(id);
+	if(script) {//已经加载过改js
+		callback();
+		return;
+	}
+	var head = document.getElementsByTagName('head');  
+	if(head && head.length)
+		head = head[0];
+	else
+		head = document.body;
+	script = document.createElement('script');   
+	script.type = "text/javascript";
+	script.id = id;
+	head.appendChild( script);
+	script.onload = script.onreadystatechange = function(){
+		//script 标签，IE 下有 onreadystatechange 事件, w3c 标准有 onload 事件     
+		//这些 readyState 是针对IE8及以下的，W3C 标准的 script 标签没有 onreadystatechange 和 this.readyState , 
+		//文件加载不成功 onload 不会执行，
+		//(!this.readyState) 是针对 W3C标准的, IE 9 也支持 W3C标准的 onload 
+		if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" )
+			callback();     
+	 }//end onreadystatechange 
+	 script.src = url;
+}
 var admin = {};
 (function(admin) {
 	/**
@@ -103,6 +128,41 @@ var admin = {};
 			promptPosition: 'bottomLeft',
 			addPromptClass: 'formError-small'
 		});
+	}
+	/**
+	 * 绑定时间控件
+	 */
+	admin.attachTimepicker = function(){
+		$('.auto-bind-timepicker').each(function(i){
+			var id = this.id;
+			var constraint = $(this).attr('data-constraint');
+			$(this).after('<input id="'+id+'_hidden" name="'+constraint+'" type="text" style="display:none;"/>');
+			bindDateTimePicker('#'+id);
+		});
+		function bindDateTimePicker(selecter){
+			$(selecter).daterangepicker({
+		    	"singleDatePicker": true,
+		    	"autoUpdateInput": false,
+		    	"showDropdowns": true,
+		    	 locale : {  
+                     applyLabel : '确定',
+                     cancelLabel : '取消',  
+                     fromLabel : '起始时间',  
+                     toLabel : '结束时间',  
+                     customRangeLabel : '自定义',  
+                     daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
+                     monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
+                     firstDay : 1  
+                 }
+		    },function(start, end, label) {
+		    	var time = start.format('YYYY-MM-DD');
+			  	$(selecter).val(time);
+			  	$(selecter+'_hidden').val(strToTime(time));
+			});
+		};
+		function strToTime(str){
+			return new Date(str.replace(/-/g,'/')).getTime();
+		};
 	}
 	/**
 	 * 搜索表单查询
