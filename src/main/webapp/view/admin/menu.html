@@ -133,6 +133,13 @@
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 		
+		var config = {
+				search: {
+					url: ''
+				}
+		}
+		
+		
 		loadJS('jqGrid_js', function(){
 			loadJS('jqGrid-zh_CN_js', function(){
 				admin.initGrid();
