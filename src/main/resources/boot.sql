@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : 127.0.0.1
-Source Server Version : 50711
-Source Host           : 127.0.0.1:3306
+Source Server Version : 50715
+Source Host           : localhost:3306
 Source Database       : boot
 
 Target Server Type    : MYSQL
-Target Server Version : 50711
+Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2016-12-04 18:26:34
+Date: 2017-03-06 16:16:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,7 +77,7 @@ CREATE TABLE `sys_menu` (
   `menu_id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_name` varchar(50) NOT NULL,
   `menu_url` varchar(100) DEFAULT '',
-  `menu_desc` varchar(200) DEFAULT NULL,
+  `menu_desc` varchar(200) DEFAULT '',
   `menu_pid` int(11) DEFAULT '0',
   `menu_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态:1 正常',
   `menu_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '菜单级别:0 一级菜单(model类),1 二级菜单,2 三级菜单',
@@ -89,22 +89,22 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/desk', '用户的工作台', '0', '1', '0', '0', '/static/a/images/icon01.png');
-INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', null, '0', '1', '0', '1', '/static/a/images/icon02.png');
-INSERT INTO `sys_menu` VALUES ('3', '模块设计', '', null, '0', '1', '0', '2', '/static/a/images/icon03.png');
-INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', null, '0', '1', '0', '3', '/static/a/images/icon04.png');
-INSERT INTO `sys_menu` VALUES ('5', '文件管理', '', null, '0', '1', '0', '4', '/static/a/images/icon05.png');
-INSERT INTO `sys_menu` VALUES ('6', '系统设计', '', null, '0', '1', '0', '5', '/static/a/images/icon06.png');
-INSERT INTO `sys_menu` VALUES ('7', '管理信息', '', null, '2', '1', '1', '0', '/static/a/images/leftico01.png');
-INSERT INTO `sys_menu` VALUES ('8', '其他设置', '', null, '2', '1', '1', '1', '/static/a/images/leftico02.png');
-INSERT INTO `sys_menu` VALUES ('9', '编辑器', '', null, '2', '1', '1', '2', '/static/a/images/leftico03.png');
-INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', null, '2', '1', '1', '3', '/static/a/images/leftico04.png');
-INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', null, '7', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk', '用户的工作台', '0', '1', '0', '0', 'icon-dashboard');
+INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', null, '0', '1', '0', '1', 'icon-coffee');
+INSERT INTO `sys_menu` VALUES ('3', '模块设计', '', 'm', '0', '1', '0', '2', 'icon-laptop');
+INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', null, '0', '1', '0', '3', 'icon-glass');
+INSERT INTO `sys_menu` VALUES ('5', '文件管理', '', null, '0', '1', '0', '4', 'icon-desktop');
+INSERT INTO `sys_menu` VALUES ('6', '系统设计', '', null, '0', '1', '0', '5', ' icon-cogs');
+INSERT INTO `sys_menu` VALUES ('7', '管理信息', '', null, '2', '1', '1', '0', '');
+INSERT INTO `sys_menu` VALUES ('8', '其他设置', '', null, '2', '1', '1', '1', '');
+INSERT INTO `sys_menu` VALUES ('9', '编辑器', '', null, '2', '1', '1', '2', '');
+INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', null, '2', '1', '1', '3', '');
+INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', null, '7', '1', '2', '0', 'icon-laptop');
 INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', null, '7', '1', '2', '1', '');
 INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', null, '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/desk', null, '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '/static/a/images/leftico01.png');
-INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu', null, '15', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '');
+INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu', null, '15', '1', '2', '0', 'icon-list');
 
 -- ----------------------------
 -- Table structure for sys_opt
@@ -193,12 +193,13 @@ CREATE TABLE `sys_user` (
   `is_super` tinyint(4) DEFAULT '0' COMMENT '是否为超级管理源:0 否, 1 是',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `FK_SYS_USER_USER_NAME` (`user_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='系统用户主表';
+) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8 COMMENT='系统用户主表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('10000', 'BB855C106B50CEA148E553154E3DF151', 'yang', 'admin', '1', '0');
+INSERT INTO `sys_user` VALUES ('10001', 'BB855C106B50CEA148E553154E3DF151', 'yang', 'test', '1', '0');
 
 -- ----------------------------
 -- Table structure for sys_user_info
