@@ -33,7 +33,7 @@ var admin = {};
 	 */
 	admin.initGrid = function(config) {
 		$grid.jqGrid({
-			url : '/admin/menu/list',//config
+			url : config.table.url,//config
 			mtype: 'POST',
 	        datatype : "json",
 	        jsonReader: {
