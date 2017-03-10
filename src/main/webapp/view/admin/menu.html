@@ -152,51 +152,8 @@
 					editUrl: ''
 				}
 		}
-		setSearchCont();
 		//写入搜索表单的数据
-		function setSearchCont(){
-			var html = new Array();
-			html.push('<div class="page-header"><div class="widget-box"><form id="search-form" class="form-horizontal" role="form" onsubmit="return admin.search();">');
-			html.push('<div class="widget-header header-color-blue">');
-			html.push('<h6><i class="icon-search"></i>搜索</h6>');
-			html.push('<div class="widget-toolbar">');
-			html.push('<a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a>');
-			html.push('</div>');
-			html.push('<div class="widget-toolbar no-border">');
-			html.push('<button class="btn btn-xs btn-info" type="submit"><i class="icon-search bigger-110"></i> 查&nbsp;询');
-			html.push('</button><button class="btn btn-xs" type="reset"><i class="icon-undo bigger-110"></i> 重&nbsp;置</button>');
-			html.push('</div>');
-			html.push('</div>');
-			html.push('<div class="widget-body">');
-			html.push('<div class="widget-main">');
-			html.push('<div class="form-group">');
-
-			var cols = config.search.col;
-			var col = null;
-			for(var i = 0, l = cols.length; i < l; i++){
-				col = cols[i];
-				html.push('<div class="col-sm-3 no-padding-left">');
-				html.push('<label class="col-sm-4 control-label no-padding-right" for="s-'+col.name+'"> 菜单编号: </label>');
-				html.push('<div class="col-sm-8">');
-				if(col.widget === 'text')
-					html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="col-sm-12 '+col.vali+']" name="rq[\''+col.name+'\']" autocomplete="off">');
-				else if(col.widget === 'select'){
-					html.push('<select id="s-'+col.name+'" class="col-sm-12" name="rq[\''+col.name+'\']">');
-					html.push('<option value=""></option>');
-					var list = col.source.cont;
-					for(var j = 0, ln = list.length; j < ln; j++)
-						html.push('<option value="'+list[j].value+'">'+list[j].text+'</option>');
-					html.push('</select>');
-				} else if(col.widget === 'date')
-					html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="auto-bind-timepicker col-sm-12 '+col.vali+']" name="rq[\''+col.name+'\']" autocomplete="off">');
-				
-				html.push('</div>');
-				html.push('</div>');
-			}
-			html.push('</div></div></div>');
-			html.push('</form></div></div>');
-			$('.page-content').empty().append(html.join(''));
-		}
+		admin.setSearchCont();
 		
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
