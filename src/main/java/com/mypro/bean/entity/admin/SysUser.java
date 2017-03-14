@@ -1,8 +1,10 @@
-package com.mypro.bean.entity;
+package com.mypro.bean.entity.admin;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.mypro.bean.entity.BaseEntity;
 
 /**
  * 系统用户

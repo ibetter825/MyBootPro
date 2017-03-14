@@ -1,6 +1,6 @@
 package com.mypro.dao.admin;
 
-import com.mypro.bean.entity.SysMenuConfig;
+import com.mypro.bean.entity.admin.SysMenuConfig;
 import com.mypro.dao.BaseDao;
 
 /**

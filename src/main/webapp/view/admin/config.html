@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<#assign title="菜单管理">
+	<#assign title="菜单页面配置">
 	<#include "/admin/includes/header.html"/>
 	<link rel="stylesheet" href="/static/a/css/validationEngine.jquery.css" />
 	<link rel="stylesheet" href="/static/a/css/daterangepicker.css" />
@@ -13,56 +13,44 @@
 
 <body class="custom">
 	<div class="page-content">
-		<div class="page-header">
-			<div class="widget-box">
-				<form id="search-form" class="form-horizontal" role="form" onsubmit="return admin.search();">
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="widget-box">
 					<div class="widget-header header-color-blue">
-						<h6><i class="icon-search"></i>搜索</h6>
-						<div class="widget-toolbar">
-							<a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a>
-						</div>
-						<div class="widget-toolbar no-border">
-							<button class="btn btn-xs btn-info" type="submit"><i class="icon-search bigger-110"></i> 查&nbsp;询
-							</button><button class="btn btn-xs" type="reset"><i class="icon-undo bigger-110"></i> 重&nbsp;置</button>
-						</div>
+						<h6><i class="icon-table"></i>数据表</h6>
+						<div class="widget-toolbar"><a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a></div>
 					</div>
 					<div class="widget-body">
 						<div class="widget-main">
-							<div class="form-group">
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_id"> 菜单编号: </label>
-									<div class="col-sm-8">
-										<input id="s-menu_id" type="text" placeholder="菜单编号" class="col-sm-12 validate[custom[integer]]" name="rq['menu_id']">
-									</div>
-								</div>
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_name"> 菜单名称: </label>
-									<div class="col-sm-8">
-										<input type="text" id="s-menu_name" placeholder="菜单名称" class="col-sm-12" name="rq['menu_name']">
-									</div>
-								</div>
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_state"> 菜单状态: </label>
-									<div class="col-sm-8">
-										<select id="s-menu_state" class="col-sm-12" name="rq['menu_state']">
-											<option value=""></option>
-											<option value="AL">Alabama</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_date"> 数据日期: </label>
-									<div class="col-sm-8">
-										<input type="text" class="auto-bind-timepicker col-sm-12" id="s-menu_date" data-constraint="rq['menu_date']" autocomplete="off"/>
-									</div>
+							<table id="grid-table"></table>
+							<div id="grid-pager"></div>
+						</div>
+					</div>
+				</div>
+			</div><!-- /.col -->
+			<div class="col-xs-6">
+				<div class="widget-box">
+					<div class="widget-header header-color-blue">
+						<h6><i class="icon-table"></i>表字段</h6>
+						<div class="widget-toolbar"><a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a></div>
+					</div>
+					<div class="widget-body">
+						<div class="widget-toolbox">
+							<div class="btn-toolbar">
+								<div class="btn-group" id="opt-cnter">
+									<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
+									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button>
 								</div>
 							</div>
 						</div>
+						<div class="widget-main">
+							<table id="grid-table-column"></table>
+							<div id="grid-pager-column"></div>
+						</div>
 					</div>
-				</form>
-			</div>
+				</div>
+			</div><!-- /.col -->
 		</div>
-		<!-- /.page-header -->
 		<!-- /row -->
 		<!-- PAGE CONTENT ENDS -->
 	</div>
@@ -70,6 +58,139 @@
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
 	<script type="text/javascript">
+		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $height = $(window).height() - 230;
+		loadJS('jqgrid', function(){
+			$grid.jqGrid({
+				url : '/admin/db/tables',//config
+				mtype: 'POST',
+		        datatype : "json",
+		        jsonReader: {
+		            page: "pageNumber",   // json中代表当前页码的数据  
+		            total: "totalPages", // json中代表页码总数的数据  
+		            records: "total" // json中代表数据行总数的数据  
+		        },
+		        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
+				height: $height + 40,
+				colNames:['表名', '表注释'],//config
+				colModel:[//config
+					{name:'TABLE_NAME', index:'TABLE_NAME', width:60},
+					{name:'TABLE_COMMENT', index:'TABLE_COMMENT', sortable: false}
+				], 
+				rownumbers: false,//显示行编号
+				viewrecords : true,
+				rowNum: 10,
+				rowList: [10,30,50,100],
+				pager : pagerSelector,
+				recordpos: 'center',
+				pagerpos: 'right',
+				recordtext: '显示 {0} - {1} 共 {2} 条',
+				pgtext : '第 {0} 页， 共 {1} 页',
+				loadtext: '正在请求数据...',
+				altRows: true,
+				
+				//multiSort: true,
+				multiselect: false,
+				//multikey: "ctrlKey",
+		        multiboxonly: false,
+		
+				loadComplete : function() {
+					var _this = this;
+					setTimeout(function(){
+						//styleCheckbox(_this);
+						//updateActionIcons(_this);
+						updatePagerIcons(_this);
+					}, 0);
+				},
+				onSelectRow: function(rowid,status){
+					var pd = $gridCol.jqGrid('getGridParam','postData');
+					pd['tableName'] = $grid.jqGrid('getRowData', rowid)['TABLE_NAME'];
+					$gridCol.jqGrid("setGridParam",{postData: pd}).trigger("reloadGrid");
+				},
+				editurl:'',//nothing is saved
+				autowidth: true
+			});
+			//按钮自定义样式
+			$grid.jqGrid('navGrid', pagerSelector, {   //navbar options
+			            edit: false,
+			            add: false,
+			            del: false,
+			            search: false,
+			            refresh: true,
+			            refreshicon : 'icon-refresh green',
+			            view: false
+		        }
+		    );
+			//替换分页插件的按钮图标
+			function updatePagerIcons(table) {
+				var replacement = {
+					'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
+					'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
+					'ui-icon-seek-next' : 'icon-angle-right bigger-140',
+					'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+				};
+				$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+					var icon = $(this);
+					var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+					if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+				});
+			}
+			
+			$gridCol.jqGrid({
+				url : '/admin/db/columns',//config
+				mtype: 'POST',
+		        datatype : "json",
+		        jsonReader: {
+		            page: "pageNumber",   // json中代表当前页码的数据  
+		            total: "totalPages", // json中代表页码总数的数据  
+		            records: "total" // json中代表数据行总数的数据  
+		        },
+		        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
+				height: $height,
+				colNames:['字段排序', '字段名', '字段类型', '字段注释'],//config
+				colModel:[//config
+					{name:'ORDINAL_POSITION', index:'ORDINAL_POSITION', width:60},
+					{name:'COLUMN_NAME', index:'COLUMN_NAME', sortable: true},
+					{name:'COLUMN_TYPE', index:'COLUMN_TYPE', sortable: true},
+					{name:'COLUMN_COMMENT', index:'COLUMN_COMMENT', sortable: false}
+				], 
+				rownumbers: false,//显示行编号
+				viewrecords : true,
+				rowNum: 10,
+				rowList: [10,30,50,100],
+				pager : pagerColSelector,
+				recordpos: 'center',
+				pagerpos: 'right',
+				recordtext: '显示 {0} - {1} 共 {2} 条',
+				pgtext : '第 {0} 页， 共 {1} 页',
+				loadtext: '正在请求数据...',
+				altRows: true,
+				
+				//multiSort: true,
+				multiselect: true,
+				//multikey: "ctrlKey",
+		        multiboxonly: false,
+		
+				loadComplete : function() {
+					var _this = this;
+					setTimeout(function(){
+						updatePagerIcons(_this);
+					}, 0);
+				},
+				editurl:'',//nothing is saved
+				autowidth: true
+			});
+			
+			$gridCol.jqGrid('navGrid', pagerColSelector, {
+			            edit: false,
+			            add: false,
+			            del: false,
+			            search: false,
+			            refresh: true,
+			            refreshicon : 'icon-refresh green',
+			            view: false
+			  	}
+			);
+		});
 		
 	</script>
 </body>

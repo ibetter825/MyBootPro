@@ -3,7 +3,7 @@ package com.mypro.dao.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.mypro.bean.entity.SysMenu;
+import com.mypro.bean.entity.admin.SysMenu;
 import com.mypro.dao.BaseDao;
 
 /**

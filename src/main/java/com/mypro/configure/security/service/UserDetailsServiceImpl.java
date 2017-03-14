@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.mypro.bean.constant.SecurityConstant;
-import com.mypro.bean.entity.SysRole;
-import com.mypro.bean.entity.SysUser;
+import com.mypro.bean.entity.admin.SysRole;
+import com.mypro.bean.entity.admin.SysUser;
 import com.mypro.configure.security.customer.MyUserDetails;
 import com.mypro.service.admin.SysUserService;
 /**

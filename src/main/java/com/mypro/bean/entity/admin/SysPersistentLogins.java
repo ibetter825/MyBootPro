@@ -1,6 +1,8 @@
-package com.mypro.bean.entity;
+package com.mypro.bean.entity.admin;
 
 import javax.persistence.Id;
+
+import com.mypro.bean.entity.BaseEntity;
 
 /**
  * 用于持久化 spring security数据到数据库

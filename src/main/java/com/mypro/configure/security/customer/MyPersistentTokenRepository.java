@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentReme
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Service;
 
-import com.mypro.bean.entity.SysPersistentLogins;
+import com.mypro.bean.entity.admin.SysPersistentLogins;
 import com.mypro.dao.admin.SysPersistentLoginsDao;
 /**
  * 用于security持久化cookie到数据库

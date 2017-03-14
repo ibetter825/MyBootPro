@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import com.mypro.Application;
-import com.mypro.bean.entity.QtTag;
+import com.mypro.bean.entity.admin.QtTag;
 import com.mypro.service.admin.TagService;
 
 /**

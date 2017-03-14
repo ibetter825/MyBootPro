@@ -3,7 +3,7 @@ package com.mypro.service.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.mypro.bean.entity.QtTag;
+import com.mypro.bean.entity.admin.QtTag;
 import com.mypro.bean.rq.QueryRq;
 
 public interface TagService {

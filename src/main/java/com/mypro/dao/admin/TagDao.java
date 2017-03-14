@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Select;
 
-import com.mypro.bean.entity.QtTag;
+import com.mypro.bean.entity.admin.QtTag;
 import com.mypro.dao.BaseDao;
 /**
  * example

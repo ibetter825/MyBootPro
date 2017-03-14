@@ -2,8 +2,6 @@ package com.mypro.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
  * Spring自带的定时任务

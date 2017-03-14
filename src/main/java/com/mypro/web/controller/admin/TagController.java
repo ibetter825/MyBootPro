@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.mypro.bean.entity.QtTag;
+import com.mypro.bean.entity.admin.QtTag;
 import com.mypro.bean.rq.QueryRq;
 import com.mypro.service.admin.TagService;
 

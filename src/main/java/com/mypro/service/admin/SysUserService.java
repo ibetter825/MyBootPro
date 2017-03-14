@@ -1,6 +1,6 @@
 package com.mypro.service.admin;
 
-import com.mypro.bean.entity.SysUser;
+import com.mypro.bean.entity.admin.SysUser;
 
 /**
  * 系统用户 service接口

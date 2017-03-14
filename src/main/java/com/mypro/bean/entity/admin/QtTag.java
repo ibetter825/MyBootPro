@@ -1,4 +1,4 @@
-package com.mypro.bean.entity;
+package com.mypro.bean.entity.admin;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.mypro.bean.entity.BaseEntity;
 
 public class QtTag extends BaseEntity{
 	private static final long serialVersionUID = 1L;

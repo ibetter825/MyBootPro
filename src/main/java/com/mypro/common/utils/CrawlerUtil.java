@@ -41,7 +41,8 @@ public class CrawlerUtil {
     private void begin() {  
         for(int i=0;i<threadCount;i++){  
             new Thread(new Runnable(){  
-                public void run() {  
+                @Override
+				public void run() {  
                     while (true) {   
                         String tmp = getAUrl();  
                         if(tmp!=null){

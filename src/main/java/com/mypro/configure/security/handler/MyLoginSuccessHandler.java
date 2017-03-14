@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import com.alibaba.fastjson.JSON;
 import com.mypro.bean.model.ResultModel;
 import com.mypro.common.utils.WebUtil;
-import com.mypro.configure.security.customer.MyUserDetails;
 /**
  * 使用 spring security 登录成功后做的操作
  * @author user

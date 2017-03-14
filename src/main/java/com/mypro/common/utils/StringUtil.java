@@ -530,7 +530,7 @@ public class StringUtil {
             Iterator it = map.keySet().iterator();
             while (it.hasNext()) {
                 String name = (String) it.next();
-                String value = (String) map.get(name);
+                String value = map.get(name);
                 result += (result.equals("")) ? "" : "&";
                 result += String.format("%s=%s", name, value);
             }
@@ -648,7 +648,7 @@ public class StringUtil {
                     return "";
                 } else if ((num * 10 % 10) == 0) {
                     // 没有小数
-                    return Integer.toString((int) num.intValue());
+                    return Integer.toString(num.intValue());
                 } else {
                     // 有小数
                     return num.toString();
@@ -1849,7 +1849,7 @@ public class StringUtil {
     // 判断一个字符串是否都为数字
     public boolean isDigit(String strNum) {
         Pattern pattern = Pattern.compile("[0-9]{1,}");
-        Matcher matcher = pattern.matcher((CharSequence) strNum);
+        Matcher matcher = pattern.matcher(strNum);
         return matcher.matches();
     }
  

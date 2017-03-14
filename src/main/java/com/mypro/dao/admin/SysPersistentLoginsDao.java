@@ -1,6 +1,6 @@
 package com.mypro.dao.admin;
 
-import com.mypro.bean.entity.SysPersistentLogins;
+import com.mypro.bean.entity.admin.SysPersistentLogins;
 import com.mypro.dao.BaseDao;
 /**
  * SysPersistentLogins Spring Security 持久化Cookie

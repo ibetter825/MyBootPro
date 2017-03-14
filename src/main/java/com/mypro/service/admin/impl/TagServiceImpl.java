@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.mypro.annotation.DataSource;
-import com.mypro.bean.entity.QtTag;
+import com.mypro.bean.entity.admin.QtTag;
 import com.mypro.bean.rq.QueryRq;
 import com.mypro.dao.admin.TagDao;
 import com.mypro.service.admin.TagService;

@@ -7,8 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mypro.bean.entity.SysRole;
-import com.mypro.bean.entity.SysUser;
+import com.mypro.bean.entity.admin.SysRole;
+import com.mypro.bean.entity.admin.SysUser;
 
 public class MyUserDetails extends SysUser implements UserDetails {
 

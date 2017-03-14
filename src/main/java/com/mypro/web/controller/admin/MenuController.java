@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mypro.bean.entity.SysMenu;
+import com.mypro.bean.entity.admin.SysMenu;
 import com.mypro.bean.model.PageModel;
 import com.mypro.bean.rq.PagerRq;
 import com.mypro.bean.rq.QueryRq;
