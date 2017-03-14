@@ -105,6 +105,8 @@ public class RedisClusterConfig {
 		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 		jackson2JsonRedisSerializer.setObjectMapper(om);
 		template.setValueSerializer(jackson2JsonRedisSerializer);
+		//template.setKeySerializer(jackson2JsonRedisSerializer);
+		//template.setHashKeySerializer(jackson2JsonRedisSerializer);
 	}
 	
 	/**
