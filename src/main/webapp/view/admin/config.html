@@ -8,11 +8,29 @@
 	<link rel="stylesheet" href="/static/a/css/daterangepicker.css" />
 	<style>
 		.formError-small .formErrorContent {border-color: #fff; border-radius: 0;}
+		.custom .page-header .widget-main {padding: 4px;}
 	</style>
 </head>
 
 <body class="custom">
 	<div class="page-content">
+		<div class="page-header">
+			<div class="widget-box">
+				<div class="widget-header header-color-blue">
+					<h6><i class="icon-cogs"></i>配置台</h6>
+					<div class="widget-toolbar">
+						<a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a>
+					</div>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-search"></i> 搜索表单
+						</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-table"></i> 数据列表
+						</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 实例表单
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-xs-6">
 				<div class="widget-box">
@@ -35,14 +53,14 @@
 						<div class="widget-toolbar"><a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a></div>
 					</div>
 					<div class="widget-body">
-						<div class="widget-toolbox">
+<!-- 						<div class="widget-toolbox">
 							<div class="btn-toolbar">
 								<div class="btn-group" id="opt-cnter">
 									<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
 									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<div class="widget-main">
 							<table id="grid-table-column"></table>
 							<div id="grid-pager-column"></div>
@@ -58,7 +76,7 @@
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
 	<script type="text/javascript">
-		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $height = $(window).height() - 230;
+		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $header = $('.page-header:first'), $height = $(window).height() - $header.height() - 230;
 		loadJS('jqgrid', function(){
 			$grid.jqGrid({
 				url : '/admin/db/tables',//config
@@ -145,7 +163,7 @@
 		            records: "total" // json中代表数据行总数的数据  
 		        },
 		        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
-				height: $height,
+				height: $height + 40,
 				colNames:['字段排序', '字段名', '字段类型', '字段注释'],//config
 				colModel:[//config
 					{name:'ORDINAL_POSITION', index:'ORDINAL_POSITION', width:60},
