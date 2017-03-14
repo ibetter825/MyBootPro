@@ -56,7 +56,7 @@ var admin = {};
 	 */
 	app.initGrid = function() {
 		$grid.jqGrid({
-			url : config.table.url,//config
+			url : config.grid.url,//config
 			mtype: 'POST',
 	        datatype : "json",
 	        jsonReader: {
@@ -297,7 +297,7 @@ var admin = {};
 	 */
 	app.setOptionCont = function(){
 		var html = new Array();
-		var btns = config.table.btn;
+		var btns = config.grid.btn;
 		var btn = null;
 		for(var i = 0, l = btns.length; i < l; i++){
 			btn = btns[i];

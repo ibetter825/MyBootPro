@@ -138,13 +138,16 @@
 					        {widget: 'date', type: 'long', name: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
 					      ]
 				},
-				table: {
+				grid: {
 					url: '/admin/menu/list',
 					btn: [
 					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
 					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''}
 					     ],
 					col: []
+				},
+				form: {
+					
 				},
 				global: {
 					searchUrl: '/admin/menu/list',
