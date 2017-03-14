@@ -24,6 +24,8 @@ body .dto-form .widget-box {margin: 0;}
 .dto-model-hide {position: absolute; top: -100%; left: -100%;}
 /* list page */
 .form-btns {margin-top: 12px; text-align:right;}
+/*grid*/
+.ui-jqgrid .loading {color: #307ECC; border-color: #307ECC;}
 /*main*/
 #iframe {width: 100%; height: 100%;}
 /*login*/

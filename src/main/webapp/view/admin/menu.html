@@ -13,7 +13,7 @@
 
 <body class="custom">
 	<div class="page-content">
-		<!-- <div class="page-header">
+		<div class="page-header">
 			<div class="widget-box">
 				<form id="search-form" class="form-horizontal" role="form" onsubmit="return admin.search();">
 					<div class="widget-header header-color-blue">
@@ -28,8 +28,8 @@
 					</div>
 					<div class="widget-body">
 						<div class="widget-main">
-							<div class="form-group">
-								<div class="col-sm-3 no-padding-left">
+							<div class="form-group" id="search-cnter">
+								<!-- <div class="col-sm-3 no-padding-left">
 									<label class="col-sm-4 control-label no-padding-right" for="s-menu_id"> 菜单编号: </label>
 									<div class="col-sm-8">
 										<input id="s-menu_id" type="text" placeholder="菜单编号" class="col-sm-12 validate[custom[integer]]" name="rq['menu_id']">
@@ -55,13 +55,13 @@
 									<div class="col-sm-8">
 										<input type="text" class="auto-bind-timepicker col-sm-12" id="s-menu_date" data-constraint="rq['menu_date']" autocomplete="off"/>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- /.page-header -->
 		<div class="row">
 			<div class="col-xs-12">
@@ -73,9 +73,9 @@
 					<div class="widget-body">
 						<div class="widget-toolbox">
 							<div class="btn-toolbar">
-								<div class="btn-group">
-									<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
-									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button>
+								<div class="btn-group" id="opt-cnter">
+									<!-- <button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
+									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button> -->
 								</div>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return admin.submitDtoModelForm();">
 				<div class="widget-box no-border">
 					<div class="widget-header header-color-blue">
-						<h6><i class="icon-search"></i>搜索</h6>
+						<h6><i class="icon-search"></i>表单</h6>
 					</div>
 					<div class="widget-body">
 						<div class="widget-main">
@@ -141,7 +141,8 @@
 				table: {
 					url: '/admin/menu/list',
 					btn: [
-					      	{type: 'outer', label: '新增', clss: 'icon*', handler: 'add()', param: '', suburl: ''}
+					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
+					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''}
 					     ],
 					col: []
 				},
@@ -154,29 +155,25 @@
 		}
 		//写入搜索表单的数据
 		admin.setSearchCont();
+		//写入操作按钮
+		admin.setOptionCont();
 		
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
-		/* loadJS('jqGrid_js', function(){
-			loadJS('jqGrid-zh_CN_js', function(){
-				admin.initGrid();
-			}, '/static/a/js/jqGrid/i18n/grid.locale-cn.js?v=4.5.2');
-		}, '/static/a/js/jqGrid/jquery.jqGrid.min.js?v=4.5.2');
-		
-		loadJS('validationEngine-zh_CN_js', function(){
-			loadJS('validationEngine_js', function(){
-				admin.attachVali($search);//给搜索表单绑定验证
-				admin.attachVali($dtoForm);//给dto表单绑定验证
-			}, '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2');
-		}, '/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2');
-		
-		loadJS('moment_js', function(){
-			loadJS('daterangepicker_js', function(){
-				admin.attachTimepicker();
-			}, '/static/a/js/datepicker/daterangepicker.js');
-		}, '/static/a/js/datepicker/moment.min.js?v=2.0.0'); */
+
+		loadJS('jqgrid', function(){
+			admin.initGrid();
+		});
+		loadJS('validate', function(){
+			admin.attachVali($search);//给搜索表单绑定验证
+			admin.attachVali($dtoForm);//给dto表单绑定验证
+		});
+		loadJS('datepicker', function(){
+			admin.attachTimepicker();
+		});
+
 	</script>
 </body>
 

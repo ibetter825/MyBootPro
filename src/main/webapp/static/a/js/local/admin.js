@@ -1,37 +1,60 @@
 /**
 * @preserve admin v1.0.0
 */
+"use strict";
+var CONSTANT = {
+	//先加载的js文件放在前面
+	'jqgrid': ['/static/a/js/jqGrid/jquery.jqGrid.min.js?v=4.5.2', '/static/a/js/jqGrid/i18n/grid.locale-cn.js?v=4.5.2'],
+	'validate': ['/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2', '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2'],
+	'datepicker': ['/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
+}
 var loadJS = function(id, callback, url){
-	var script = document.getElementById(id);
-	if(script) {//已经加载过改js
-		callback();
-		return;
-	}
-	var head = document.getElementsByTagName('head');  
-	if(head && head.length)
-		head = head[0];
+	var path = CONSTANT[id];
+	if(path)
+		it(id, path, 0, callback);
 	else
-		head = document.body;
-	script = document.createElement('script');   
-	script.type = "text/javascript";
-	script.id = id;
-	head.appendChild( script);
-	script.onload = script.onreadystatechange = function(){
-		//script 标签，IE 下有 onreadystatechange 事件, w3c 标准有 onload 事件     
-		//这些 readyState 是针对IE8及以下的，W3C 标准的 script 标签没有 onreadystatechange 和 this.readyState , 
-		//文件加载不成功 onload 不会执行，
-		//(!this.readyState) 是针对 W3C标准的, IE 9 也支持 W3C标准的 onload 
-		if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" )
-			callback();     
-	 }//end onreadystatechange 
-	 script.src = url;
+		load(id, callback, url);
+	
+	function it(id, path, i, callback){
+		load(id+'_'+i, function(){
+			if(i === path.length - 1)
+				callback();
+			else
+				it(id, path, i + 1, callback);
+		}, path[i]);
+	}
+	function load(id, callback, url){
+		var script = document.getElementById(id);
+		if(script) {//已经加载过该js
+			callback();
+			return;
+		}
+		var head = document.getElementsByTagName('head');  
+		if(head && head.length)
+			head = head[0];
+		else
+			head = document.body;
+		script = document.createElement('script');   
+		script.type = "text/javascript";
+		script.id = id;
+		head.appendChild( script);
+		script.onload = script.onreadystatechange = function(){
+			//script 标签，IE 下有 onreadystatechange 事件, w3c 标准有 onload 事件     
+			//这些 readyState 是针对IE8及以下的，W3C 标准的 script 标签没有 onreadystatechange 和 this.readyState , 
+			//文件加载不成功 onload 不会执行，
+			//(!this.readyState) 是针对 W3C标准的, IE 9 也支持 W3C标准的 onload 
+			if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" )
+				callback();     
+		 }//end onreadystatechange 
+		 script.src = url;
+	}
 }
 var admin = {};
-(function(admin) {
+(function(app) {
 	/**
 	 * 初始化jqgrid数据
 	 */
-	admin.initGrid = function(config) {
+	app.initGrid = function() {
 		$grid.jqGrid({
 			url : config.table.url,//config
 			mtype: 'POST',
@@ -121,7 +144,7 @@ var admin = {};
 	/**
 	 * 绑定验证
 	 */
-	admin.attachVali = function($obj){
+	app.attachVali = function($obj){
 		$obj.validationEngine('attach', {
 			maxErrorsPerField: 1,
 			showOneMessage: true,
@@ -132,7 +155,7 @@ var admin = {};
 	/**
 	 * 绑定时间控件
 	 */
-	admin.attachTimepicker = function(){
+	app.attachTimepicker = function(){
 		$('.auto-bind-timepicker').each(function(i){
 			var id = this.id;
 			var constraint = $(this).attr('data-constraint');
@@ -167,7 +190,7 @@ var admin = {};
 	/**
 	 * 搜索表单查询
 	 */
-	admin.search = function(){
+	app.search = function(){
 		var vali = $search.validationEngine('validate');
 		if(!vali) return false;
 		var pd = $grid.jqGrid('getGridParam','postData');
@@ -183,7 +206,7 @@ var admin = {};
 	/**
 	 * dto天假
 	 */
-	admin.addDto = function(){
+	app.addDto = function(){
 		$dtoForm.validationEngine('hideAll');
 		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-plus"></i> 新增');
 		layer.open({
@@ -203,7 +226,7 @@ var admin = {};
 	/**
 	 * 编辑dto
 	 */
-	admin.editDto = function(){
+	app.editDto = function(){
 		var gr = $grid.jqGrid('getGridParam', 'selrow');
 	    if (gr != null){
 	    	$dtoForm.validationEngine('hideAll');
@@ -228,7 +251,7 @@ var admin = {};
 	/**
 	 * 提交dto编辑框表单
 	 */
-	admin.submitDtoModelForm = function(){
+	app.submitDtoModelForm = function(){
 		var vali = $dtoForm.validationEngine('validate');
 		if(!vali) return false;
 		return false;
@@ -236,29 +259,14 @@ var admin = {};
 	/**
 	 * 关闭dto编辑框
 	 */
-	admin.closeDtoModel = function(){
+	app.closeDtoModel = function(){
 		layer.closeAll('page');
 	}
 	/**
 	 * 创建搜索表单
 	 */
-	admin.setSearchCont = function(){
+	app.setSearchCont = function(){
 		var html = new Array();
-		html.push('<div class="page-header"><div class="widget-box"><form id="search-form" class="form-horizontal" role="form" onsubmit="return admin.search();">');
-		html.push('<div class="widget-header header-color-blue">');
-		html.push('<h6><i class="icon-search"></i>搜索</h6>');
-		html.push('<div class="widget-toolbar">');
-		html.push('<a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a>');
-		html.push('</div>');
-		html.push('<div class="widget-toolbar no-border">');
-		html.push('<button class="btn btn-xs btn-info" type="submit"><i class="icon-search bigger-110"></i> 查&nbsp;询');
-		html.push('</button><button class="btn btn-xs" type="reset"><i class="icon-undo bigger-110"></i> 重&nbsp;置</button>');
-		html.push('</div>');
-		html.push('</div>');
-		html.push('<div class="widget-body">');
-		html.push('<div class="widget-main">');
-		html.push('<div class="form-group">');
-
 		var cols = config.search.col;
 		var col = null;
 		for(var i = 0, l = cols.length; i < l; i++){
@@ -281,8 +289,20 @@ var admin = {};
 			html.push('</div>');
 			html.push('</div>');
 		}
-		html.push('</div></div></div>');
-		html.push('</form></div></div>');
-		$('.page-content').empty().append(html.join(''));
+		html.push('</div>');
+		$('#search-cnter').empty().append(html.join(''));
+	}
+	/**
+	 * 操作按钮
+	 */
+	app.setOptionCont = function(){
+		var html = new Array();
+		var btns = config.table.btn;
+		var btn = null;
+		for(var i = 0, l = btns.length; i < l; i++){
+			btn = btns[i];
+			html.push('<button class="btn btn-sm '+ btn.clss +'" onclick="'+ btn.handler +'"><i class="'+ btn.icon +'"></i> '+ btn.label +'</button>');
+		}
+		$('#opt-cnter').empty().append(html.join(''));
 	}
 }(admin));
