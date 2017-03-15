@@ -152,25 +152,30 @@
 					        {widget: 'text', type: 'varchar', name: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
 					        {widget: 'select', type: 'integer', name: 'menu_state', label: '菜单状态', vali: '', source: {type: 'fixed', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
 					        {widget: 'date', type: 'long', name: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
-					      ]
+					      ],
+					 subMethod: ''
 				},
 				grid: {
-					url: '/admin/menu/list',
-					btn: [
+					url: {
+						list: '/admin/menu/list',
+						del: '',
+						add: '',
+						edit: ''
+					},
+					btns: [//用于权限限制
 					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
 					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''},
 					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'configs()', param: '', suburl: ''}
 					     ],
-					col: []
+					cols: []
 				},
 				form: {
-					
+					cols: []//新增，或修改字段集合
 				},
 				global: {
-					searchUrl: '/admin/menu/list',//暂时可以不需要，因为这个url与grid的url一样
-					deleteUrl: '',
-					addUrl: '',
-					editUrl: ''
+					variables: '',//一些自定义方法变量等，一条字符串，在页面中转换为js代码
+					methods: '',
+					valis: ''//自定义校验方法
 				}
 		}
 		//写入搜索表单的数据

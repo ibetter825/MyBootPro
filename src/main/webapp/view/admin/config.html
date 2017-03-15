@@ -27,6 +27,8 @@
 						<button class="btn btn-sm btn-success" onclick="configSearch()"><i class="icon-search"></i> 搜索表单
 						</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-table"></i> 数据列表
 						</button><button class="btn btn-sm btn-info" onclick="admin.editDto();"><i class="icon-edit"></i> 实例表单
+						</button><button class="btn btn-sm btn-purple" onclick="admin.editDto();"><i class="icon-globe"></i> 全局变量
+						</button>
 					</div>
 				</div>
 			</div>
@@ -71,7 +73,7 @@
 		</div>
 		<!-- /row -->
 		<div id="dto-model" class="dto-model-hide">
-			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return searchConfigSubmit();">
+			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return configSubmit();">
 				<div class="widget-box no-border">
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-search"></i>表单</h6>
@@ -109,7 +111,7 @@
 							<button type="submit" class="btn btn-sm btn-primary pull-right">
 								<i class="icon-ok"></i><span class="bigger-110"> 确&nbsp;定</span>
 							</button>
-							<button type="button" class="btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
+							<button type="button" class="c-btn c-btn-search hide btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
 								<i class="icon-legal"></i><span class="bigger-110"> 提交事件</span>
 							</button>
 						</div>
@@ -125,8 +127,8 @@
 	<script type="text/javascript">
 		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $header = $('.page-header:first'), $height = $(window).height() - $header.height() - 230;
 		var dtoModelSelector = '#dto-model', $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
-			//是否能切换表格
-		var tableSwitchable = true, searchSelectedArr = new Array();//配置search时已经选择的字段
+							//是否能切换表格
+		var	curTarget = 'search', tableSwitchable = true, selectedArr = new Array();//配置search时已经选择的字段
 		
 		loadJS('jqgrid', function(){
 			$grid.jqGrid({
@@ -249,14 +251,14 @@
 				},
 				onSelectRow: function(rowid, status){
 					var col = $gridCol.jqGrid('getRowData', rowid);
-					var index = searchSelectedArr.indexOf(rowid);
+					var index = selectedArr.indexOf(rowid);
 					if(status){//选中
 						if(index !== -1)
 			    			return;
-			    		searchSelectedArr.push(rowid);
+			    		selectedArr.push(rowid);
 						$dtoModel.find('.widget-main').append(getSearchFormElement(col));
 					}else{//取消选中
-						searchSelectedArr.splice(index, 1);
+						selectedArr.splice(index, 1);
 						$('#search_'+ col.COLUMN_NAME).remove();
 					}
 				}
@@ -301,6 +303,9 @@
 		
 		//配置搜索部分
 		function configSearch(){
+			curTarget = 'search';
+			$('.c-btn').addClass('hide');
+			$('.c-btn-search').removeClass('hide');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
@@ -310,9 +315,9 @@
 		    	if(cols.length > 0){
 			    	var col = null, html = new Array();
 			    	$(cols).each(function(i, v){
-			    		if(searchSelectedArr.indexOf(v) !== -1)
+			    		if(selectedArr.indexOf(v) !== -1)
 			    			return;
-			    		searchSelectedArr.push(v);
+			    		selectedArr.push(v);
 			    		col = $gridCol.jqGrid('getRowData', v);
 			    		html.push(getSearchFormElement(col));
 			    	});
@@ -335,7 +340,7 @@
 			  		  },
 			  		  end: function(){
 			  			$dtoModel.find('.widget-main').empty();
-			  			searchSelectedArr = new Array();
+			  			selectedArr = new Array();
 			  			$dtoModel.addClass('dto-model-hide');
 			  			tableSwitchable = true;
 			  		  }
@@ -360,7 +365,7 @@
 		}
 		
 		//配置完成后保存 搜索表单配置
-		function searchConfigSubmit(){
+		function configSubmit(){
 			var search = {};
 			var colArr = $dtoModel.find('.form-group');
 			var cols = new Array();
