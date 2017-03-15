@@ -109,6 +109,22 @@
 								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
 								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
+								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
+							</div>
 						</div>
 						<div class="widget-toolbox padding-8 clearfix">
 							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
@@ -130,7 +146,7 @@
 	<script type="text/javascript">
 		var config = {
 				search: {
-					col: [
+					cols: [
 					        //widget: 控件类型        type: 字段类型        source:填充内容来源； value: 默认值什么的
 					        {widget: 'text', type: 'varchar', name: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
 					        {widget: 'text', type: 'varchar', name: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
@@ -142,7 +158,8 @@
 					url: '/admin/menu/list',
 					btn: [
 					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
-					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''}
+					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''},
+					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'configs()', param: '', suburl: ''}
 					     ],
 					col: []
 				},
@@ -150,7 +167,7 @@
 					
 				},
 				global: {
-					searchUrl: '/admin/menu/list',
+					searchUrl: '/admin/menu/list',//暂时可以不需要，因为这个url与grid的url一样
 					deleteUrl: '',
 					addUrl: '',
 					editUrl: ''
@@ -177,6 +194,15 @@
 			admin.attachTimepicker();
 		});
 
+		function configs(){
+			var index = layer.open({
+				  type: 2,
+				  title: '配置页面',
+				  content: '/admin/forward/config',
+				  area: ['100%', '100%'],
+				  maxmin: true
+			});
+		}
 	</script>
 </body>
 

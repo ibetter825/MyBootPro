@@ -24,15 +24,15 @@
 				</div>
 				<div class="widget-body">
 					<div class="widget-main">
-						<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-search"></i> 搜索表单
+						<button class="btn btn-sm btn-success" onclick="configSearch()"><i class="icon-search"></i> 搜索表单
 						</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-table"></i> 数据列表
-						</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 实例表单
+						</button><button class="btn btn-sm btn-info" onclick="admin.editDto();"><i class="icon-edit"></i> 实例表单
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-xs-5">
 				<div class="widget-box">
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-table"></i>数据表</h6>
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 			</div><!-- /.col -->
-			<div class="col-xs-6">
+			<div class="col-xs-7" style="padding-left: 0;">
 				<div class="widget-box">
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-table"></i>表字段</h6>
@@ -70,6 +70,53 @@
 			</div><!-- /.col -->
 		</div>
 		<!-- /row -->
+		<div id="dto-model" class="dto-model-hide">
+			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return searchConfigSubmit();">
+				<div class="widget-box no-border">
+					<div class="widget-header header-color-blue">
+						<h6><i class="icon-search"></i>表单</h6>
+					</div>
+					<div class="widget-body">
+						<input id="search-sub-method" type="hidden" name="searchSubMethod" value="return admin.search();">
+						<div class="widget-main">
+							<!-- <div class="form-group">
+								<div class="col-sm-12">
+									<input id="s" type="text" name="label" placeholder="显示名称" class="col-sm-2" title="字段显示名称">
+									<input id="ssss" type="text" name="name" placeholder="字段名称" class="col-sm-2" title="字段名称">
+									<input id="ssssss" type="text" name="value" placeholder="默认值" class="col-sm-2" title="默认值">
+									<select id="ss" name="type" class="col-sm-2" title="数据库数据类型">
+										<option value="varchar">varchar</option>
+										<option value="integer">integer</option>
+										<option value="long">long</option>
+									</select>
+									<select id="sss" name="widget" class="col-sm-2" title="前台控件类型">
+										<option value="text">text</option>
+										<option value="select">select</option>
+										<option value="date">date</option>
+									</select>
+									<select id="ssssss" name="source" class="col-sm-2" title="内容来源">
+										<option value="fixed">fixed</option>
+										<option value="url">url</option>
+									</select>
+									<textarea name="vali" class="col-sm-12" rows="1" title="验证规则" style="margin-top: 2px;">验证规则</textarea>
+								</div>
+							</div> -->
+						</div>
+						<div class="widget-toolbox padding-8 clearfix">
+							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
+								<i class="icon-trash"></i><span class="bigger-110"> 取&nbsp;消</span>
+							</button>
+							<button type="submit" class="btn btn-sm btn-primary pull-right">
+								<i class="icon-ok"></i><span class="bigger-110"> 确&nbsp;定</span>
+							</button>
+							<button type="button" class="btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
+								<i class="icon-legal"></i><span class="bigger-110"> 提交事件</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 		<!-- PAGE CONTENT ENDS -->
 	</div>
 	
@@ -77,6 +124,10 @@
 	<#include "/admin/includes/footer.html"/>
 	<script type="text/javascript">
 		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $header = $('.page-header:first'), $height = $(window).height() - $header.height() - 230;
+		var dtoModelSelector = '#dto-model', $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
+			//是否能切换表格
+		var tableSwitchable = true, searchSelectedArr = new Array();//配置search时已经选择的字段
+		
 		loadJS('jqgrid', function(){
 			$grid.jqGrid({
 				url : '/admin/db/tables',//config
@@ -91,7 +142,7 @@
 				height: $height + 40,
 				colNames:['表名', '表注释'],//config
 				colModel:[//config
-					{name:'TABLE_NAME', index:'TABLE_NAME', width:60},
+					{name:'TABLE_NAME', index:'TABLE_NAME', width: 100},
 					{name:'TABLE_COMMENT', index:'TABLE_COMMENT', sortable: false}
 				], 
 				rownumbers: false,//显示行编号
@@ -101,21 +152,20 @@
 				pager : pagerSelector,
 				recordpos: 'center',
 				pagerpos: 'right',
-				recordtext: '显示 {0} - {1} 共 {2} 条',
-				pgtext : '第 {0} 页， 共 {1} 页',
+				recordtext: '{0} - {1} 共 {2}',
+				pgtext : ' {0} 共 {1} 页',
 				loadtext: '正在请求数据...',
 				altRows: true,
-				
 				//multiSort: true,
 				multiselect: false,
 				//multikey: "ctrlKey",
 		        multiboxonly: false,
-		
+				editurl:'',//nothing is saved
+				autowidth: true,
+				
 				loadComplete : function() {
 					var _this = this;
 					setTimeout(function(){
-						//styleCheckbox(_this);
-						//updateActionIcons(_this);
 						updatePagerIcons(_this);
 					}, 0);
 				},
@@ -124,8 +174,9 @@
 					pd['tableName'] = $grid.jqGrid('getRowData', rowid)['TABLE_NAME'];
 					$gridCol.jqGrid("setGridParam",{postData: pd}).trigger("reloadGrid");
 				},
-				editurl:'',//nothing is saved
-				autowidth: true
+				beforeSelectRow: function(){
+					return tableSwitchable;
+				}
 			});
 			//按钮自定义样式
 			$grid.jqGrid('navGrid', pagerSelector, {   //navbar options
@@ -164,11 +215,12 @@
 		        },
 		        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
 				height: $height + 40,
-				colNames:['字段排序', '字段名', '字段类型', '字段注释'],//config
+				colNames:['字段排序', '字段名', '字段类型', '数据类型', '字段注释'],//config
 				colModel:[//config
 					{name:'ORDINAL_POSITION', index:'ORDINAL_POSITION', width:60},
 					{name:'COLUMN_NAME', index:'COLUMN_NAME', sortable: true},
-					{name:'COLUMN_TYPE', index:'COLUMN_TYPE', sortable: true},
+					{name:'COLUMN_TYPE', index:'COLUMN_TYPE', sortable: false, hidden: true},
+					{name:'DATA_TYPE', index:'DATA_TYPE', sortable: true},
 					{name:'COLUMN_COMMENT', index:'COLUMN_COMMENT', sortable: false}
 				], 
 				rownumbers: false,//显示行编号
@@ -178,24 +230,36 @@
 				pager : pagerColSelector,
 				recordpos: 'center',
 				pagerpos: 'right',
-				recordtext: '显示 {0} - {1} 共 {2} 条',
-				pgtext : '第 {0} 页， 共 {1} 页',
+				recordtext: '{0} - {1} 共 {2}',
+				pgtext : ' {0} 共 {1} 页',
 				loadtext: '正在请求数据...',
 				altRows: true,
-				
 				//multiSort: true,
 				multiselect: true,
 				//multikey: "ctrlKey",
 		        multiboxonly: false,
-		
+				editurl:'',//nothing is saved
+				autowidth: true,
+
 				loadComplete : function() {
 					var _this = this;
 					setTimeout(function(){
 						updatePagerIcons(_this);
 					}, 0);
 				},
-				editurl:'',//nothing is saved
-				autowidth: true
+				onSelectRow: function(rowid, status){
+					var col = $gridCol.jqGrid('getRowData', rowid);
+					var index = searchSelectedArr.indexOf(rowid);
+					if(status){//选中
+						if(index !== -1)
+			    			return;
+			    		searchSelectedArr.push(rowid);
+						$dtoModel.find('.widget-main').append(getSearchFormElement(col));
+					}else{//取消选中
+						searchSelectedArr.splice(index, 1);
+						$('#search_'+ col.COLUMN_NAME).remove();
+					}
+				}
 			});
 			
 			$gridCol.jqGrid('navGrid', pagerColSelector, {
@@ -210,6 +274,110 @@
 			);
 		});
 		
+		//搜索部分字段html
+		function getSearchFormElement(col){
+			var html = new Array();
+			html.push('<div id="search_'+ col.COLUMN_NAME +'" class="form-group">');
+				html.push('<div class="col-sm-12">');
+					html.push('<input type="text" name="label" placeholder="显示名称" class="col-sm-2" title="字段显示名称">');
+					html.push('<input type="text" name="name" value="'+col.COLUMN_NAME+'" placeholder="字段名称" class="col-sm-2" title="字段名称">');
+					html.push('<input type="text" name="value" placeholder="默认值" class="col-sm-2" title="默认值">');
+					html.push('<input type="text" name="type" value="'+ col.DATA_TYPE +'" readonly="readonly" placeholder="字段数据类型" class="col-sm-2" title="字段数据类型">');
+					html.push('<select name="widget" class="col-sm-2" title="前台控件类型">');
+						html.push('<option value="text">text</option>');
+						html.push('<option value="select">select</option>');
+						html.push('<option value="date">date</option>');
+					html.push('</select>');
+						html.push('<select name="source" class="col-sm-2" title="内容来源">');
+						html.push('<option value=""></option>');
+						html.push('<option value="fixed">fixed</option>');
+						html.push('<option value="url">url</option>');
+					html.push('</select>');
+					html.push('<textarea name="vali" class="col-sm-12" rows="1" title="验证规则" style="margin-top: 2px;">验证规则</textarea>');
+				html.push('</div>');
+			html.push('</div>');
+			return html.join('');
+		}
+		
+		//配置搜索部分
+		function configSearch(){
+			//是否已经选择了数据表
+			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
+		    if (gr != null){
+		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-search"></i> 配置搜索表单');
+		    	//如果已经选择有字段，拼装这些字段
+		    	var cols = $gridCol.jqGrid('getGridParam', 'selarrrow');//获取选择行id的array
+		    	if(cols.length > 0){
+			    	var col = null, html = new Array();
+			    	$(cols).each(function(i, v){
+			    		if(searchSelectedArr.indexOf(v) !== -1)
+			    			return;
+			    		searchSelectedArr.push(v);
+			    		col = $gridCol.jqGrid('getRowData', v);
+			    		html.push(getSearchFormElement(col));
+			    	});
+			    	$dtoModel.find('.widget-main').append(html.join(''));
+		    	}
+				layer.open({
+			  		  type: 1,
+			  		  id: 'layer-search-model',
+			  		  shade: false,
+			  		  title: false,
+			  		  move: '.widget-header',
+			  		  closeBtn: 0,
+			  		  skin: 'dto-form',
+			  		  shadeClose: true,
+			  		  area: ['760px'],
+			  		  content: $dtoModel,
+			  		  success: function(){
+			  			$('#layer-search-model').removeAttr('style'); 
+			  			tableSwitchable = false;//此时不能切换表格
+			  		  },
+			  		  end: function(){
+			  			$dtoModel.find('.widget-main').empty();
+			  			searchSelectedArr = new Array();
+			  			$dtoModel.addClass('dto-model-hide');
+			  			tableSwitchable = true;
+			  		  }
+				});
+		    }else
+		      layer.msg('请选择数据表');
+		}
+		
+		//替换默认的提交方法
+		function replaceSearchFormSubmit(){
+			var $smethod = $('#search-sub-method');
+			layer.prompt({
+				  formType: 2,
+				  skin: 'layer-skin',
+				  value: $smethod.val(),
+				  title: '自定义方法',
+				  area: ['500px', '150px']
+				}, function(value, index, elem){
+					$smethod.val(value);
+				 	layer.close(index);
+				});
+		}
+		
+		//配置完成后保存 搜索表单配置
+		function searchConfigSubmit(){
+			var search = {};
+			var colArr = $dtoModel.find('.form-group');
+			var cols = new Array();
+			var col = {};
+			for(var i = 0, l = colArr.length; i < l; i++){
+				col['label'] = $(colArr[i]).find('[name="label"]').val();
+				col['type'] = $(colArr[i]).find('[name="type"]').val();
+				col['widget'] = $(colArr[i]).find('[name="widget"]').val();
+				col['vali'] = $(colArr[i]).find('[name="vali"]').val();
+				col['source'] = $(colArr[i]).find('[name="source"]').val();
+				col['value'] = $(colArr[i]).find('[name="value"]').val();
+				cols.push(col);
+			}
+			console.log(cols);
+			layer.closeAll('page');
+			return false;
+		}
 	</script>
 </body>
 

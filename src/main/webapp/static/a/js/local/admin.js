@@ -267,7 +267,7 @@ var admin = {};
 	 */
 	app.setSearchCont = function(){
 		var html = new Array();
-		var cols = config.search.col;
+		var cols = config.search.cols;
 		var col = null;
 		for(var i = 0, l = cols.length; i < l; i++){
 			col = cols[i];

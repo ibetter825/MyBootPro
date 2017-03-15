@@ -22,6 +22,12 @@ body::-webkit-scrollbar-corner, div::-webkit-scrollbar-corner {background:rgba(0
 body .dto-form .widget-main {padding-top: 18px; padding-bottom: 0; max-height: 280px; overflow: auto;}
 body .dto-form .widget-box {margin: 0;}
 .dto-model-hide {position: absolute; top: -100%; left: -100%;}
+/*layer skin*/
+body .layer-skin .layui-layer-title{background: #307ECC; color: #fff; border: none;}
+body .layer-skin .layui-layer-content {padding: 10px;}
+body .layer-skin .layui-layer-btn a {color: #fff; border-radius: 0; border: none; margin: 0;}
+body .layer-skin .layui-layer-btn .layui-layer-btn0{background: #428BCA; }
+body .layer-skin .layui-layer-btn .layui-layer-btn1{background: #D15B47;}
 /* list page */
 .form-btns {margin-top: 12px; text-align:right;}
 /*grid*/

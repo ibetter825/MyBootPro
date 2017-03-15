@@ -36,7 +36,7 @@ public class MenuConfigController extends BaseAdminController {
 	public PageModel columns(PagerRq page,	@RequestParam(defaultValue = "") String tableName){
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());
 		PageHelper.orderBy(page.getOrder());
-		String sql = "select COLUMN_NAME, COLUMN_TYPE, ORDINAL_POSITION, COLUMN_DEFAULT, IS_NULLABLE, COLUMN_COMMENT from information_schema.columns where table_schema='boot' and table_name = '"+ tableName +"'";
+		String sql = "select COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, ORDINAL_POSITION, COLUMN_DEFAULT, IS_NULLABLE, COLUMN_COMMENT from information_schema.columns where table_schema='boot' and table_name = '"+ tableName +"'";
 		smcService.queryTable(sql);
 		return new PageModel(pager);
 	}
