@@ -9,6 +9,26 @@ var CONSTANT = {
 	'datepicker': ['/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
 	'editor': ['/static/a/js/editor/wangEditor.min.js?v=2.0.0']
 }
+//创建事件
+var EVT = document.createEvent('HTMLEvents');
+// 初始化事件
+EVT.initEvent('listen', false, false);
+
+//listen事件执行的方法
+function listen (e) {
+  var el = e.target
+  if(el.callback){
+	for(var i = 0, l = el.callback.length; i < l; i++)
+		el.callback[i]();
+	delete el.callback
+  }
+  // 移除事件监听
+  if (window.removeEventListener)
+      el.removeEventListener('listen', listen, false)
+    else if (window.detachEvent)
+      el.detachEvent('onlisten', fn)
+}
+//lazies[i].dispatchEvent(evt); 触发事件
 var loadJS = function(id, callback, url){
 	var path = CONSTANT[id];
 	if(path)
@@ -30,7 +50,9 @@ var loadJS = function(id, callback, url){
 			if(script.ready)
 				callback();
 			else {
-				//在调用完成后，触发自定义事件，没有加载完成需要等待加载完成使用自定义事件
+				if(script.callback === undefined)//如果还没有加载完成，将当前的回调函数放入节点callback中变量中，在加载完成后触发自定义函数循环调用回调函数
+					script.callback = [];
+				script.callback.push(callback);
 			}
 			return;
 		}
@@ -44,6 +66,12 @@ var loadJS = function(id, callback, url){
 		script.id = id;
 		script.ready = false;//还没加载完成
 		head.appendChild(script);
+		//添加监听事件
+	    if (window.addEventListener)
+	    	script.addEventListener('listen', listen, false)
+	    else if (window.attachEvent)
+	    	script.attachEvent('onlisten', listen)
+	    	
 		script.onload = script.onreadystatechange = function(){
 			//script 标签，IE 下有 onreadystatechange 事件, w3c 标准有 onload 事件     
 			//这些 readyState 是针对IE8及以下的，W3C 标准的 script 标签没有 onreadystatechange 和 this.readyState , 
@@ -52,6 +80,7 @@ var loadJS = function(id, callback, url){
 			if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" ){
 				callback();
 				script.ready = true;
+				script.dispatchEvent(EVT);//触发事件
 			}
 		 }//end onreadystatechange 
 		 script.src = url;
