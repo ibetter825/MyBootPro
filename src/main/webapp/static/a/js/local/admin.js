@@ -7,6 +7,7 @@ var CONSTANT = {
 	'jqgrid': ['/static/a/js/jqGrid/jquery.jqGrid.min.js?v=4.5.2', '/static/a/js/jqGrid/i18n/grid.locale-cn.js?v=4.5.2'],
 	'validate': ['/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2', '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2'],
 	'datepicker': ['/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
+	'editor': ['/static/a/js/editor/wangEditor.min.js?v=2.0.0']
 }
 var loadJS = function(id, callback, url){
 	var path = CONSTANT[id];
@@ -25,8 +26,12 @@ var loadJS = function(id, callback, url){
 	}
 	function load(id, callback, url){
 		var script = document.getElementById(id);
-		if(script) {//已经加载过该js
-			callback();
+		if(script) {//已经加载过该js,但是需要判断是否已经加载完成
+			if(script.ready)
+				callback();
+			else {
+				//在调用完成后，触发自定义事件，没有加载完成需要等待加载完成使用自定义事件
+			}
 			return;
 		}
 		var head = document.getElementsByTagName('head');  
@@ -37,26 +42,26 @@ var loadJS = function(id, callback, url){
 		script = document.createElement('script');   
 		script.type = "text/javascript";
 		script.id = id;
-		head.appendChild( script);
+		script.ready = false;//还没加载完成
+		head.appendChild(script);
 		script.onload = script.onreadystatechange = function(){
 			//script 标签，IE 下有 onreadystatechange 事件, w3c 标准有 onload 事件     
 			//这些 readyState 是针对IE8及以下的，W3C 标准的 script 标签没有 onreadystatechange 和 this.readyState , 
 			//文件加载不成功 onload 不会执行，
 			//(!this.readyState) 是针对 W3C标准的, IE 9 也支持 W3C标准的 onload 
-			if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" )
-				callback();     
+			if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" ){
+				callback();
+				script.ready = true;
+			}
 		 }//end onreadystatechange 
 		 script.src = url;
 	}
 }
 var admin = {};
 (function(app) {
-	/**
-	 * 初始化jqgrid数据
-	 */
-	app.initGrid = function() {
-		$grid.jqGrid({
-			url : config.grid.url.list,//config
+	app.getGridOption = function(option){
+		var deft = {
+			url : '',//config
 			mtype: 'POST',
 	        datatype : "json",
 	        jsonReader: {
@@ -65,6 +70,56 @@ var admin = {};
 	            records: "total" // json中代表数据行总数的数据  
 	        },
 	        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
+			colNames:[],//config
+			colModel:[], 
+			rownumbers: false,//显示行编号
+			viewrecords : true,
+			rowNum: 10,
+			rowList: [10,30,50,100],
+			pager : '',
+			recordpos: 'center',
+			pagerpos: 'right',
+			recordtext: '显示 {0} - {1} 共 {2} 条',
+			pgtext : '第 {0} 页， 共 {1} 页',
+			loadtext: '正在请求数据...',
+			altRows: true,
+			//multiSort: true,
+			multiselect: true,
+			//multikey: "ctrlKey",
+	        multiboxonly: false,
+			loadComplete : function() {
+				var _this = this;
+				setTimeout(function(){
+					//styleCheckbox(_this);
+					//updateActionIcons(_this);
+					updatePagerIcons(_this);
+				}, 0);
+			},
+			editurl:'',
+			autowidth: true
+		}
+		//替换分页插件的按钮图标
+		function updatePagerIcons(table) {
+			var replacement = {
+				'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
+				'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
+				'ui-icon-seek-next' : 'icon-angle-right bigger-140',
+				'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+			};
+			$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+				var icon = $(this);
+				var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+				if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+			});
+		}
+		return $.extend({}, deft, option);
+	}
+	/**
+	 * 初始化jqgrid数据
+	 */
+	app.initGrid = function() {
+		$grid.jqGrid(app.getGridOption({
+			url : config.grid.url.list,//config
 			height: $height,
 			colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
 			colModel:[//config
@@ -78,37 +133,8 @@ var admin = {};
 					}
 				}
 			], 
-			rownumbers: false,//显示行编号
-			viewrecords : true,
-			rowNum: 10,
-			rowList: [10,30,50,100],
-			pager : pagerSelector,
-			recordpos: 'center',
-			pagerpos: 'right',
-			recordtext: '显示 {0} - {1} 共 {2} 条',
-			pgtext : '第 {0} 页， 共 {1} 页',
-			loadtext: '正在请求数据...',
-			altRows: true,
-			
-			//multiSort: true,
-			multiselect: true,
-			//multikey: "ctrlKey",
-	        multiboxonly: false,
-	
-			loadComplete : function() {
-				var _this = this;
-				setTimeout(function(){
-					//styleCheckbox(_this);
-					//updateActionIcons(_this);
-					updatePagerIcons(_this);
-				}, 0);
-			},
-			beforeRequest: function(){
-				//jQuery("#grid-table").jqGrid('setGridParam',{loadui: 'block'});//显示正在加载提示
-			},
-			editurl:'',//nothing is saved
-			autowidth: true
-		});
+			pager : pagerSelector
+		}));
 		//按钮自定义样式
 		$grid.jqGrid('navGrid', pagerSelector,
 		        {   //navbar options
@@ -126,20 +152,6 @@ var admin = {};
 		            viewicon : 'icon-eye-open grey'
 		        }
 		    );
-		//替换分页插件的按钮图标
-		function updatePagerIcons(table) {
-			var replacement = {
-				'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
-				'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
-				'ui-icon-seek-next' : 'icon-angle-right bigger-140',
-				'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
-			};
-			$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-				var icon = $(this);
-				var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-				if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-			});
-		}
 	}
 	/**
 	 * 绑定验证

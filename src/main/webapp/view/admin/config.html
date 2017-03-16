@@ -4,11 +4,11 @@
 <head>
 	<#assign title="菜单页面配置">
 	<#include "/admin/includes/header.html"/>
-	<link rel="stylesheet" href="/static/a/css/validationEngine.jquery.css" />
-	<link rel="stylesheet" href="/static/a/css/daterangepicker.css" />
+	<link rel="stylesheet" href="/static/a/js/editor/css/wangEditor.min.css" />
 	<style>
 		.formError-small .formErrorContent {border-color: #fff; border-radius: 0;}
 		.custom .page-header .widget-main {padding: 4px;}
+		.wangEditor-container .wangEditor-txt p {margin: 0; line-height: 1.4;}
 	</style>
 </head>
 
@@ -25,9 +25,9 @@
 				<div class="widget-body">
 					<div class="widget-main">
 						<button class="btn btn-sm btn-success" onclick="configSearch()"><i class="icon-search"></i> 搜索表单
-						</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-table"></i> 数据列表
-						</button><button class="btn btn-sm btn-info" onclick="admin.editDto();"><i class="icon-edit"></i> 实例表单
-						</button><button class="btn btn-sm btn-purple" onclick="admin.editDto();"><i class="icon-globe"></i> 全局变量
+						</button><button class="btn btn-sm btn-danger" onclick="configGrid();"><i class="icon-table"></i> 数据列表
+						</button><button class="btn btn-sm btn-info" onclick="configObject();"><i class="icon-coffee"></i> 对象表单
+						</button><button class="btn btn-sm btn-purple" onclick="configGlobal();"><i class="icon-globe"></i> 全局设置
 						</button>
 					</div>
 				</div>
@@ -55,14 +55,6 @@
 						<div class="widget-toolbar"><a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a></div>
 					</div>
 					<div class="widget-body">
-<!-- 						<div class="widget-toolbox">
-							<div class="btn-toolbar">
-								<div class="btn-group" id="opt-cnter">
-									<button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
-									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button>
-								</div>
-							</div>
-						</div> -->
 						<div class="widget-main">
 							<table id="grid-table-column"></table>
 							<div id="grid-pager-column"></div>
@@ -73,37 +65,14 @@
 		</div>
 		<!-- /row -->
 		<div id="dto-model" class="dto-model-hide">
-			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return configSubmit();">
+			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return submitConfig();">
 				<div class="widget-box no-border">
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-search"></i>表单</h6>
 					</div>
 					<div class="widget-body">
-						<input id="search-sub-method" type="hidden" name="searchSubMethod" value="return admin.search();">
-						<div class="widget-main">
-							<!-- <div class="form-group">
-								<div class="col-sm-12">
-									<input id="s" type="text" name="label" placeholder="显示名称" class="col-sm-2" title="字段显示名称">
-									<input id="ssss" type="text" name="name" placeholder="字段名称" class="col-sm-2" title="字段名称">
-									<input id="ssssss" type="text" name="value" placeholder="默认值" class="col-sm-2" title="默认值">
-									<select id="ss" name="type" class="col-sm-2" title="数据库数据类型">
-										<option value="varchar">varchar</option>
-										<option value="integer">integer</option>
-										<option value="long">long</option>
-									</select>
-									<select id="sss" name="widget" class="col-sm-2" title="前台控件类型">
-										<option value="text">text</option>
-										<option value="select">select</option>
-										<option value="date">date</option>
-									</select>
-									<select id="ssssss" name="source" class="col-sm-2" title="内容来源">
-										<option value="fixed">fixed</option>
-										<option value="url">url</option>
-									</select>
-									<textarea name="vali" class="col-sm-12" rows="1" title="验证规则" style="margin-top: 2px;">验证规则</textarea>
-								</div>
-							</div> -->
-						</div>
+						<input id="config-sub-method" type="hidden" name="configSubMethod" value="return admin.search();">
+						<div class="widget-main"></div>
 						<div class="widget-toolbox padding-8 clearfix">
 							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
 								<i class="icon-trash"></i><span class="bigger-110"> 取&nbsp;消</span>
@@ -111,8 +80,8 @@
 							<button type="submit" class="btn btn-sm btn-primary pull-right">
 								<i class="icon-ok"></i><span class="bigger-110"> 确&nbsp;定</span>
 							</button>
-							<button type="button" class="c-btn c-btn-search hide btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
-								<i class="icon-legal"></i><span class="bigger-110"> 提交事件</span>
+							<button type="button" class="c-btn c-btn-search c-btn-object hide btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
+								<i class="icon-legal"></i><span class="bigger-110"> 提交方法</span>
 							</button>
 						</div>
 					</div>
@@ -129,48 +98,19 @@
 		var dtoModelSelector = '#dto-model', $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 							//是否能切换表格
 		var	curTarget = 'search', tableSwitchable = true, selectedArr = new Array();//配置search时已经选择的字段
+		var editorColModel, editorJs, editorHtml;
 		
 		loadJS('jqgrid', function(){
-			$grid.jqGrid({
+			$grid.jqGrid(admin.getGridOption({
 				url : '/admin/db/tables',//config
-				mtype: 'POST',
-		        datatype : "json",
-		        jsonReader: {
-		            page: "pageNumber",   // json中代表当前页码的数据  
-		            total: "totalPages", // json中代表页码总数的数据  
-		            records: "total" // json中代表数据行总数的数据  
-		        },
-		        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
 				height: $height + 40,
 				colNames:['表名', '表注释'],//config
 				colModel:[//config
 					{name:'TABLE_NAME', index:'TABLE_NAME', width: 100},
 					{name:'TABLE_COMMENT', index:'TABLE_COMMENT', sortable: false}
 				], 
-				rownumbers: false,//显示行编号
-				viewrecords : true,
-				rowNum: 10,
-				rowList: [10,30,50,100],
-				pager : pagerSelector,
-				recordpos: 'center',
-				pagerpos: 'right',
-				recordtext: '{0} - {1} 共 {2}',
-				pgtext : ' {0} 共 {1} 页',
-				loadtext: '正在请求数据...',
-				altRows: true,
-				//multiSort: true,
+				pager: pagerSelector,
 				multiselect: false,
-				//multikey: "ctrlKey",
-		        multiboxonly: false,
-				editurl:'',//nothing is saved
-				autowidth: true,
-				
-				loadComplete : function() {
-					var _this = this;
-					setTimeout(function(){
-						updatePagerIcons(_this);
-					}, 0);
-				},
 				onSelectRow: function(rowid,status){
 					var pd = $gridCol.jqGrid('getGridParam','postData');
 					pd['tableName'] = $grid.jqGrid('getRowData', rowid)['TABLE_NAME'];
@@ -179,7 +119,7 @@
 				beforeSelectRow: function(){
 					return tableSwitchable;
 				}
-			});
+			}));
 			//按钮自定义样式
 			$grid.jqGrid('navGrid', pagerSelector, {   //navbar options
 			            edit: false,
@@ -191,31 +131,9 @@
 			            view: false
 		        }
 		    );
-			//替换分页插件的按钮图标
-			function updatePagerIcons(table) {
-				var replacement = {
-					'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
-					'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
-					'ui-icon-seek-next' : 'icon-angle-right bigger-140',
-					'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
-				};
-				$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-					var icon = $(this);
-					var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-					if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-				});
-			}
 			
-			$gridCol.jqGrid({
-				url : '/admin/db/columns',//config
-				mtype: 'POST',
-		        datatype : "json",
-		        jsonReader: {
-		            page: "pageNumber",   // json中代表当前页码的数据  
-		            total: "totalPages", // json中代表页码总数的数据  
-		            records: "total" // json中代表数据行总数的数据  
-		        },
-		        prmNames:  {page:'page', rows:'size', sort: 'sort', order: 'order', search: null, nd: null, npage:null},
+			$gridCol.jqGrid(admin.getGridOption({
+				url: '/admin/db/columns',//config
 				height: $height + 40,
 				colNames:['字段排序', '字段名', '字段类型', '数据类型', '字段注释'],//config
 				colModel:[//config
@@ -225,44 +143,22 @@
 					{name:'DATA_TYPE', index:'DATA_TYPE', sortable: true},
 					{name:'COLUMN_COMMENT', index:'COLUMN_COMMENT', sortable: false}
 				], 
-				rownumbers: false,//显示行编号
-				viewrecords : true,
-				rowNum: 10,
-				rowList: [10,30,50,100],
 				pager : pagerColSelector,
-				recordpos: 'center',
-				pagerpos: 'right',
-				recordtext: '{0} - {1} 共 {2}',
-				pgtext : ' {0} 共 {1} 页',
-				loadtext: '正在请求数据...',
-				altRows: true,
-				//multiSort: true,
-				multiselect: true,
-				//multikey: "ctrlKey",
-		        multiboxonly: false,
-				editurl:'',//nothing is saved
-				autowidth: true,
-
-				loadComplete : function() {
-					var _this = this;
-					setTimeout(function(){
-						updatePagerIcons(_this);
-					}, 0);
-				},
 				onSelectRow: function(rowid, status){
+					if(curTarget !== 'search' && curTarget !== 'object') return;
 					var col = $gridCol.jqGrid('getRowData', rowid);
 					var index = selectedArr.indexOf(rowid);
 					if(status){//选中
 						if(index !== -1)
 			    			return;
 			    		selectedArr.push(rowid);
-						$dtoModel.find('.widget-main').append(getSearchFormElement(col));
+						$dtoModel.find('.widget-main').append(getColumnElement(col));
 					}else{//取消选中
 						selectedArr.splice(index, 1);
 						$('#search_'+ col.COLUMN_NAME).remove();
 					}
 				}
-			});
+			}));
 			
 			$gridCol.jqGrid('navGrid', pagerColSelector, {
 			            edit: false,
@@ -277,9 +173,9 @@
 		});
 		
 		//搜索部分字段html
-		function getSearchFormElement(col){
+		function getColumnElement(col){
 			var html = new Array();
-			html.push('<div id="search_'+ col.COLUMN_NAME +'" class="form-group">');
+			html.push('<div id="search_'+ col.COLUMN_NAME +'" class="form-data form-group">');
 				html.push('<div class="col-sm-12">');
 					html.push('<input type="text" name="label" placeholder="显示名称" class="col-sm-2" title="字段显示名称">');
 					html.push('<input type="text" name="name" value="'+col.COLUMN_NAME+'" placeholder="字段名称" class="col-sm-2" title="字段名称">');
@@ -303,9 +199,14 @@
 		
 		//配置搜索部分
 		function configSearch(){
+			if(curTarget !== 'search'){
+				$dtoModel.find('.widget-main').empty();
+				selectedArr = new Array();
+			}
 			curTarget = 'search';
 			$('.c-btn').addClass('hide');
 			$('.c-btn-search').removeClass('hide');
+			$('#config-sub-method').val('return admin.search();');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
@@ -319,44 +220,164 @@
 			    			return;
 			    		selectedArr.push(v);
 			    		col = $gridCol.jqGrid('getRowData', v);
-			    		html.push(getSearchFormElement(col));
+			    		html.push(getColumnElement(col));
 			    	});
 			    	$dtoModel.find('.widget-main').append(html.join(''));
 		    	}
-				layer.open({
-			  		  type: 1,
-			  		  id: 'layer-search-model',
-			  		  shade: false,
-			  		  title: false,
-			  		  move: '.widget-header',
-			  		  closeBtn: 0,
-			  		  skin: 'dto-form',
-			  		  shadeClose: true,
-			  		  area: ['760px'],
-			  		  content: $dtoModel,
-			  		  success: function(){
-			  			$('#layer-search-model').removeAttr('style'); 
-			  			tableSwitchable = false;//此时不能切换表格
-			  		  },
-			  		  end: function(){
-			  			$dtoModel.find('.widget-main').empty();
-			  			selectedArr = new Array();
-			  			$dtoModel.addClass('dto-model-hide');
-			  			tableSwitchable = true;
-			  		  }
-				});
+		    	openModel();
 		    }else
 		      layer.msg('请选择数据表');
 		}
 		
+		function getGridListElement(){
+			var html = new Array();
+				html.push('<div class="form-data col-sm-12">');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="list"> 列表链接: </label>');
+						html.push('<input type="text" name="list" placeholder="列表链接" class="col-sm-9" title="列表链接">');
+					html.push('</div>');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="add"> 新增链接: </label>');
+						html.push('<input type="text" name="add" placeholder="新增链接" class="col-sm-9" title="新增链接">');
+					html.push('</div>');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="del"> 删除链接: </label>');
+						html.push('<input type="text" name="del" placeholder="删除链接" class="col-sm-9" title="删除链接">');
+					html.push('</div>');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="edit"> 修改链接: </label>');
+						html.push('<input type="text" name="edit" placeholder="修改链接" class="col-sm-9" title="修改链接">');
+					html.push('</div><hr/>');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="colNames"> 字段名称: </label>');
+						html.push('<textarea name="colNames" class="col-sm-9" rows="1" title="字段名称"></textarea>');
+					html.push('</div>');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="colModel"> 字段配置: </label>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-colModel" name="colModel" rows="12" title="字段配置"></textarea></div>');
+					html.push('</div>');
+				html.push('</div>');
+			return html.join('');
+		}
+		
+		//配置数据列表
+		function configGrid(){
+			if(curTarget !== 'grid') $dtoModel.find('.widget-main').empty();
+			curTarget = 'grid';
+			$('.c-btn').addClass('hide');
+			$('.c-btn-grid').removeClass('hide');
+			//是否已经选择了数据表
+			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
+		    if (gr != null){
+		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-table"></i> 配置数据列表');
+		    	$dtoModel.find('.widget-main').empty().append(getGridListElement());
+		    	
+		    	initEditor(editorColModel, 'editor-colModel');
+		    	openModel();
+		    }else
+		      layer.msg('请选择数据表');
+		}
+		
+		//配置对象增加添加表单
+		function configObject(){
+			if(curTarget !== 'object'){
+				$dtoModel.find('.widget-main').empty();
+				selectedArr = new Array();
+			}
+			curTarget = 'object';
+			$('.c-btn').addClass('hide');
+			$('.c-btn-object').removeClass('hide');
+			$('#config-sub-method').val('return admin.submitDtoModelForm();');
+			//是否已经选择了数据表
+			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
+		    if (gr != null){
+		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-coffee"></i> 配置对象表单');
+		    	var cols = $gridCol.jqGrid('getGridParam', 'selarrrow');//获取选择行id的array
+		    	if(cols.length > 0){
+			    	var col = null, html = new Array();
+			    	$(cols).each(function(i, v){
+			    		if(selectedArr.indexOf(v) !== -1)
+			    			return;
+			    		selectedArr.push(v);
+			    		col = $gridCol.jqGrid('getRowData', v);
+			    		html.push(getColumnElement(col));
+			    	});
+			    	$dtoModel.find('.widget-main').append(html.join(''));
+		    	}
+		    	openModel();
+		    }else
+		      layer.msg('请选择数据表');
+		}
+		
+		function getGlobalElement(){
+			var html = new Array();
+				html.push('<div class="form-data col-sm-12">');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="js"> js代码: </label>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-js" name="js" rows="14" title="js代码"></textarea></div>');
+					html.push('</div>');
+					html.push('<div class="form-group">');
+						html.push('<label class="col-sm-2 control-label" for="html"> html代码: </label>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-html" name="html" rows="14" title="html代码"></textarea></div>');
+					html.push('</div>');
+				html.push('</div>');
+			return html.join('');
+		}
+		
+		//全局内容配置
+		function configGlobal(){
+			if(curTarget !== 'global') $dtoModel.find('.widget-main').empty();
+			curTarget = 'global';
+			$('.c-btn').addClass('hide');
+			$('.c-btn-global').removeClass('hide');
+			//是否已经选择了数据表
+			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
+		    if (gr != null){
+		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-globe"></i> 配置全局内容');
+		    	$dtoModel.find('.widget-main').empty().append(getGlobalElement());
+		    	
+		    	initEditor(editorJs, 'editor-js');
+		    	initEditor(editorHtml, 'editor-html');
+		        
+		    	openModel();
+		    }else
+		      layer.msg('请选择数据表');
+		}
+		
+		function openModel(){
+			layer.open({
+		  		  type: 1,
+		  		  id: 'layer-config-model',
+		  		  shade: false,
+		  		  title: false,
+		  		  move: '.widget-header',
+		  		  closeBtn: 0,
+		  		  skin: 'dto-form',
+		  		  shadeClose: true,
+		  		  area: ['760px'],
+		  		  content: $dtoModel,
+		  		  success: function(){
+		  			$('#layer-config-model').removeAttr('style'); 
+		  			tableSwitchable = false;//此时不能切换表格
+		  		  },
+		  		  end: function(){
+		  			$dtoModel.find('.widget-main').empty();
+		  			selectedArr = new Array();
+		  			$dtoModel.addClass('dto-model-hide');
+		  			$('.c-btn').addClass('hide');
+		  			tableSwitchable = true;
+		  		  }
+			});
+		}
+		
 		//替换默认的提交方法
 		function replaceSearchFormSubmit(){
-			var $smethod = $('#search-sub-method');
+			var $smethod = $('#config-sub-method');
 			layer.prompt({
 				  formType: 2,
 				  skin: 'layer-skin',
 				  value: $smethod.val(),
-				  title: '自定义方法',
+				  title: '自定义表单提交方法',
 				  area: ['500px', '150px']
 				}, function(value, index, elem){
 					$smethod.val(value);
@@ -365,23 +386,69 @@
 		}
 		
 		//配置完成后保存 搜索表单配置
-		function configSubmit(){
-			var search = {};
-			var colArr = $dtoModel.find('.form-group');
-			var cols = new Array();
-			var col = {};
-			for(var i = 0, l = colArr.length; i < l; i++){
-				col['label'] = $(colArr[i]).find('[name="label"]').val();
-				col['type'] = $(colArr[i]).find('[name="type"]').val();
-				col['widget'] = $(colArr[i]).find('[name="widget"]').val();
-				col['vali'] = $(colArr[i]).find('[name="vali"]').val();
-				col['source'] = $(colArr[i]).find('[name="source"]').val();
-				col['value'] = $(colArr[i]).find('[name="value"]').val();
-				cols.push(col);
+		function submitConfig(){
+			var data = $dtoModel.find('.form-data');
+			if(curTarget === 'search'){
+				var cols = new Array();
+				var col = {};
+				for(var i = 0, l = data.length; i < l; i++){
+					col['label'] = $(data[i]).find('[name="label"]').val();
+					col['type'] = $(data[i]).find('[name="type"]').val();
+					col['widget'] = $(data[i]).find('[name="widget"]').val();
+					col['vali'] = $(data[i]).find('[name="vali"]').val();
+					col['source'] = $(data[i]).find('[name="source"]').val();
+					col['value'] = $(data[i]).find('[name="value"]').val();
+					cols.push(col);
+				}
+				console.log(cols);
+			}else if(curTarget === 'grid'){
+				var grid = {
+					url: {
+						list: data.find('[name="list"]').val(),
+						add: data.find('[name="add"]').val(),
+						del: data.find('[name="del"]').val(),
+						edit: data.find('[name="edit"]').val()
+					},
+					option: {
+						colNames: data.find('[name="colNames"]').val(),
+						colModel: data.find('[name="colModel"]').val()
+					}
+				}
+				console.log(grid);
+			}else if(curTarget === 'object'){
+				var cols = new Array();
+				var col = {};
+				for(var i = 0, l = data.length; i < l; i++){
+					col['label'] = $(data[i]).find('[name="label"]').val();
+					col['type'] = $(data[i]).find('[name="type"]').val();
+					col['widget'] = $(data[i]).find('[name="widget"]').val();
+					col['vali'] = $(data[i]).find('[name="vali"]').val();
+					col['source'] = $(data[i]).find('[name="source"]').val();
+					col['value'] = $(data[i]).find('[name="value"]').val();
+					cols.push(col);
+				}
+				console.log(cols);
+			}else if(curTarget === 'global'){
+				var global = {
+					js: data.find('[name="js"]').val(),
+					html: data.find('[name="html"]').val(),
+				}
+				console.log(global);
 			}
-			console.log(cols);
+				
 			layer.closeAll('page');
 			return false;
+		}
+		
+		//初始化富文本框
+		function initEditor(editor, id){
+			// 获取编辑区域的纯文本
+		    //var text = editor.$txt.text();
+			loadJS('editor', function(){
+				editor = new wangEditor(id);
+				editor.config.menus = ['undo', 'redo', 'fullscreen'];
+				editor.create();
+			});
 		}
 	</script>
 </body>

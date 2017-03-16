@@ -147,10 +147,10 @@
 		var config = {
 				search: {
 					cols: [
-					        //widget: 控件类型        type: 字段类型        source:填充内容来源； value: 默认值什么的
+					        //widget: 控件类型        type: 字段类型        source:填充内容来源 type(local, server)； value: 默认值什么的
 					        {widget: 'text', type: 'varchar', name: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
 					        {widget: 'text', type: 'varchar', name: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
-					        {widget: 'select', type: 'integer', name: 'menu_state', label: '菜单状态', vali: '', source: {type: 'fixed', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
+					        {widget: 'select', type: 'integer', name: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
 					        {widget: 'date', type: 'long', name: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
 					      ],
 					 subMethod: ''
@@ -167,15 +167,32 @@
 					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''},
 					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'configs()', param: '', suburl: ''}
 					     ],
-					cols: []
+					option: {
+						//jqgrid配置，替换默认的配置
+						colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
+						colModel:[//config
+							{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: false},
+							{name:'menu_name',index:'menu_name',width:90, editable:true},
+							{name:'menu_url',index:'menu_url', width:150, editable: true, editoptions:{maxlength:"30"}},
+							{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+								formatter:'actions', 
+								formatoptions:{
+									keys:true
+								}
+							}
+						]
+					}
 				},
-				form: {
-					cols: []//新增，或修改字段集合
+				object: {
+					cols: {//新增，或修改字段集合, 格式与search cols一致, 新增与修改有时不一致，当edit为空时则两者一样
+						add: [],
+						edit: []
+					},
+					subMethod: ''
 				},
 				global: {
-					variables: '',//一些自定义方法变量等，一条字符串，在页面中转换为js代码
-					methods: '',
-					valis: ''//自定义校验方法
+					js: '',//一些自定义方法变量等，一条字符串，在页面中转换为js代码//自定义校验方法，加入到validateEngine中去
+					html: ''//html代码
 				}
 		}
 		//写入搜索表单的数据
