@@ -22,7 +22,8 @@ import com.mypro.common.utils.WebUtil;
  * 全局异常管理
  * 不会与springboot的BasicErrorController发生冲突
  * 替换掉HandlerExceptionResolver的方式，该方式与springboot中会发生冲突
- * 只能处理异常，不能对404等错误进行管理
+ * 只能处理异常 500错误等，不能对404等错误进行管理
+ * 对404错误需要使用 MyBasicErrorController该类目前只处理404页面的问题，根据路径不同跳转不同目录下的错误页面
  * @author user
  *
  */
@@ -42,7 +43,7 @@ public class GlobalExceptionHandler {
 				resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
 				resp.setCharacterEncoding(WebConstant.DEFAULT_ENCODING); //避免乱码
 				resp.setHeader("Cache-Control", "no-cache, must-revalidate");
-				writer.print(JSON.toJSONString(new ResultModel(ResultMessageEnum.OPTION_EXCEPTION)));
+				writer.print(JSON.toJSONString(new ResultModel(ResultMessageEnum.SYSTEM_EXCEPTION)));
 				writer.flush();
 			} catch (IOException ex) {
 				ex.printStackTrace();

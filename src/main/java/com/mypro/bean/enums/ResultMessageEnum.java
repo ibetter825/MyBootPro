@@ -6,6 +6,7 @@ public enum ResultMessageEnum {
 	DATA_ALREADY_EXISTS("信息已经存在你"),
 	DATA_NOT_EXISTS("信息不存在或已删除"),
 	OPTION_EXCEPTION("操作处理失败"),
+	SYSTEM_EXCEPTION("程序发生错误"),
 	FILE_UPLOAD_SUCCESS("文件上传成功"),
 	FILE_UPLOAD_FAIL("文件上传异常");
 	
