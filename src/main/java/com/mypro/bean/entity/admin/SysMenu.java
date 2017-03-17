@@ -7,18 +7,14 @@ import java.util.Map;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import com.mypro.bean.entity.BaseEntity;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 系统菜单
  * @author user
  *
  */
-@Getter @Setter
 public class SysMenu extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
@@ -63,5 +59,77 @@ public class SysMenu extends BaseEntity {
         	tree.add(map);
 		}
 		return tree;
+	}
+
+	public Integer getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
+
+	public String getMenuName() {
+		return menuName;
+	}
+
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
+	}
+
+	public String getMenuUrl() {
+		return menuUrl;
+	}
+
+	public void setMenuUrl(String menuUrl) {
+		this.menuUrl = menuUrl;
+	}
+
+	public String getMenuDesc() {
+		return menuDesc;
+	}
+
+	public void setMenuDesc(String menuDesc) {
+		this.menuDesc = menuDesc;
+	}
+
+	public Integer getMenuPid() {
+		return menuPid;
+	}
+
+	public void setMenuPid(Integer menuPid) {
+		this.menuPid = menuPid;
+	}
+
+	public Short getMenuState() {
+		return menuState;
+	}
+
+	public void setMenuState(Short menuState) {
+		this.menuState = menuState;
+	}
+
+	public Short getMenuLevel() {
+		return menuLevel;
+	}
+
+	public void setMenuLevel(Short menuLevel) {
+		this.menuLevel = menuLevel;
+	}
+
+	public Integer getMenuSeq() {
+		return menuSeq;
+	}
+
+	public void setMenuSeq(Integer menuSeq) {
+		this.menuSeq = menuSeq;
+	}
+
+	public String getMenuIcon() {
+		return menuIcon;
+	}
+
+	public void setMenuIcon(String menuIcon) {
+		this.menuIcon = menuIcon;
 	}
 }
