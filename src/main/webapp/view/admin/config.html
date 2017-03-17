@@ -93,12 +93,16 @@
 	
 	<!-- basic scripts -->
 	<#include "/admin/includes/footer.html"/>
-	<script type="text/javascript">
+	<script type="text/javascript">	
 		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $header = $('.page-header:first'), $height = $(window).height() - $header.height() - 230;
 		var dtoModelSelector = '#dto-model', $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 							//是否能切换表格
-		var	curTarget = 'search', tableSwitchable = true, selectedArr = new Array();//配置search时已经选择的字段
-		var editorColModel, editorJs, editorHtml;
+		var	curTarget = 'search', tableSwitchable = true, selectedTable = null, selectedArr = new Array();//配置search时已经选择的字段
+		var editors = {
+				'editor-colModel': null,
+				'editor-js': null,
+				'editor-html': null
+		};
 		
 		loadJS('jqgrid', function(){
 			$grid.jqGrid(admin.getGridOption({
@@ -272,7 +276,7 @@
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-table"></i> 配置数据列表');
 		    	$dtoModel.find('.widget-main').empty().append(getGridListElement());
 		    	
-		    	initEditor(editorColModel, 'editor-colModel');
+		    	initEditor('editor-colModel');
 		    	openModel();
 		    }else
 		      layer.msg('请选择数据表');
@@ -336,8 +340,8 @@
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-globe"></i> 配置全局内容');
 		    	$dtoModel.find('.widget-main').empty().append(getGlobalElement());
 		    	
-		    	initEditor(editorJs, 'editor-js');
-		    	initEditor(editorHtml, 'editor-html');
+		    	initEditor('editor-js');
+		    	initEditor('editor-html');
 		        
 		    	openModel();
 		    }else
@@ -387,12 +391,16 @@
 		
 		//配置完成后保存 搜索表单配置
 		function submitConfig(){
+			var config = {
+				'menuId': parent.curMenuId//当前配置的菜单id
+			}
 			var data = $dtoModel.find('.form-data');
 			if(curTarget === 'search'){
 				var cols = new Array();
 				var col = {};
 				for(var i = 0, l = data.length; i < l; i++){
 					col['label'] = $(data[i]).find('[name="label"]').val();
+					col['name'] = $(data[i]).find('[name="name"]').val();
 					col['type'] = $(data[i]).find('[name="type"]').val();
 					col['widget'] = $(data[i]).find('[name="widget"]').val();
 					col['vali'] = $(data[i]).find('[name="vali"]').val();
@@ -400,7 +408,7 @@
 					col['value'] = $(data[i]).find('[name="value"]').val();
 					cols.push(col);
 				}
-				console.log(cols);
+				config['cfgSearch'] = JSON.stringify(cols);
 			}else if(curTarget === 'grid'){
 				var grid = {
 					url: {
@@ -411,10 +419,10 @@
 					},
 					option: {
 						colNames: data.find('[name="colNames"]').val(),
-						colModel: data.find('[name="colModel"]').val()
+						colModel: editors['editor-colModel'].$txt.text()
 					}
 				}
-				console.log(grid);
+				config['cfgGrid'] = JSON.stringify(grid);
 			}else if(curTarget === 'object'){
 				var cols = new Array();
 				var col = {};
@@ -427,27 +435,32 @@
 					col['value'] = $(data[i]).find('[name="value"]').val();
 					cols.push(col);
 				}
-				console.log(cols);
+				config['cfgObject'] = JSON.stringify(cols);
 			}else if(curTarget === 'global'){
 				var global = {
-					js: data.find('[name="js"]').val(),
-					html: data.find('[name="html"]').val(),
+					js: editors['editor-js'].$txt.text(),
+					html: editors['editor-html'].$txt.text(),
 				}
-				console.log(global);
+				config['cfgGlobal'] = JSON.stringify(global);
 			}
-				
-			layer.closeAll('page');
+			
+			$.post('/admin/cfg/aoe', config, function(data){
+				alert(data.success);
+				layer.msg(data.msg);
+				if(data.success) layer.closeAll('page');
+			}, 'json');
+			
 			return false;
 		}
 		
 		//初始化富文本框
-		function initEditor(editor, id){
+		function initEditor(id){
 			// 获取编辑区域的纯文本
 		    //var text = editor.$txt.text();
 			loadJS('editor', function(){
-				editor = new wangEditor(id);
-				editor.config.menus = ['undo', 'redo', 'fullscreen'];
-				editor.create();
+				editors[id] = new wangEditor(id);
+				editors[id].config.menus = ['undo', 'redo', 'fullscreen'];
+				editors[id].create();
 			});
 		}
 	</script>

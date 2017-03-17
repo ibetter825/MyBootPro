@@ -87,7 +87,7 @@ var loadJS = function(id, callback, url){
 	}
 }
 var admin = {};
-(function(app) {
+!(function(app) {
 	app.getGridOption = function(option){
 		var deft = {
 			url : '',//config
@@ -345,5 +345,23 @@ var admin = {};
 			html.push('<button class="btn btn-sm '+ btn.clss +'" onclick="'+ btn.handler +'"><i class="'+ btn.icon +'"></i> '+ btn.label +'</button>');
 		}
 		$('#opt-cnter').empty().append(html.join(''));
+	}
+	/**
+	 * 打开配置菜单页面
+	 */
+	app.config = function(){
+		var gr = $grid.jqGrid('getGridParam', 'selrow');
+	    if (gr != null){
+	    	var row = $grid.jqGrid('getRowData', gr);
+	    	curMenuId = row.menu_id;
+	    	layer.open({
+			  type: 2,
+			  title: '配置页面 - '+ row.menu_name,
+			  content: '/admin/forward/config',
+			  area: ['100%', '100%'],
+			  maxmin: true
+			});
+	    }else
+	      layer.msg('请选择一条记录');
 	}
 }(admin));

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-06 16:16:45
+Date: 2017-03-17 13:56:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,6 +105,25 @@ INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', null, '11', 
 INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/desk', null, '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '');
 INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu', null, '15', '1', '2', '0', 'icon-list');
+
+-- ----------------------------
+-- Table structure for sys_menu_config
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu_config`;
+CREATE TABLE `sys_menu_config` (
+  `menu_id` int(11) NOT NULL COMMENT '菜单id，外键',
+  `cfg_search` varchar(1000) DEFAULT '' COMMENT '搜索表单配置部分，json格式存放数据',
+  `cfg_grid` varchar(2000) NOT NULL DEFAULT '' COMMENT '搜索表单配置，json格式存放',
+  `cfg_object` varchar(2000) DEFAULT '' COMMENT '对象表单配置，json',
+  `cfg_global` varchar(5000) DEFAULT '' COMMENT '全局配置，json',
+  PRIMARY KEY (`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单页面资源配置表';
+
+-- ----------------------------
+-- Records of sys_menu_config
+-- ----------------------------
+INSERT INTO `sys_menu_config` VALUES ('1', '[{\"label\":\"常用流程\",\"name\":\"tag_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"常用流程\",\"name\":\"tag_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '', '', '');
+INSERT INTO `sys_menu_config` VALUES ('16', '[{\"label\":\"菜单状态\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_opt

@@ -165,7 +165,7 @@
 					btns: [//用于权限限制
 					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
 					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-plus', handler: 'admin.editDto()', param: '', suburl: ''},
-					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'configs()', param: '', suburl: ''}
+					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'admin.config()', param: '', suburl: ''}
 					     ],
 					option: {
 						//jqgrid配置，替换默认的配置
@@ -204,7 +204,8 @@
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
-
+		var curMenuId = null;
+		
 		loadJS('jqgrid', function(){
 			admin.initGrid();
 		});
@@ -216,15 +217,6 @@
 			admin.attachTimepicker();
 		});
 
-		function configs(){
-			var index = layer.open({
-				  type: 2,
-				  title: '配置页面',
-				  content: '/admin/forward/config',
-				  area: ['100%', '100%'],
-				  maxmin: true
-			});
-		}
 	</script>
 </body>
 

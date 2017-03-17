@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mypro.bean.entity.admin.SysMenuConfig;
 import com.mypro.dao.admin.SysMenuConfigDao;
 import com.mypro.service.admin.SysMenuConfigService;
 
@@ -21,6 +22,14 @@ public class SysMenuConfigServiceImpl implements SysMenuConfigService {
 	@Override
 	public List<Map<String, Object>> queryTable(String sql) {
 		return smcDao.selectBySql(sql);
+	}
+
+	@Override
+	public boolean addOrEditConfig(SysMenuConfig config) {
+		if(smcDao.insertSelective(config) != 1)//插入不成功
+			return smcDao.updateByPrimaryKeySelective(config) == 1;//修改
+		else
+			return true;
 	}  
 	
 }
