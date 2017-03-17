@@ -4,11 +4,17 @@ import javax.persistence.Id;
 
 import com.mypro.bean.entity.BaseEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 系统菜单
  * @author user
  *
  */
+@Getter
+@Setter
+@SuppressWarnings("unused")
 public class SysMenuConfig extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
@@ -18,35 +24,4 @@ public class SysMenuConfig extends BaseEntity {
 	private String cfgGrid;
 	private String cfgObject;
 	private String cfgGlobal;
-	
-	public Integer getMenuId() {
-		return menuId;
-	}
-	public void setMenuId(Integer menuId) {
-		this.menuId = menuId;
-	}
-	public String getCfgSearch() {
-		return cfgSearch;
-	}
-	public void setCfgSearch(String cfgSearch) {
-		this.cfgSearch = cfgSearch;
-	}
-	public String getCfgGrid() {
-		return cfgGrid;
-	}
-	public void setCfgGrid(String cfgGrid) {
-		this.cfgGrid = cfgGrid;
-	}
-	public String getCfgObject() {
-		return cfgObject;
-	}
-	public void setCfgObject(String cfgObject) {
-		this.cfgObject = cfgObject;
-	}
-	public String getCfgGlobal() {
-		return cfgGlobal;
-	}
-	public void setCfgGlobal(String cfgGlobal) {
-		this.cfgGlobal = cfgGlobal;
-	}
 }

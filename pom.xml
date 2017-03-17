@@ -103,6 +103,12 @@
 	    <artifactId>guava</artifactId>
 	    <version>20.0</version>
 	</dependency>
+	<!-- 工具:lombok 通过@Getter@Setter自动为类设置get与set方法 -->
+	<dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>1.16.14</version>
+	</dependency>
 	<!-- 工具:quartz -->
 	<dependency>
 	    <groupId>org.quartz-scheduler</groupId>

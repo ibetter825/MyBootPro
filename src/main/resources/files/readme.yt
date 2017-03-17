@@ -11,6 +11,7 @@
 	10.Session管理使用Spring Session, 配合redis使用,超时设置
 	11.cglib动态创建类，如果是数据表对应的类，再注入到mybatis的mapper中 x
 	12. 高并发，线程池
+	13.lombok 通过@Getter@Setter注解为类自动添加
 前:
 	1.bootstrap.js
 	2.require.js

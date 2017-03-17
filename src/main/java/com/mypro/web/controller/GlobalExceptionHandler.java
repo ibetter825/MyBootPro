@@ -21,6 +21,7 @@ import com.mypro.common.utils.WebUtil;
 /**
  * 全局异常管理
  * 不会与springboot的BasicErrorController发生冲突
+ * 替换掉HandlerExceptionResolver的方式，该方式与springboot中会发生冲突
  * 只能处理异常，不能对404等错误进行管理
  * @author user
  *
@@ -28,7 +29,7 @@ import com.mypro.common.utils.WebUtil;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	public static final String DEFAULT_ERROR_PATH = "/error";
-	public static final String ADMIN_ERROR_PATH = "/admin/error";
+	public static final String ADMIN_ERROR_PATH = "/admin/error"; //这些需要修改为可配置
 	
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, HttpServletResponse resp, Exception e) throws Exception {
