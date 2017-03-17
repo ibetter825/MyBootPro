@@ -6,15 +6,11 @@ import javax.persistence.Id;
 
 import com.mypro.bean.entity.BaseEntity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 系统用户
  * @author user
  *
  */
-@Getter @Setter
 public class SysUser extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
@@ -37,5 +33,53 @@ public class SysUser extends BaseEntity {
 		this.userName = sysUser.getUserName();
 		this.userPwd = sysUser.getUserPwd();
 		this.userSalt = sysUser.getUserSalt();
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserPwd() {
+		return userPwd;
+	}
+
+	public void setUserPwd(String userPwd) {
+		this.userPwd = userPwd;
+	}
+
+	public String getUserSalt() {
+		return userSalt;
+	}
+
+	public void setUserSalt(String userSalt) {
+		this.userSalt = userSalt;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Short getUserState() {
+		return userState;
+	}
+
+	public void setUserState(Short userState) {
+		this.userState = userState;
+	}
+
+	public Short getIsSuper() {
+		return isSuper;
+	}
+
+	public void setIsSuper(Short isSuper) {
+		this.isSuper = isSuper;
 	}
 }
