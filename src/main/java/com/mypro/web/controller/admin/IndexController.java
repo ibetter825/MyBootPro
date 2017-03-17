@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@RestController
-public class MainController extends BaseAdminController {
-	@RequestMapping("/main")
+@RestController("adminIndex")
+public class IndexController extends BaseAdminController {
+	@RequestMapping("/index.html")
 	public ModelAndView index(Map<String, String> model){
 		model.put("name", "这里是主页面!");
-		return new ModelAndView("admin/main", model);
+		return new ModelAndView("admin/index", model);
 	}
 	@RequestMapping("/role")
 	@PreAuthorize("hasAuthority('admin')")

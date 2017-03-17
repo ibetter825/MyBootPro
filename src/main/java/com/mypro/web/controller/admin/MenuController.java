@@ -19,7 +19,7 @@ import com.mypro.service.admin.SysMenuService;
 @RestController
 public class MenuController extends BaseAdminController {
 	@SuppressWarnings("unused")
-	private Logger logger = LoggerFactory.getLogger(MainController.class);
+	private Logger logger = LoggerFactory.getLogger(IndexController.class);
 	@Autowired
 	private SysMenuService sysMenuService;
 	

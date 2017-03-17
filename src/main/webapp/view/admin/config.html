@@ -445,7 +445,6 @@
 			}
 			
 			$.post('/admin/cfg/aoe', config, function(data){
-				alert(data.success);
 				layer.msg(data.msg);
 				if(data.success) layer.closeAll('page');
 			}, 'json');

@@ -19,7 +19,7 @@ import com.mypro.common.utils.WebUtil;
  */
 public class MyLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-	private String defaultTargetUrl = "/admin/main";
+	private String defaultTargetUrl = "/admin/index.html";
 
 	private boolean forwardToDestination = false; 
     

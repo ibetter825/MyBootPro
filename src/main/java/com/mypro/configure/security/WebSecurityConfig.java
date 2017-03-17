@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             	//.failureUrl("/admin/login?error")
                 .loginPage(SecurityConstant.LOGIN_PAGE_URL)
-                //.defaultSuccessUrl("/admin/main")
+                //.defaultSuccessUrl("/admin/index.html")
                 .successHandler(new MyLoginSuccessHandler())//登录成功后处理
                 .failureHandler(new MyLoginFailureHandler())//登录失败后处理
                 .authenticationDetailsSource(authenticationDetailsSource)

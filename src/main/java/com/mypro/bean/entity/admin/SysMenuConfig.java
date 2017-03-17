@@ -14,7 +14,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@SuppressWarnings("unused")
 public class SysMenuConfig extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	

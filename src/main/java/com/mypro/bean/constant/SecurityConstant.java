@@ -16,7 +16,7 @@ public class SecurityConstant {
 	/**
 	 * 登录成功后存默认跳转页面
 	 */
-	public final static String LOGIN_SUCCESS_DEFAULT_TARGET_URL = "/admin/main";
+	public final static String LOGIN_SUCCESS_DEFAULT_TARGET_URL = "/admin/index.html";
 	/**
 	 * 登录失败后默认跳转的页面
 	 */

@@ -357,7 +357,7 @@ var admin = {};
 	    	layer.open({
 			  type: 2,
 			  title: '配置页面 - '+ row.menu_name,
-			  content: '/admin/forward/config',
+			  content: '/admin/forward/config.html',
 			  area: ['100%', '100%'],
 			  maxmin: true
 			});

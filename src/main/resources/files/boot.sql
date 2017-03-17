@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-17 13:56:46
+Date: 2017-03-17 15:32:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -89,7 +89,7 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk', '用户的工作台', '0', '1', '0', '0', 'icon-dashboard');
+INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk.html', '用户的工作台', '0', '1', '0', '0', 'icon-dashboard');
 INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', null, '0', '1', '0', '1', 'icon-coffee');
 INSERT INTO `sys_menu` VALUES ('3', '模块设计', '', 'm', '0', '1', '0', '2', 'icon-laptop');
 INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', null, '0', '1', '0', '3', 'icon-glass');
@@ -104,7 +104,7 @@ INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', null, '7', 
 INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', null, '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/desk', null, '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '');
-INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu', null, '15', '1', '2', '0', 'icon-list');
+INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu.html', null, '15', '1', '2', '0', 'icon-list');
 
 -- ----------------------------
 -- Table structure for sys_menu_config

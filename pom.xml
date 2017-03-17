@@ -103,6 +103,12 @@
 	    <artifactId>guava</artifactId>
 	    <version>20.0</version>
 	</dependency>
+	<!-- spring-boot-devtools 如果不添加此插件，在使用lombok注解时，spring不能插入注入数据到实体类中 -->
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-devtools</artifactId>
+	    <scope>runtime</scope>
+	</dependency>
 	<!-- 工具:lombok 通过@Getter@Setter自动为类设置get与set方法 -->
 	<dependency>
 	    <groupId>org.projectlombok</groupId>

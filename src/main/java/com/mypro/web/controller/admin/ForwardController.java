@@ -18,7 +18,7 @@ public class ForwardController extends BaseAdminController {
 	 * @param view
 	 * @return
 	 */
-	@RequestMapping("/forward/{view}")
+	@RequestMapping("/forward/{view}.html")
 	public ModelAndView index(@PathVariable("view") String view){
 		return new ModelAndView("admin/"+view);
 	}
