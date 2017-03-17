@@ -397,8 +397,9 @@
 			var data = $dtoModel.find('.form-data');
 			if(curTarget === 'search'){
 				var cols = new Array();
-				var col = {};
+				var col;
 				for(var i = 0, l = data.length; i < l; i++){
+					col = {};
 					col['label'] = $(data[i]).find('[name="label"]').val();
 					col['name'] = $(data[i]).find('[name="name"]').val();
 					col['type'] = $(data[i]).find('[name="type"]').val();
@@ -425,8 +426,9 @@
 				config['cfgGrid'] = JSON.stringify(grid);
 			}else if(curTarget === 'object'){
 				var cols = new Array();
-				var col = {};
+				var col;
 				for(var i = 0, l = data.length; i < l; i++){
+					col = {};
 					col['label'] = $(data[i]).find('[name="label"]').val();
 					col['type'] = $(data[i]).find('[name="type"]').val();
 					col['widget'] = $(data[i]).find('[name="widget"]').val();
