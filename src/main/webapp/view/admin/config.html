@@ -98,7 +98,7 @@
 	<#include "/admin/includes/footer.html"/>
 	<script type="text/javascript">	
 		var curMenuId = parent.curMenuId;//当前索要配置的菜单编号，如果不村子则关闭当前iframe
-		var dto = null;//已经存在的配置
+		var dto = {};//已经存在的配置
 		var $grid = $('#grid-table'), pagerSelector = '#grid-pager', $gridCol = $('#grid-table-column'), pagerColSelector = '#grid-pager-column', $header = $('.page-header:first'), $height = $(window).height() - $header.height() - 230;
 		var dtoModelSelector = '#dto-model', $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 								  //是否能切换表格
@@ -277,32 +277,32 @@
 		      layer.msg('请选择数据表');
 		}
 		
-		function getGridListElement(){
+		function getGridListElement(grid){
 			var html = new Array();
 				html.push('<div class="form-data col-sm-12">');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="list"> 列表链接: </label>');
-						html.push('<input type="text" name="list" placeholder="列表链接" class="col-sm-9" title="列表链接" value="'+ (dto.cfgGrid.list ? dto.cfgGrid.list : '') +'">');
+						html.push('<input type="text" name="list" placeholder="列表链接" class="col-sm-9" title="列表链接" value="'+ (grid && grid['list'] ? grid['list'] : '') +'">');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="add"> 新增链接: </label>');
-						html.push('<input type="text" name="add" placeholder="新增链接" class="col-sm-9" title="新增链接" value="'+ (dto.cfgGrid.add ? dto.cfgGrid.add : '') +'">');
+						html.push('<input type="text" name="add" placeholder="新增链接" class="col-sm-9" title="新增链接" value="'+ (grid && grid['add'] ? grid['add'] : '') +'">');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="del"> 删除链接: </label>');
-						html.push('<input type="text" name="del" placeholder="删除链接" class="col-sm-9" title="删除链接" value="'+ (dto.cfgGrid.del ? dto.cfgGrid.del : '') +'">');
+						html.push('<input type="text" name="del" placeholder="删除链接" class="col-sm-9" title="删除链接" value="'+ (grid && grid['add'] ? grid['add'] : '') +'">');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="edit"> 修改链接: </label>');
-						html.push('<input type="text" name="edit" placeholder="修改链接" class="col-sm-9" title="修改链接" value="'+ (dto.cfgGrid.edit ? dto.cfgGrid.edit : '') +'">');
+						html.push('<input type="text" name="edit" placeholder="修改链接" class="col-sm-9" title="修改链接" value="'+ (grid && grid['edit'] ? grid['edit'] : '') +'">');
 					html.push('</div><hr/>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="colNames"> 字段名称: </label>');
-						html.push('<textarea name="colNames" class="col-sm-9" rows="1" title="字段名称">'+ (dto.cfgGrid.colNames ? dto.cfgGrid.colNames : '') +'</textarea>');
+						html.push('<textarea name="colNames" class="col-sm-9" rows="1" title="字段名称">'+ (grid && grid['colNames'] ? grid['colNames'] : '') +'</textarea>');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="colModel"> 字段配置: </label>');
-						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-colModel" name="colModel" rows="12" title="字段配置">'+ (dto.cfgGrid.colModel ? dto.cfgGrid.colModel : '') +'</textarea></div>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-colModel" name="colModel" rows="12" title="字段配置">'+ (grid && grid['colModel'] ? grid['colModel'] : '') +'</textarea></div>');
 					html.push('</div>');
 				html.push('</div>');
 			return html.join('');
@@ -318,7 +318,7 @@
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-table"></i> 配置数据列表');
-		    	$dtoModel.find('.widget-main').empty().append(getGridListElement());
+		    	$dtoModel.find('.widget-main').empty().append(getGridListElement(dto['cfgGrid']));
 		    	
 		    	initEditor('editor-colModel');
 		    	openModel();
@@ -363,11 +363,11 @@
 				html.push('<div class="form-data col-sm-12">');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="js"> js代码: </label>');
-						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-js" name="js" rows="14" title="js代码">'+ (global.jssource ? global.jssource : '') +'</textarea></div>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-js" name="js" rows="14" title="js代码">'+ (global && global['jssource'] ? global['jssource'] : '') +'</textarea></div>');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="html"> html代码: </label>');
-						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-html" class="col-sm-12" name="html" rows="14" title="html代码">'+ (global.html ? global.html : '') +'</textarea></div>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-html" class="col-sm-12" name="html" rows="14" title="html代码">'+ (global && global['html'] ? global['html'] : '') +'</textarea></div>');
 					html.push('</div>');
 				html.push('</div>');
 			return html.join('');
