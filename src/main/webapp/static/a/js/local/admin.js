@@ -366,7 +366,7 @@ var admin = {};
 			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="rq[\''+ col.name +'\']"></div>');
 			html.push('</div>');
 		}
-		$('#object-cnter').empty().append(html.join(''));
+		$dtoForm.find('.widget-main').empty().append(html.join(''));
 	}
 	/**
 	 * 打开配置菜单页面
