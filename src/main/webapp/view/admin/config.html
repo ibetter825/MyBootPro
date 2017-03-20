@@ -204,23 +204,23 @@
 			var html = new Array();
 			html.push('<div id="search_'+ col.COLUMN_NAME +'" class="form-data form-group">');
 				html.push('<div class="col-sm-12">');
-					html.push('<input type="text" name="label" placeholder="显示名称" class="col-sm-2" title="字段显示名称">');
-					html.push('<input type="text" name="name" value="'+col.COLUMN_NAME+'" placeholder="字段名称" class="col-sm-2" title="字段名称">');
+					html.push('<input type="text" name="label" value="'+ (col.label ? col.label : '') +'" placeholder="显示名称" class="col-sm-2" title="字段显示名称">');
+					html.push('<input type="text" name="name" value="'+ col.COLUMN_NAME +'" placeholder="字段名称" class="col-sm-2" title="字段名称">');
 					html.push('<input type="hidden" name="column" value="'+col.COLUMN_NAME+'">');//考虑到表单字段与实际数据名可能不一样的情况
-					html.push('<input type="text" name="value" placeholder="默认值" class="col-sm-2" title="默认值">');
+					html.push('<input type="text" name="value" value="'+ (col.value ? col.value : '') +'" placeholder="默认值" class="col-sm-2" title="默认值">');
 					html.push('<input type="text" name="type" value="'+ col.DATA_TYPE +'" readonly="readonly" placeholder="字段数据类型" class="col-sm-2" title="字段数据类型">');
 					html.push('<select name="widget" class="col-sm-2" title="前台控件类型">');
-						html.push('<option value="text">text</option>');
-						html.push('<option value="select">select</option>');
-						html.push('<option value="date">date</option>');
-						html.push('<option value="date">hidden</option>');
+						html.push('<option value="text"'+ (col.widget && col.widget === 'text' ? ' selected' : '') +'>text</option>');
+						html.push('<option value="select"'+ (col.widget && col.widget === 'select' ? ' selected' : '') +'>select</option>');
+						html.push('<option value="date"'+ (col.widget && col.widget === 'date' ? 'selected' : '') +'>date</option>');
+						html.push('<option value="hidden"'+ (col.widget && col.widget === 'hidden' ? 'selected' : '') +'>hidden</option>');
 					html.push('</select>');
 						html.push('<select name="source" class="col-sm-2" title="内容来源">');
 						html.push('<option value=""></option>');
-						html.push('<option value="fixed">fixed</option>');
-						html.push('<option value="url">url</option>');
+						html.push('<option value="fixed"'+ (col.source && col.source === 'fixed' ? ' selected' : '') +'>fixed</option>');
+						html.push('<option value="url"'+ (col.source && col.source === 'url' ? ' selected' : '') +'>url</option>');
 					html.push('</select>');
-					html.push('<textarea name="vali" class="col-sm-12" rows="1" title="验证规则" style="margin-top: 2px;">验证规则</textarea>');
+					html.push('<input type="text" name="vali" value="'+ (col.vali ? col.vali : '') +'" class="col-sm-12" rows="1" placeholder="验证规则" style="margin-top: 2px;">');
 				html.push('</div>');
 			html.push('</div>');
 			return html.join('');
@@ -239,15 +239,14 @@
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
-		    	console.log(dto);
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-search"></i> 配置搜索表单');
 		    	//首先要看dto存不存在
-		    	if(dto.cfgSearch){
+		    	if(dto && dto['cfgSearch']){
 		    		var cs = $.parseJSON(dto.cfgSearch);
-			    	if(cs.cols) {
+			    	if(cs['cols']) {
 			    		var col = null, html = new Array();
 			    		$(cs.cols).each(function(i, c){
-			    			col = {};
+			    			col = c;
 				    		if(selectedArr.indexOf(c.column) !== -1)
 				    			return;
 				    		selectedArr.push(c.column);
@@ -359,16 +358,16 @@
 		      layer.msg('请选择数据表');
 		}
 		
-		function getGlobalElement(){
+		function getGlobalElement(global){
 			var html = new Array();
 				html.push('<div class="form-data col-sm-12">');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="js"> js代码: </label>');
-						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-js" name="js" rows="14" title="js代码">'+ (dto.cfgGlobal.js ? dto.cfgGlobal.js : '') +'</textarea></div>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-js" name="js" rows="14" title="js代码">'+ (global.jssource ? global.jssource : '') +'</textarea></div>');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="html"> html代码: </label>');
-						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-html" name="html" rows="14" title="html代码">'+ (dto.cfgGlobal.html ? dto.cfgGlobal.html : '') +'</textarea></div>');
+						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-html" class="col-sm-12" name="html" rows="14" title="html代码">'+ (global.html ? global.html : '') +'</textarea></div>');
 					html.push('</div>');
 				html.push('</div>');
 			return html.join('');
@@ -384,10 +383,12 @@
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-globe"></i> 配置全局内容');
-		    	$dtoModel.find('.widget-main').empty().append(getGlobalElement());
+		    	var global = null;
+		    	if(dto && dto['cfgGlobal']) global = $.parseJSON(dto['cfgGlobal']);
+		    	$dtoModel.find('.widget-main').empty().append(getGlobalElement(global));
 		    	
 		    	initEditor('editor-js');
-		    	initEditor('editor-html');
+		    	//initEditor('editor-html');
 		        
 		    	openModel();
 		    }else
@@ -491,13 +492,17 @@
 			}else if(curTarget === 'global'){
 				var global = {
 					js: editors['editor-js'].$txt.text(),
-					html: editors['editor-html'].$txt.text(),
+					html: $('#editor-html').val(),
+					jssource: editors['editor-js'].$txt.html(),
 				}
 				config['cfgGlobal'] = JSON.stringify(global);
 			}
 			
 			$.post('/admin/cfg/aoe', config, function(data){
 				layer.msg(data.msg);
+				//成功以后还需要将dto的值修改一下
+				//...
+				
 				if(data.success) layer.closeAll('page');
 			}, 'json');
 			
@@ -511,6 +516,10 @@
 			loadJS('editor', function(){
 				editors[id] = new wangEditor(id);
 				editors[id].config.menus = ['undo', 'redo', 'fullscreen'];
+				/* if(id.indexOf('html') !== -1){
+					editors[id].config.menus = ['insertcode', 'undo', 'redo', 'fullscreen'];
+					editors[id].config.codeDefaultLang = 'html';
+				} */
 				editors[id].create();
 			});
 		}
