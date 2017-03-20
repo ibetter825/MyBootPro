@@ -16,7 +16,7 @@ import tk.mybatis.mapper.common.MySqlMapper;
  */
 public interface BaseDao<T> extends Mapper<T>,MySqlMapper<T> {
 	/**
-	 * 传入sql查询结果
+	 * 传入sql查询结果 - mine
 	 * @param sql
 	 * @return
 	 */

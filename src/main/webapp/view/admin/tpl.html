@@ -28,35 +28,7 @@
 					</div>
 					<div class="widget-body">
 						<div class="widget-main">
-							<div class="form-group" id="search-cnter">
-								<!-- <div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_id"> 菜单编号: </label>
-									<div class="col-sm-8">
-										<input id="s-menu_id" type="text" placeholder="菜单编号" class="col-sm-12 validate[custom[integer]]" name="rq['menu_id']">
-									</div>
-								</div>
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_name"> 菜单名称: </label>
-									<div class="col-sm-8">
-										<input type="text" id="s-menu_name" placeholder="菜单名称" class="col-sm-12" name="rq['menu_name']">
-									</div>
-								</div>
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_state"> 菜单状态: </label>
-									<div class="col-sm-8">
-										<select id="s-menu_state" class="col-sm-12" name="rq['menu_state']">
-											<option value=""></option>
-											<option value="AL">Alabama</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-3 no-padding-left">
-									<label class="col-sm-4 control-label no-padding-right" for="s-menu_date"> 数据日期: </label>
-									<div class="col-sm-8">
-										<input type="text" class="auto-bind-timepicker col-sm-12" id="s-menu_date" data-constraint="rq['menu_date']" autocomplete="off"/>
-									</div>
-								</div> -->
-							</div>
+							<div class="form-group" id="search-cnter"></div>
 						</div>
 					</div>
 				</form>
@@ -144,80 +116,51 @@
 	<#include "/admin/includes/footer.html"/>
 	
 	<script type="text/javascript">
-		var config = {
-				search: {
-					cols: [
-					        //widget: 控件类型        type: 字段类型        source:填充内容来源 type(local, server)； value: 默认值什么的
-					        //widget包括：text文本框 textarea 文本域 editor 富文本编辑器 select下拉框 hidden隐藏文本框 date时间选择器 chosen下拉框插件 tree 树插件如ztree
-					        {widget: 'text', type: 'varchar', name: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
-					        {widget: 'text', type: 'varchar', name: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
-					        {widget: 'select', type: 'integer', name: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
-					        {widget: 'date', type: 'long', name: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
-					      ],
-					 subMethod: ''
-				},
-				grid: {
-					url: {
-						list: '/admin/menu/list',
-						del: '',
-						add: '',
-						edit: ''
-					},
-					btns: [//用于权限限制
-					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
-					      	{type: 'outer', label: '编辑', clss: 'btn-danger', icon: 'icon-edit', handler: 'admin.editDto()', param: '', suburl: ''},
-					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'admin.config()', param: '', suburl: ''}
-					     ],
-					option: {
-						//jqgrid配置，替换默认的配置
-						colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
-						colModel:[//config
-							{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: false},
-							{name:'menu_name',index:'menu_name',width:90, editable:true},
-							{name:'menu_url',index:'menu_url', width:150, editable: true, editoptions:{maxlength:"30"}},
-							{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-								formatter:'actions', 
-								formatoptions:{
-									keys:true
-								}
-							}
-						]
-					}
-				},
-				object: {
-					cols: {//新增，或修改字段集合, 格式与search cols一致, 新增与修改有时不一致，当edit为空时则两者一样
-						add: [],
-						edit: []
-					},
-					subMethod: ''
-				},
-				global: {
-					js: '',//一些自定义方法变量等，一条字符串，在页面中转换为js代码//自定义校验方法，加入到validateEngine中去
-					html: ''//html代码
-				}
-		}
-		//写入搜索表单的数据
-		admin.setSearchCont();
-		//写入操作按钮
-		admin.setOptionCont();
-		
+		var menuId = '${menu}';
+		var config = {};
 		//计算表格高度
-		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
+		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 236;
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
-		var curMenuId = null;
 		
-		loadJS('jqgrid', function(){
-			admin.initGrid();
-		});
-		loadJS('validate', function(){
-			admin.attachVali($search);//给搜索表单绑定验证
-			admin.attachVali($dtoForm);//给dto表单绑定验证
-		});
-		loadJS('datepicker', function(){
-			admin.attachTimepicker();
-		});
+		$.get('/admin/cfg/get?menuId='+menuId, function(data){
+			if(data.success){
+				var dto = data.data.dto;
+				if(dto['cfgSearch']) config['search'] = $.parseJSON(dto.cfgSearch);
+				if(dto['cfgGrid']) config['grid'] = $.parseJSON(dto.cfgGrid);
+				if(dto['cfgObject']) config['object'] = $.parseJSON(dto.cfgObject);
+				if(dto['cfgGlobal']) config['global'] = $.parseJSON(dto.cfgGlobal);
+				init();
+			}			
+		}, 'json');
 
+		function init(){
+			//写入搜索表单的数据
+			admin.setSearchCont();
+			$.get('/admin/opt/btns?menuId='+menuId, function(data){
+				if(data){
+					//写入操作按钮
+					if(!config.grid) config.grid = {};
+					config.grid.btns = [];
+					
+					$(data).each(function(i, d){
+						config.grid.btns.push({type: d.optType, label: d.optLabel, clss: d.optClass, icon: d.optIcon, handler: d.optHandler, param: '', suburl: d.optSuburl});
+					});
+					admin.setOptionCont();
+				}
+			}, 'json');
+			
+			loadJS('jqgrid', function(){
+				admin.initGrid();
+			});
+			loadJS('validate', function(){
+				admin.attachVali($search);//给搜索表单绑定验证
+				admin.attachVali($dtoForm);//给dto表单绑定验证
+			});
+			loadJS('datepicker', function(){
+				admin.attachTimepicker();
+			});
+		}
 	</script>
 </body>
 

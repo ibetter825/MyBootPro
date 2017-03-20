@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-17 15:32:30
+Date: 2017-03-20 16:55:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -102,7 +102,7 @@ INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', null, '2', '1', '1', '3
 INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', null, '7', '1', '2', '0', 'icon-laptop');
 INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', null, '7', '1', '2', '1', '');
 INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', null, '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/desk', null, '11', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/cfg/tpl/14.html', null, '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '');
 INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu.html', null, '15', '1', '2', '0', 'icon-list');
 
@@ -122,8 +122,8 @@ CREATE TABLE `sys_menu_config` (
 -- ----------------------------
 -- Records of sys_menu_config
 -- ----------------------------
-INSERT INTO `sys_menu_config` VALUES ('1', '[{\"label\":\"常用流程\",\"name\":\"tag_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"常用流程\",\"name\":\"tag_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '', '', '');
-INSERT INTO `sys_menu_config` VALUES ('16', '[{\"label\":\"菜单状态\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '', '', '');
+INSERT INTO `sys_menu_config` VALUES ('14', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/menu/list\",\"add\":\"\",\"del\":\"\",\"edit\":\"\"},\"option\":{\"colNames\":\"[\'菜单编号\', \'菜单名称\',\'菜单地址\', \'操作\']\",\"colModel\":\"[//config\\n\\t\\t\\t\\t\\t\\t\\t{name:\'menu_id\',index:\'menu_id\', width:60, sorttype:\\\"int\\\", editable: false},\\n\\t\\t\\t\\t\\t\\t\\t{name:\'menu_name\',index:\'menu_name\',width:90, editable:true},\\n\\t\\t\\t\\t\\t\\t\\t{name:\'menu_url\',index:\'menu_url\', width:150, editable: true, editoptions:{maxlength:\\\"30\\\"}},\\n\\t\\t\\t\\t\\t\\t\\t{name:\'myac\',index:\'\', width:80, fixed:true, sortable:false, resize:false,\\n\\t\\t\\t\\t\\t\\t\\t\\tformatter:\'actions\', \\n\\t\\t\\t\\t\\t\\t\\t\\tformatoptions:{\\n\\t\\t\\t\\t\\t\\t\\t\\t\\tkeys:true\\n\\t\\t\\t\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t\\t\\t]\"}}', '[{\"label\":\"菜单名称\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单链接\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单描述\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"父级菜单\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单排序\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单图标\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '{\"js\":\"var ad = null;function setAd(){    ad = \\\"nihao\\\";}\",\"html\":\"<a href=\\\"#\\\">你好</a>\",\"jssource\":\"<p>var ad = null;</p><p>function setAd(){</p><p>&nbsp; &nbsp; ad = \\\"nihao\\\";<br></p><p>}</p><p><br></p>\",\"hlsource\":\"<pre style=\\\"max-width:100%;overflow-x:auto;\\\"><code class=\\\"html hljs xml\\\" codemark=\\\"1\\\"><span class=\\\"hljs-tag\\\">&lt;<span class=\\\"hljs-name\\\">a</span> <span class=\\\"hljs-attr\\\">href</span>=<span class=\\\"hljs-string\\\">\\\"#\\\"</span>&gt;</span>你好<span class=\\\"hljs-tag\\\">&lt;/<span class=\\\"hljs-name\\\">a</span>&gt;</span></code></pre><p><br></p>\"}');
+INSERT INTO `sys_menu_config` VALUES ('16', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '', '[{\"label\":\"菜单名称\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单链接\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单描述\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"父级菜单\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单排序\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单图标\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '{\"js\":\"\",\"html\":\"\",\"jssource\":\"<p><br></p>\"}');
 
 -- ----------------------------
 -- Table structure for sys_opt
@@ -131,22 +131,26 @@ INSERT INTO `sys_menu_config` VALUES ('16', '[{\"label\":\"菜单状态\",\"type
 DROP TABLE IF EXISTS `sys_opt`;
 CREATE TABLE `sys_opt` (
   `opt_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '操作id',
-  `opt_code` varchar(20) NOT NULL COMMENT '操作编号',
-  `opt_name` varchar(50) NOT NULL,
-  `opt_desc` varchar(200) DEFAULT NULL,
-  `opt_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '操作状态: 1 正常',
+  `opt_code` varchar(20) NOT NULL DEFAULT '' COMMENT '操作编号',
+  `opt_label` varchar(50) NOT NULL DEFAULT '',
+  `opt_desc` varchar(200) DEFAULT '',
+  `opt_state` tinyint(4) NOT NULL COMMENT '操作状态: 1 正常',
   `menu_id` int(11) NOT NULL COMMENT 'FK对应的菜单',
   `opt_seq` int(11) NOT NULL DEFAULT '0' COMMENT '操作排序',
   `opt_icon` varchar(200) DEFAULT '' COMMENT '操作图标',
   `opt_class` varchar(100) DEFAULT '' COMMENT '操作css类名',
   `is_show` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否显示:1 是, 0 否',
   `opt_type` varchar(20) DEFAULT '' COMMENT '操作分类',
+  `opt_suburl` varchar(200) DEFAULT '' COMMENT '点击链接',
+  `opt_handler` varchar(50) DEFAULT '' COMMENT '点击时调用的js方法',
   PRIMARY KEY (`opt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt
 -- ----------------------------
+INSERT INTO `sys_opt` VALUES ('1', 'add', '新增', '', '1', '14', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('2', 'edit', '编辑', '', '1', '14', '0', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
 
 -- ----------------------------
 -- Table structure for sys_persistent_logins

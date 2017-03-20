@@ -2,11 +2,15 @@ package com.mypro.web.controller.admin;
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Maps;
 import com.mypro.bean.entity.admin.SysMenuConfig;
 import com.mypro.bean.enums.ResultMessageEnum;
 import com.mypro.bean.model.PageModel;
@@ -90,5 +94,16 @@ public class MenuConfigController extends BaseAdminController {
 		}else
 			model = new ResultModel(ResultMessageEnum.DATA_NOT_EXISTS);
 		return model;
+	}
+	
+	/**
+	 * 跳转到模板页面
+	 * menu为传入的菜单id
+	 * @param menuId
+	 * @return
+	 */
+	@RequestMapping("/cfg/tpl/{menu}.html")
+	public ModelAndView tpl(@PathVariable("menu") Integer menu){
+		return new ModelAndView("admin/tpl");
 	}
 }

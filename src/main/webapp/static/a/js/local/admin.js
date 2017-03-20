@@ -313,7 +313,7 @@ var admin = {};
 		for(var i = 0, l = cols.length; i < l; i++){
 			col = cols[i];
 			html.push('<div class="col-sm-3 no-padding-left">');
-			html.push('<label class="col-sm-4 control-label no-padding-right" for="s-'+col.name+'"> 菜单编号: </label>');
+			html.push('<label class="col-sm-4 control-label no-padding-right" for="s-'+col.name+'"> '+col.label+': </label>');
 			html.push('<div class="col-sm-8">');
 			if(col.widget === 'text')
 				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="col-sm-12 '+col.vali+']" name="rq[\''+col.name+'\']" autocomplete="off">');

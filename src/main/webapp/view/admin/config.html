@@ -116,7 +116,7 @@
 			$.get('/admin/cfg/get', config, function(data){
 				if(data.success) dto = data.data.dto;
 				init();
-			});
+			}, 'json');
 		}
 		
 		function init(){
