@@ -250,6 +250,9 @@ var admin = {};
 	app.addDto = function(){
 		$dtoForm.validationEngine('hideAll');
 		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-plus"></i> 新增');
+		//需要填充到表单中
+		var list = config.object.cols.add;
+		app.setObjectCont(list);
 		layer.open({
   		  type: 1,
   		  title: false,
@@ -273,6 +276,10 @@ var admin = {};
 	    	$dtoForm.validationEngine('hideAll');
 	    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
 	    	var row = $grid.jqGrid('getRowData', gr);
+	    	var list = config.object.cols.add;
+			app.setObjectCont(list, row);
+			//完成以后还需要添加验证
+			
 	    	layer.open({
 	    		  type: 1,
 	    		  title: false,
@@ -345,6 +352,21 @@ var admin = {};
 			html.push('<button class="btn btn-sm '+ btn.clss +'" onclick="'+ btn.handler +'"><i class="'+ btn.icon +'"></i> '+ btn.label +'</button>');
 		}
 		$('#opt-cnter').empty().append(html.join(''));
+	}
+	/**
+	 * 表单
+	 */
+	app.setObjectCont = function(list, dto){
+		var html = new Array();
+		var col = null;
+		for(var i = 0, l = list.length; i < l; i++){
+			col = list[i];
+			html.push('<div class="form-group">');
+			html.push('<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-'+ col.name +'"> '+ col.label  +': </label>');
+			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="rq[\''+ col.name +'\']"></div>');
+			html.push('</div>');
+		}
+		$('#object-cnter').empty().append(html.join(''));
 	}
 	/**
 	 * 打开配置菜单页面

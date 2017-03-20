@@ -488,7 +488,12 @@
 					col['value'] = $(data[i]).find('[name="value"]').val();
 					cols.push(col);
 				}
-				config['cfgObject'] = JSON.stringify(cols);
+				config['cfgObject'] = JSON.stringify({
+					cols: {
+						add: cols,
+						edit: cols
+					}
+				});
 			}else if(curTarget === 'global'){
 				var global = {
 					js: editors['editor-js'].$txt.text(),
