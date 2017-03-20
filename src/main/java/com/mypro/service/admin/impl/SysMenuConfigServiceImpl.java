@@ -30,6 +30,11 @@ public class SysMenuConfigServiceImpl implements SysMenuConfigService {
 			return smcDao.insertSelective(config) == 1;//修改
 		else
 			return true;
+	}
+
+	@Override
+	public SysMenuConfig queryConfig(SysMenuConfig config) {
+		return smcDao.selectOne(config);
 	}  
 	
 }

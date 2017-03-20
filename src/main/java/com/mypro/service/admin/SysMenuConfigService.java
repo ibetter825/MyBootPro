@@ -23,4 +23,10 @@ public interface SysMenuConfigService {
 	 * @return
 	 */
 	public boolean addOrEditConfig(SysMenuConfig config);
+	/**
+	 * 查询单个config
+	 * @param config
+	 * @return
+	 */
+	public SysMenuConfig queryConfig(SysMenuConfig config);
 }

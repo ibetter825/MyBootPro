@@ -74,4 +74,21 @@ public class MenuConfigController extends BaseAdminController {
 			model = new ResultModel(ResultMessageEnum.OPTION_EXCEPTION.getMsg());
 		return model;
 	}
+	
+	/**
+	 * 查询单个config
+	 * @param config
+	 * @return
+	 */
+	@RequestMapping("/cfg/get")
+	public ResultModel get(SysMenuConfig config){
+		ResultModel model = null;
+		config = smcService.queryConfig(config);
+		if(config != null){
+			model = new ResultModel();
+			model.getData().put("dto", config);
+		}else
+			model = new ResultModel(ResultMessageEnum.DATA_NOT_EXISTS);
+		return model;
+	}
 }

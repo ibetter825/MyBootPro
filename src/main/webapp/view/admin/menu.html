@@ -148,6 +148,7 @@
 				search: {
 					cols: [
 					        //widget: 控件类型        type: 字段类型        source:填充内容来源 type(local, server)； value: 默认值什么的
+					        //widget包括：text文本框 textarea 文本域 editor 富文本编辑器 select下拉框 hidden隐藏文本框 date时间选择器 chosen下拉框插件 tree 树插件如ztree
 					        {widget: 'text', type: 'varchar', name: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
 					        {widget: 'text', type: 'varchar', name: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
 					        {widget: 'select', type: 'integer', name: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
