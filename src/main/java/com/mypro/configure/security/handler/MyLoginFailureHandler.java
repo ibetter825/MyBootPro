@@ -20,7 +20,7 @@ import com.mypro.common.utils.WebUtil;
  */
 public class MyLoginFailureHandler implements AuthenticationFailureHandler {
 
-	private String defaultTargetUrl = "/admin/login";
+	private String defaultTargetUrl = "/admin/login.html";
 
 	private boolean forwardToDestination = false; 
     

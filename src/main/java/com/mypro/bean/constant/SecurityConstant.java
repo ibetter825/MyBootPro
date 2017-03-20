@@ -20,20 +20,20 @@ public class SecurityConstant {
 	/**
 	 * 登录失败后默认跳转的页面
 	 */
-	public final static String LOGIN_FAILURE_DEFAULT_TARGET_URL = "/admin/login";
+	public final static String LOGIN_FAILURE_DEFAULT_TARGET_URL = "/admin/login.html";
 	/**
 	 * 登陆URL地址
 	 */
-	public final static String LOGIN_PAGE_URL = "/admin/login";
+	public final static String LOGIN_PAGE_URL = "/admin/login.html";
 	/**
 	 * 登出URL地址
 	 */
-	public final static String LOGOUT_PAGE_URL = "/admin/logout";
+	public final static String LOGOUT_PAGE_URL = "/admin/logout.html";
 	/**
 	 * SESSION失效跳转的页面
 	 */
-	public final static String	INVALID_SESSION_URL = "/admin/timeout";
-	public final static String	EXPIRED_SESSION_URL = "/admin/expired";
+	public final static String	INVALID_SESSION_URL = "/admin/login/timeout.html";
+	public final static String	EXPIRED_SESSION_URL = "/admin/login/expired.html";
 	/**
 	 * 用户同时登陆的次数
 	 */

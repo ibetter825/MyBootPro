@@ -10,21 +10,21 @@ import com.mypro.common.utils.WebUtil;
 @Controller
 public class LoginController extends BaseAdminController {
 	
-	@RequestMapping("/login")
+	@RequestMapping("/login.html")
 	public ModelAndView login(){
 		return new ModelAndView("admin/login");
 	}
-	@RequestMapping("/logout")
+	@RequestMapping("/logout.html")
 	public ModelAndView logout(){
 		return new ModelAndView("admin/login");
 	}
-	@RequestMapping("/timeout")
+	@RequestMapping("/login/timeout.html")
 	public ModelAndView timeout(){
 		if(WebUtil.isAjax(request))
 			WebUtil.writeJson(response, SecurityConstant.TIME_OUT_SESSION_MSG);
 		return new ModelAndView("admin/error/timeout");
 	}
-	@RequestMapping("/expired")
+	@RequestMapping("/login/expired.html")
 	public ModelAndView expired(){
 		if(WebUtil.isAjax(request))
 			WebUtil.writeJson(response, SecurityConstant.EXPIRED_SESSION_MSG);
