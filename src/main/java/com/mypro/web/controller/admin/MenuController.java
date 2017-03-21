@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mypro.bean.entity.admin.SysMenu;
+import com.mypro.bean.enums.ResultMessageEnum;
 import com.mypro.bean.model.PageModel;
+import com.mypro.bean.model.ResultModel;
 import com.mypro.bean.rq.PagerRq;
 import com.mypro.bean.rq.QueryRq;
 import com.mypro.service.admin.SysMenuService;
@@ -27,7 +29,7 @@ public class MenuController extends BaseAdminController {
 	 * 查询菜单树
 	 * @return
 	 */
-	@RequestMapping(value="/menu/tree", method = RequestMethod.POST)
+	@RequestMapping(value = "/menu/tree", method = RequestMethod.POST)
 	public List<Map<String, Object>> tree(){
 		return SysMenu.getMenuTree(sysMenuService.queryMenus(), null);
 	}
@@ -37,7 +39,7 @@ public class MenuController extends BaseAdminController {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value="/menu/list")
+	@RequestMapping(value = "/menu/list")
 	public PageModel list(PagerRq page, QueryRq query){
 		/*
 		 * 查询排序提供两种方法
@@ -48,5 +50,22 @@ public class MenuController extends BaseAdminController {
 		PageHelper.orderBy(page.getOrder());
 		sysMenuService.queryWithParams(query);
 		return new PageModel(pager);
+	}
+	
+	/**
+	 * 新增或修改
+	 * @param menu
+	 * @return
+	 */
+	@RequestMapping(value = "/menu/aoe", method = RequestMethod.POST)
+	public ResultModel addOrEdit(SysMenu dto){
+		//提交表单时 还需要在服务端验证数据的合法性
+		//...
+		ResultModel model = null;
+		if(sysMenuService.addOrEdit(dto))
+			model = new ResultModel();
+		else
+			model = new ResultModel(ResultMessageEnum.OPTION_EXCEPTION);
+		return model;
 	}
 }

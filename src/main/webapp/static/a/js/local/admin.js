@@ -257,6 +257,7 @@ var admin = {};
 	app.addDto = function(){
 		$dtoForm.validationEngine('hideAll');
 		$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-plus"></i> 新增');
+		$dtoModel.attr('type', 'add');
 		//需要填充到表单中
 		var list = config.object.cols.add;
 		app.setObjectCont(list);
@@ -282,6 +283,7 @@ var admin = {};
 	    if (gr != null){
 	    	$dtoForm.validationEngine('hideAll');
 	    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
+	    	$dtoModel.attr('type', 'edit');
 	    	var row = $grid.jqGrid('getRowData', gr);
 	    	var list = config.object.cols['edit'] || config.object.cols['add'];
 			app.setObjectCont(list, row);
@@ -308,7 +310,18 @@ var admin = {};
 		var vali = $dtoForm.validationEngine('validate');
 		if(!vali) return false;
 		//验证通过后需要提交表单
-		
+		var type = $dtoModel.attr('type');
+		var url = config.grid.url[type] || config.grid.url['add'];
+		if(url){
+			$.post(url, $dtoForm.serialize(), function(res){
+				layer.msg(res.msg);
+				if(res.success){
+					layer.closeAll('page');
+					//也可以不用重新刷新页面，在本地修改grid中的数据也一样
+					$grid.trigger("reloadGrid");
+				}
+			}, 'json');
+		}
 		return false;
 	}
 	/**
@@ -371,11 +384,20 @@ var admin = {};
 			col = list[i];
 			html.push('<div class="form-group">');
 			html.push('<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-'+ col.name +'"> '+ col.label  +': </label>');
-			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="rq[\''+ col.name +'\']"></div>');
+			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ convert(col.name) +'"></div>');
 			html.push('</div>');
 		}
 		$dtoForm.find('.widget-main').empty().append(html.join(''));
 		app.attachVali($dtoForm);//给dto表单绑定验证
+		
+		function convert(str){
+			//下划线转驼峰命名
+			var a = str.split("_");
+			var o = a[0];
+			for(var i = 1, l = a.length; i < l; i++)
+			    o = o + a[i].slice(0,1).toUpperCase() + a[i].slice(1);
+			return o;
+		}
 	}
 	/**
 	 * 打开配置菜单页面

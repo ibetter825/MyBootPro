@@ -30,6 +30,15 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return sysMenuDao.selectWithParams(query.getRq());
 	}
 	@Override
+	public boolean addOrEdit(SysMenu menu) {
+		int res = 0;
+		if(menu.getMenuId() != null)//修改
+			res = sysMenuDao.updateByPrimaryKeySelective(menu);
+		else//新增
+			res = sysMenuDao.insertSelective(menu);
+		return res == 1;
+	}
+	@Override
 	public List<Map<String, Object>> queryBySql(){
 		String sql = "select menu_id, menu_name from sys_menu";
 		return sysMenuDao.selectBySql(sql);

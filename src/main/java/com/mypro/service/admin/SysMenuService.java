@@ -21,6 +21,12 @@ public interface SysMenuService {
 	 * 通过参数查询菜单
 	 * @return
 	 */
-	List<Map<String, Object>> queryWithParams(QueryRq query);
-	public List queryBySql();
+	public List<Map<String, Object>> queryWithParams(QueryRq query);
+	/**
+	 * 新增或修改
+	 * @param menu
+	 * @return
+	 */
+	public boolean addOrEdit(SysMenu menu);
+	public List<?> queryBySql();
 }

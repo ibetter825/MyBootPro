@@ -96,36 +96,7 @@
 						<h6><i class="icon-search"></i>表单</h6>
 					</div>
 					<div class="widget-body">
-						<div class="widget-main">
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-menu_id"> 菜单编号: </label>
-								<div class="col-sm-6"><input id="d-menu_id" type="text" placeholder="菜单编号" class="col-sm-12 validate[required]" name="rq['menu_id']"></div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="form-field-1"> 菜单编号: </label>
-								<div class="col-sm-6"><input type="text" placeholder="菜单编号" class="col-sm-12" name="rq['menu_id']"></div>
-							</div>
-						</div>
+						<div class="widget-main"></div>
 						<div class="widget-toolbox padding-8 clearfix">
 							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
 								<i class="icon-trash"></i><span class="bigger-110"> 取&nbsp;消</span>
@@ -196,16 +167,15 @@
 					html: ''//html代码
 				}
 		}
-		//写入搜索表单的数据
-		admin.setSearchCont();
-		//写入操作按钮
-		admin.setOptionCont();
-		
 		//计算表格高度
 		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 230;
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 		var curMenuId = null;
+		//写入搜索表单的数据
+		admin.setSearchCont();
+		//写入操作按钮
+		admin.setOptionCont();
 		
 		admin.initGrid();
 		admin.attachVali($dtoForm);//给dto表单绑定验证

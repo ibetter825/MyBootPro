@@ -282,19 +282,19 @@
 				html.push('<div class="form-data col-sm-12">');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="list"> 列表链接: </label>');
-						html.push('<input type="text" name="list" placeholder="列表链接" class="col-sm-9" title="列表链接" value="'+ (grid && grid['list'] ? grid['list'] : '') +'">');
+						html.push('<input type="text" name="list" placeholder="列表链接" class="col-sm-9" title="列表链接" value="'+ (grid && grid['url']['list'] ? grid['url']['list'] : '') +'">');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="add"> 新增链接: </label>');
-						html.push('<input type="text" name="add" placeholder="新增链接" class="col-sm-9" title="新增链接" value="'+ (grid && grid['add'] ? grid['add'] : '') +'">');
+						html.push('<input type="text" name="add" placeholder="新增链接" class="col-sm-9" title="新增链接" value="'+ (grid && grid['url']['add'] ? grid['url']['add'] : '') +'">');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="del"> 删除链接: </label>');
-						html.push('<input type="text" name="del" placeholder="删除链接" class="col-sm-9" title="删除链接" value="'+ (grid && grid['add'] ? grid['add'] : '') +'">');
+						html.push('<input type="text" name="del" placeholder="删除链接" class="col-sm-9" title="删除链接" value="'+ (grid && grid['url']['del'] ? grid['url']['del'] : '') +'">');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="edit"> 修改链接: </label>');
-						html.push('<input type="text" name="edit" placeholder="修改链接" class="col-sm-9" title="修改链接" value="'+ (grid && grid['edit'] ? grid['edit'] : '') +'">');
+						html.push('<input type="text" name="edit" placeholder="修改链接" class="col-sm-9" title="修改链接" value="'+ (grid && grid['url']['edit'] ? grid['url']['edit'] : '') +'">');
 					html.push('</div><hr/>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="colNames"> 字段名称: </label>');
@@ -318,7 +318,7 @@
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-table"></i> 配置数据列表');
-		    	$dtoModel.find('.widget-main').empty().append(getGridListElement(dto['cfgGrid']));
+		    	$dtoModel.find('.widget-main').empty().append(getGridListElement($.parseJSON(dto['cfgGrid'])));
 		    	
 		    	initEditor('editor-colModel');
 		    	openModel();
@@ -340,6 +340,25 @@
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-coffee"></i> 配置对象表单');
+		    	//首先要看dto存不存在
+		    	if(dto && dto['cfgObject']){
+		    		var cs = $.parseJSON(dto.cfgObject);
+			    	if(cs['cols']) {
+			    		var col = null, html = new Array();
+			    		$(cs.cols['add']).each(function(i, c){
+			    			col = c;
+				    		if(selectedArr.indexOf(c.column) !== -1)
+				    			return;
+				    		selectedArr.push(c.column);
+				    		
+				    		col.COLUMN_NAME = c.column;
+				    		col.DATA_TYPE = c.type;
+				    		
+				    		html.push(getColumnElement(col));
+				    	});
+			    		$dtoModel.find('.widget-main').append(html.join(''));
+			    	}
+		    	}
 		    	var cols = $gridCol.jqGrid('getGridParam', 'selarrrow');//获取选择行id的array
 		    	if(cols.length > 0){
 			    	var col = null, html = new Array();
@@ -481,6 +500,8 @@
 				for(var i = 0, l = data.length; i < l; i++){
 					col = {};
 					col['label'] = $(data[i]).find('[name="label"]').val();
+					col['name'] = $(data[i]).find('[name="name"]').val();
+					col['column'] = $(data[i]).find('[name="column"]').val();
 					col['type'] = $(data[i]).find('[name="type"]').val();
 					col['widget'] = $(data[i]).find('[name="widget"]').val();
 					col['vali'] = $(data[i]).find('[name="vali"]').val();
