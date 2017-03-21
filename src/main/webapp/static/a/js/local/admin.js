@@ -283,10 +283,8 @@ var admin = {};
 	    	$dtoForm.validationEngine('hideAll');
 	    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
 	    	var row = $grid.jqGrid('getRowData', gr);
-	    	var list = config.object.cols.add;
+	    	var list = config.object.cols['edit'] || config.object.cols['add'];
 			app.setObjectCont(list, row);
-			//完成以后还需要添加验证
-			
 	    	layer.open({
 	    		  type: 1,
 	    		  title: false,
@@ -309,6 +307,8 @@ var admin = {};
 	app.submitDtoModelForm = function(){
 		var vali = $dtoForm.validationEngine('validate');
 		if(!vali) return false;
+		//验证通过后需要提交表单
+		
 		return false;
 	}
 	/**
@@ -346,6 +346,7 @@ var admin = {};
 		}
 		html.push('</div>');
 		$('#search-cnter').empty().append(html.join(''));
+		app.attachVali($search);//给搜索表单绑定验证
 	}
 	/**
 	 * 操作按钮
@@ -374,6 +375,7 @@ var admin = {};
 			html.push('</div>');
 		}
 		$dtoForm.find('.widget-main').empty().append(html.join(''));
+		app.attachVali($dtoForm);//给dto表单绑定验证
 	}
 	/**
 	 * 打开配置菜单页面
