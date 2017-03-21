@@ -32,11 +32,13 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Override
 	public boolean addOrEdit(SysMenu menu) {
 		int res = 0;
-		if(menu.getMenuId() != null)//修改
-			res = sysMenuDao.updateByPrimaryKeySelective(menu);
-		else//新增
-			res = sysMenuDao.insertSelective(menu);
-		return res == 1;
+		//if(menu.getMenuId() != null)//修改
+			//res = sysMenuDao.updateByPrimaryKeySelective(menu);
+		//else//新增
+			//res = sysMenuDao.insertSelective(menu);
+		res = sysMenuDao.insertOrUpdateSelective(menu);//自定义动态sql生成
+		//insert 为 1  update 为2
+		return res == 1 || res == 2;
 	}
 	@Override
 	public List<Map<String, Object>> queryBySql(){
