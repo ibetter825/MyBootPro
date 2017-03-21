@@ -83,8 +83,11 @@
 							<button type="submit" class="btn btn-sm btn-primary pull-right">
 								<i class="icon-ok"></i><span class="bigger-110"> 确&nbsp;定</span>
 							</button>
-							<button type="button" class="c-btn c-btn-search c-btn-object hide btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
+							<button type="button" class="c-ele c-ele-search c-ele-object hide btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
 								<i class="icon-legal"></i><span class="bigger-110"> 提交方法</span>
+							</button>
+							<button type="button" class="c-ele c-ele-object hide btn btn-sm btn-info pull-right" onclick="exchangeObjectType(this)">
+								<i class="icon-exchange"></i><span class="bigger-110">切换到修改</span>
 							</button>
 						</div>
 					</div>
@@ -167,15 +170,28 @@
 					onSelectRow: function(rowid, status){
 						if(curTarget !== 'search' && curTarget !== 'object') return;
 						var col = $gridCol.jqGrid('getRowData', rowid);
-						var index = selectedArr.indexOf(col.COLUMN_NAME);
+						var type = $dtoModel.attr('type');
+						var cn = col.COLUMN_NAME, cr = '.widget-main';
+						if(curTarget === 'object'){
+							if(!type){
+								$dtoModel.find('.widget-main').html('<div class="c-ele-add"></div><div class="c-ele-edit hide"></div>');
+								type = 'add';
+							}
+							cn = type+'_'+cn;
+							cr = '.c-ele-'+type;
+						}
+						var index = selectedArr.indexOf(cn);
 						if(status){//选中
 							if(index !== -1)
 				    			return;
-				    		selectedArr.push(col.COLUMN_NAME);
-							$dtoModel.find('.widget-main').append(getColumnElement(col));
+				    		selectedArr.push(cn);
+							$dtoModel.find(cr).append(getColumnElement(col));
 						}else{//取消选中
 							selectedArr.splice(index, 1);
-							$('#search_'+ col.COLUMN_NAME).remove();
+							if(curTarget === 'object')
+								$('.c-ele-'+ type +'>.identity_'+ col.COLUMN_NAME).remove();
+							else
+								$('.identity_'+ col.COLUMN_NAME).remove();
 						}
 					}
 				}));
@@ -202,7 +218,7 @@
 		//搜索部分字段html
 		function getColumnElement(col){
 			var html = new Array();
-			html.push('<div id="search_'+ col.COLUMN_NAME +'" class="form-data form-group">');
+			html.push('<div class="identity_'+ col.COLUMN_NAME +' form-data form-group">');
 				html.push('<div class="col-sm-12">');
 					html.push('<input type="text" name="label" value="'+ (col.label ? col.label : '') +'" placeholder="显示名称" class="col-sm-2" title="字段显示名称">');
 					html.push('<input type="text" name="name" value="'+ col.COLUMN_NAME +'" placeholder="字段名称" class="col-sm-2" title="字段名称">');
@@ -233,8 +249,8 @@
 				selectedArr = new Array();
 			}
 			curTarget = 'search';
-			$('.c-btn').addClass('hide');
-			$('.c-btn-search').removeClass('hide');
+			$('.c-ele').addClass('hide');
+			$('.c-ele-search').removeClass('hide');
 			$('#config-sub-method').val('return admin.search();');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
@@ -314,8 +330,8 @@
 		function configGrid(){
 			if(curTarget !== 'grid') $dtoModel.find('.widget-main').empty();
 			curTarget = 'grid';
-			$('.c-btn').addClass('hide');
-			$('.c-btn-grid').removeClass('hide');
+			$('.c-ele').addClass('hide');
+			$('.c-ele-grid').removeClass('hide');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
@@ -332,52 +348,70 @@
 		//配置对象增加添加表单
 		function configObject(){
 			if(curTarget !== 'object'){
-				$dtoModel.find('.widget-main').empty();
+				$dtoModel.find('.widget-main').empty().html('<div class="c-ele-add"></div><div class="c-ele-edit hide"></div>');
 				selectedArr = new Array();
 			}
 			curTarget = 'object';
-			$('.c-btn').addClass('hide');
-			$('.c-btn-object').removeClass('hide');
+			$('.c-ele').addClass('hide');
+			$('.c-ele-object').removeClass('hide');
 			$('#config-sub-method').val('return admin.submitDtoModelForm();');
+			$dtoModel.attr('type', 'add').find('.c-ele-add').removeClass('hide').siblings().addClass('hide');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
-		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-coffee"></i> 配置对象表单');
+		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-plus"></i> 配置对象-新增表单');
 		    	//首先要看dto存不存在
+		    	var col = null, html = new Array();
 		    	if(dto && dto['cfgObject']){
 		    		var cs = $.parseJSON(dto.cfgObject);
 			    	if(cs['cols']) {
-			    		var col = null, html = new Array();
 			    		$(cs.cols['add']).each(function(i, c){
 			    			col = c;
-				    		if(selectedArr.indexOf(c.column) !== -1)
+				    		if(selectedArr.indexOf('add_'+c.column) !== -1)
 				    			return;
-				    		selectedArr.push(c.column);
+				    		selectedArr.push('add_'+c.column);
 				    		
 				    		col.COLUMN_NAME = c.column;
 				    		col.DATA_TYPE = c.type;
 				    		
 				    		html.push(getColumnElement(col));
 				    	});
-			    		$dtoModel.find('.widget-main').append(html.join(''));
 			    	}
 		    	}
 		    	var cols = $gridCol.jqGrid('getGridParam', 'selarrrow');//获取选择行id的array
 		    	if(cols.length > 0){
-			    	var col = null, html = new Array();
 			    	$(cols).each(function(i, v){
 			    		col = $gridCol.jqGrid('getRowData', v);
-			    		if(selectedArr.indexOf(col.COLUMN_NAME) !== -1)
+			    		if(selectedArr.indexOf('add_'+col.COLUMN_NAME) !== -1)
 			    			return;
-			    		selectedArr.push(col.COLUMN_NAME);
-			    		
+			    		selectedArr.push('add_'+col.COLUMN_NAME);
 			    		html.push(getColumnElement(col));
 			    	});
-			    	$dtoModel.find('.widget-main').append(html.join(''));
 		    	}
+		    	$dtoModel.find('.c-ele-add').append(html.join(''));
 		    	openModel();
 		    }else
 		      layer.msg('请选择数据表');
+		}
+		//切换对象表单类型
+		function exchangeObjectType(btn){
+			var type = $dtoModel.attr('type');
+			switch(type){
+				case 'add':
+					$(btn).find('span').html('切换到新增');
+					$dtoModel.attr('type', 'edit').find('.c-ele-edit').removeClass('hide').siblings().addClass('hide');
+					$dtoModel.find('h6').html('<i class="icon-edit"></i> 配置对象-编辑表单');
+					break;
+				case 'edit':
+					$(btn).find('span').html('切换到编辑');
+					$dtoModel.attr('type', 'add').find('.c-ele-add').removeClass('hide').siblings().addClass('hide');
+					$dtoModel.find('h6').html('<i class="icon-plus"></i> 配置对象-新增表单');
+					break;
+				default: 
+					$(btn).find('span').html('切换到新增');
+					$dtoModel.attr('type', 'edit').find('.c-ele-edit').removeClass('hide').siblings().addClass('hide');
+					$dtoModel.find('h6').html('<i class="icon-edit"></i> 配置对象-编辑表单');
+			}
 		}
 		
 		function getGlobalElement(global){
@@ -399,8 +433,8 @@
 		function configGlobal(){
 			if(curTarget !== 'global') $dtoModel.find('.widget-main').empty();
 			curTarget = 'global';
-			$('.c-btn').addClass('hide');
-			$('.c-btn-global').removeClass('hide');
+			$('.c-ele').addClass('hide');
+			$('.c-ele-global').removeClass('hide');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
@@ -437,7 +471,7 @@
 		  			$dtoModel.find('.widget-main').empty();
 		  			selectedArr = new Array();
 		  			$dtoModel.addClass('dto-model-hide');
-		  			$('.c-btn').addClass('hide');
+		  			$('.c-ele').addClass('hide');
 		  			tableSwitchable = true;
 		  		  }
 			});
@@ -498,24 +532,30 @@
 				}
 				config['cfgGrid'] = JSON.stringify(grid);
 			}else if(curTarget === 'object'){
-				var cols = new Array();
-				var col;
-				for(var i = 0, l = data.length; i < l; i++){
-					col = {};
-					col['label'] = $(data[i]).find('[name="label"]').val();
-					col['name'] = $(data[i]).find('[name="name"]').val();
-					col['column'] = $(data[i]).find('[name="column"]').val();
-					col['type'] = $(data[i]).find('[name="type"]').val();
-					col['widget'] = $(data[i]).find('[name="widget"]').val();
-					col['vali'] = $(data[i]).find('[name="vali"]').val();
-					col['source'] = $(data[i]).find('[name="source"]').val();
-					col['value'] = $(data[i]).find('[name="value"]').val();
-					cols.push(col);
+				var dataAdd = $('.c-ele-add').find('.form-data');
+				var dataEdit = $('.c-ele-edit').find('.form-data');
+				
+				function getParam(list){
+					var cols = new Array(), col;
+					for(var i = 0, l = list.length; i < l; i++){
+						col = {};
+						col['label'] = $(list[i]).find('[name="label"]').val();
+						col['name'] = $(list[i]).find('[name="name"]').val();
+						col['column'] = $(list[i]).find('[name="column"]').val();
+						col['type'] = $(list[i]).find('[name="type"]').val();
+						col['widget'] = $(list[i]).find('[name="widget"]').val();
+						col['vali'] = $(list[i]).find('[name="vali"]').val();
+						col['source'] = $(list[i]).find('[name="source"]').val();
+						col['value'] = $(list[i]).find('[name="value"]').val();
+						cols.push(col);
+					}
+					return cols;
 				}
+				
 				config['cfgObject'] = JSON.stringify({
 					cols: {
-						add: cols,
-						edit: cols
+						add: getParam(dataAdd),
+						edit: getParam(dataEdit)
 					}
 				});
 			}else if(curTarget === 'global'){
@@ -531,7 +571,6 @@
 				layer.msg(data.msg);
 				//成功以后还需要将dto的值修改一下
 				//...
-				
 				if(data.success) layer.closeAll('page');
 			}, 'json');
 			

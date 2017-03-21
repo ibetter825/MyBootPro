@@ -263,6 +263,7 @@ var admin = {};
 		app.setObjectCont(list);
 		layer.open({
   		  type: 1,
+  		  id: 'layer-dto-model',
   		  title: false,
   		  move: '.widget-header',
   		  closeBtn: 0,
@@ -270,6 +271,9 @@ var admin = {};
   		  shadeClose: true,
   		  area: ['460px'],
   		  content: $dtoModel,
+  		  success: function(){
+  			$('#layer-dto-model').removeAttr('style'); 
+  		  },
   		  end: function(){
   			$dtoModel.addClass('dto-model-hide');
   		  }
@@ -289,6 +293,7 @@ var admin = {};
 			app.setObjectCont(list, row);
 	    	layer.open({
 	    		  type: 1,
+	    		  id: 'layer-dto-model',
 	    		  title: false,
 	    		  move: '.widget-header',
 	    		  closeBtn: 0,
@@ -296,6 +301,9 @@ var admin = {};
 	    		  shadeClose: true,
 	    		  area: ['460px'],
 	    		  content: $dtoModel,
+	    		  success: function(){
+	    	  		$('#layer-dto-model').removeAttr('style'); 
+	    	  	  },
     	  		  end: function(){
     	  			$dtoModel.addClass('dto-model-hide');
     	  		  }
