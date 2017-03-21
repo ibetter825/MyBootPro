@@ -121,16 +121,10 @@
 				}
 			}, 'json');
 			
-			loadJS('jqgrid', function(){
-				admin.initGrid();
-			});
-			loadJS('validate', function(){
-				admin.attachVali($search);//给搜索表单绑定验证
-				admin.attachVali($dtoForm);//给dto表单绑定验证
-			});
-			loadJS('datepicker', function(){
-				admin.attachTimepicker();
-			});
+			admin.initGrid();
+			admin.attachVali($search);//给搜索表单绑定验证
+			//admin.attachVali($dtoForm);//给dto表单绑定验证
+			admin.attachTimepicker();
 		}
 	</script>
 </body>

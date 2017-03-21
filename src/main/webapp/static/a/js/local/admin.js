@@ -147,86 +147,93 @@ var admin = {};
 	 * 初始化jqgrid数据
 	 */
 	app.initGrid = function() {
-		$grid.jqGrid(app.getGridOption({
-			url : config.grid.url.list,//config
-			height: $height,
-			colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
-			colModel:[//config
-				{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: false},
-				{name:'menu_name',index:'menu_name',width:90, editable:true},
-				{name:'menu_url',index:'menu_url', width:150, editable: true, editoptions:{maxlength:"30"}},
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{
-						keys:true
+		loadJS('jqgrid', function(){
+			$grid.jqGrid(app.getGridOption({
+				url : config.grid.url.list,//config
+				height: $height,
+				colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
+				colModel:[//config
+					{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: false},
+					{name:'menu_name',index:'menu_name',width:90, editable:true},
+					{name:'menu_url',index:'menu_url', width:150, editable: true, editoptions:{maxlength:"30"}},
+					{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+						formatter:'actions', 
+						formatoptions:{
+							keys:true
+						}
 					}
-				}
-			], 
-			pager : pagerSelector
-		}));
-		//按钮自定义样式
-		$grid.jqGrid('navGrid', pagerSelector,
-		        {   //navbar options
-		            edit: false,
-		            editicon : 'icon-pencil blue',
-		            add: false,
-		            addicon : 'icon-plus-sign purple',
-		            del: false,
-		            delicon : 'icon-trash red',
-		            search: false,
-		            searchicon : 'icon-search orange',
-		            refresh: true,
-		            refreshicon : 'icon-refresh green',
-		            view: false,
-		            viewicon : 'icon-eye-open grey'
-		        }
-		    );
+				], 
+				pager : pagerSelector
+			}));
+			//按钮自定义样式
+			$grid.jqGrid('navGrid', pagerSelector,
+			        {   //navbar options
+			            edit: false,
+			            editicon : 'icon-pencil blue',
+			            add: false,
+			            addicon : 'icon-plus-sign purple',
+			            del: false,
+			            delicon : 'icon-trash red',
+			            search: false,
+			            searchicon : 'icon-search orange',
+			            refresh: true,
+			            refreshicon : 'icon-refresh green',
+			            view: false,
+			            viewicon : 'icon-eye-open grey'
+			        }
+			    );
+		});
 	}
 	/**
 	 * 绑定验证
 	 */
 	app.attachVali = function($obj){
-		$obj.validationEngine('attach', {
-			maxErrorsPerField: 1,
-			showOneMessage: true,
-			promptPosition: 'bottomLeft',
-			addPromptClass: 'formError-small'
+		loadJS('validate', function(){
+			$obj.validationEngine('detach');//先移除再绑定
+			$obj.validationEngine('attach', {
+				maxErrorsPerField: 1,
+				showOneMessage: true,
+				promptPosition: 'bottomLeft',
+				addPromptClass: 'formError-small'
+			});
 		});
 	}
 	/**
 	 * 绑定时间控件
 	 */
 	app.attachTimepicker = function(){
-		$('.auto-bind-timepicker').each(function(i){
-			var id = this.id;
-			var constraint = $(this).attr('data-constraint');
-			$(this).after('<input id="'+id+'_hidden" name="'+constraint+'" type="text" style="display:none;"/>');
-			bindDateTimePicker('#'+id);
-		});
-		function bindDateTimePicker(selecter){
-			$(selecter).daterangepicker({
-		    	"singleDatePicker": true,
-		    	"autoUpdateInput": false,
-		    	"showDropdowns": true,
-		    	 locale : {  
-                     applyLabel : '确定',
-                     cancelLabel : '取消',  
-                     fromLabel : '起始时间',  
-                     toLabel : '结束时间',  
-                     customRangeLabel : '自定义',  
-                     daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
-                     monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
-                     firstDay : 1  
-                 }
-		    },function(start, end, label) {
-		    	var time = start.format('YYYY-MM-DD');
-			  	$(selecter).val(time);
-			  	$(selecter+'_hidden').val(strToTime(time));
+		loadJS('datepicker', function(){
+			$('.auto-bind-timepicker').each(function(i){
+				var id = this.id;
+				var constraint = $(this).attr('data-constraint');
+				$(this).after('<input id="'+id+'_hidden" name="'+constraint+'" type="text" style="display:none;"/>');
+				bindDateTimePicker('#'+id);
 			});
-		};
-		function strToTime(str){
-			return new Date(str.replace(/-/g,'/')).getTime();
-		};
+			function bindDateTimePicker(selecter){
+				$(selecter).daterangepicker({
+			    	"singleDatePicker": true,
+			    	"autoUpdateInput": false,
+			    	"showDropdowns": true,
+			    	 locale : {  
+	                     applyLabel : '确定',
+	                     cancelLabel : '取消',  
+	                     fromLabel : '起始时间',  
+	                     toLabel : '结束时间',  
+	                     customRangeLabel : '自定义',  
+	                     daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
+	                     monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
+	                     firstDay : 1  
+	                 }
+			    },function(start, end, label) {
+			    	var time = start.format('YYYY-MM-DD');
+				  	$(selecter).val(time);
+				  	$(selecter+'_hidden').val(strToTime(time));
+				});
+			};
+			function strToTime(str){
+				return new Date(str.replace(/-/g,'/')).getTime();
+			};
+		});
 	}
 	/**
 	 * 搜索表单查询
