@@ -278,6 +278,8 @@
 		}
 		
 		function getGridListElement(grid){
+			if(typeof grid === 'string')
+				grid = $.parseJSON(grid);
 			var html = new Array();
 				html.push('<div class="form-data col-sm-12">');
 					html.push('<div class="form-group">');
@@ -318,7 +320,8 @@
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
 		    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-table"></i> 配置数据列表');
-		    	$dtoModel.find('.widget-main').empty().append(getGridListElement($.parseJSON(dto['cfgGrid'])));
+		    	
+		    	$dtoModel.find('.widget-main').empty().append(getGridListElement(dto['cfgGrid']));
 		    	
 		    	initEditor('editor-colModel');
 		    	openModel();
