@@ -88,6 +88,13 @@ var loadJS = function(id, callback, url){
 }
 var admin = {};
 !(function(app) {
+	//eval全局执行
+	app.eval = function(code){
+		var a = document .createElement ("script" );
+        a.type= "text/javascript" ;
+        a.text= code ;
+        document .getElementsByTagName ("head" )[0 ].appendChild (a) ;
+	}
 	app.getGridOption = function(option){
 		var deft = {
 			url : '',//config

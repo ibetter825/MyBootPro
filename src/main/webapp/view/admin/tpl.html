@@ -100,11 +100,14 @@
 				if(dto['cfgSearch']) config['search'] = $.parseJSON(dto.cfgSearch);
 				if(dto['cfgGrid']) config['grid'] = $.parseJSON(dto.cfgGrid);
 				if(dto['cfgObject']) config['object'] = $.parseJSON(dto.cfgObject);
-				if(dto['cfgGlobal']) config['global'] = $.parseJSON(dto.cfgGlobal);
+				if(dto['cfgGlobal']) {
+					config['global'] = $.parseJSON(dto.cfgGlobal);
+					if(config['global']['js']) admin.eval(config['global']['js']);//global的js部分 eval全局执行后就可以直接调用了
+				}
 				init();
 			}			
 		}, 'json');
-
+		
 		function init(){
 			//写入搜索表单的数据
 			admin.setSearchCont();
