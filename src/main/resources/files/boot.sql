@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-20 16:55:36
+Date: 2017-03-22 17:01:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -75,21 +75,21 @@ CREATE TABLE `sys_group_role` (
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `menu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu_name` varchar(50) NOT NULL,
+  `menu_name` varchar(50) NOT NULL DEFAULT '',
   `menu_url` varchar(100) DEFAULT '',
   `menu_desc` varchar(200) DEFAULT '',
   `menu_pid` int(11) DEFAULT '0',
-  `menu_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态:1 正常',
+  `menu_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态:1 正常, -1软删除',
   `menu_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '菜单级别:0 一级菜单(model类),1 二级菜单,2 三级菜单',
   `menu_seq` int(11) NOT NULL DEFAULT '0' COMMENT '菜单排序',
   `menu_icon` varchar(200) DEFAULT '' COMMENT '菜单图标',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk.html', '用户的工作台', '0', '1', '0', '0', 'icon-dashboard');
+INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk.html', 'sss', '0', '1', '0', '0', 'icon-dashboard');
 INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', null, '0', '1', '0', '1', 'icon-coffee');
 INSERT INTO `sys_menu` VALUES ('3', '模块设计', '', 'm', '0', '1', '0', '2', 'icon-laptop');
 INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', null, '0', '1', '0', '3', 'icon-glass');
@@ -101,10 +101,11 @@ INSERT INTO `sys_menu` VALUES ('9', '编辑器', '', null, '2', '1', '1', '2', '
 INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', null, '2', '1', '1', '3', '');
 INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', null, '7', '1', '2', '0', 'icon-laptop');
 INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', null, '7', '1', '2', '1', '');
-INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', null, '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/cfg/tpl/14.html', null, '11', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', '', '11', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/forward/tpl', null, '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '');
 INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu.html', null, '15', '1', '2', '0', 'icon-list');
+INSERT INTO `sys_menu` VALUES ('17', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
 
 -- ----------------------------
 -- Table structure for sys_menu_config
@@ -122,8 +123,9 @@ CREATE TABLE `sys_menu_config` (
 -- ----------------------------
 -- Records of sys_menu_config
 -- ----------------------------
-INSERT INTO `sys_menu_config` VALUES ('14', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/menu/list\",\"add\":\"\",\"del\":\"\",\"edit\":\"\"},\"option\":{\"colNames\":\"[\'菜单编号\', \'菜单名称\',\'菜单地址\', \'操作\']\",\"colModel\":\"[//config\\n\\t\\t\\t\\t\\t\\t\\t{name:\'menu_id\',index:\'menu_id\', width:60, sorttype:\\\"int\\\", editable: false},\\n\\t\\t\\t\\t\\t\\t\\t{name:\'menu_name\',index:\'menu_name\',width:90, editable:true},\\n\\t\\t\\t\\t\\t\\t\\t{name:\'menu_url\',index:\'menu_url\', width:150, editable: true, editoptions:{maxlength:\\\"30\\\"}},\\n\\t\\t\\t\\t\\t\\t\\t{name:\'myac\',index:\'\', width:80, fixed:true, sortable:false, resize:false,\\n\\t\\t\\t\\t\\t\\t\\t\\tformatter:\'actions\', \\n\\t\\t\\t\\t\\t\\t\\t\\tformatoptions:{\\n\\t\\t\\t\\t\\t\\t\\t\\t\\tkeys:true\\n\\t\\t\\t\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t\\t\\t]\"}}', '[{\"label\":\"菜单名称\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单链接\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单描述\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"父级菜单\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单排序\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单图标\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '{\"js\":\"var ad = null;function setAd(){    ad = \\\"nihao\\\";}\",\"html\":\"<a href=\\\"#\\\">你好</a>\",\"jssource\":\"<p>var ad = null;</p><p>function setAd(){</p><p>&nbsp; &nbsp; ad = \\\"nihao\\\";<br></p><p>}</p><p><br></p>\",\"hlsource\":\"<pre style=\\\"max-width:100%;overflow-x:auto;\\\"><code class=\\\"html hljs xml\\\" codemark=\\\"1\\\"><span class=\\\"hljs-tag\\\">&lt;<span class=\\\"hljs-name\\\">a</span> <span class=\\\"hljs-attr\\\">href</span>=<span class=\\\"hljs-string\\\">\\\"#\\\"</span>&gt;</span>你好<span class=\\\"hljs-tag\\\">&lt;/<span class=\\\"hljs-name\\\">a</span>&gt;</span></code></pre><p><br></p>\"}');
+INSERT INTO `sys_menu_config` VALUES ('14', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/menu/list\",\"add\":\"/admin/menu/aoe\",\"del\":\"/admin/menu/del\",\"edit\":\"/admin/menu/aoe\"},\"option\":{\"colNames\":\"[]\",\"colModel\":\"\"}}', '{\"cols\":{\"add\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"validate[required]\",\"source\":\"\",\"value\":\"\"}],\"edit\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[required]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"validate[required]\",\"source\":\"\",\"value\":\"\"}]}}', '{\"js\":\"function a(){    alert(1);}function b(){    alert(2);}\",\"html\":\"<a href=\\\"#\\\">你好</a>\",\"jssource\":\"<p>function a(){</p><p>&nbsp; &nbsp; alert(1);</p><p>}</p><p>function b(){</p><p>&nbsp; &nbsp; alert(2);</p><p>}</p><p><br></p><p><br></p>\"}');
 INSERT INTO `sys_menu_config` VALUES ('16', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '', '[{\"label\":\"菜单名称\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单链接\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单描述\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"父级菜单\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单排序\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单图标\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '{\"js\":\"\",\"html\":\"\",\"jssource\":\"<p><br></p>\"}');
+INSERT INTO `sys_menu_config` VALUES ('17', '{\"cols\":[{\"label\":\"角色名称\",\"name\":\"role_name\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"角色状态\",\"name\":\"role_state\",\"column\":\"role_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_opt
