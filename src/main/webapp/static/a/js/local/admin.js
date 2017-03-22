@@ -311,6 +311,22 @@ var admin = {};
 	      layer.msg('请选择一条记录');
 	}
 	/**
+	 * 删除数据
+	 */
+	app.delDto = function(){
+		var list = $grid.jqGrid('getGridParam', 'selarrrow');//获取选择行id的array
+    	if(list.length > 0){
+	    	//请求后台删除数据
+    		layer.msg('确定要删除吗？', {
+    			  time: 0,
+    			  btn: ['确定','取消'] //按钮
+    			}, function(){
+    				//请求后台删除数据
+    			});
+    	}else
+    		layer.msg('请选择需要删除的记录');
+	}
+	/**
 	 * 提交dto编辑框表单
 	 */
 	app.submitDtoModelForm = function(){
