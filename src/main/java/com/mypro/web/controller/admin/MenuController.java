@@ -1,7 +1,9 @@
 package com.mypro.web.controller.admin;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Maps;
 import com.mypro.bean.entity.admin.SysMenu;
 import com.mypro.bean.enums.ResultMessageEnum;
 import com.mypro.bean.model.PageModel;
@@ -66,6 +69,35 @@ public class MenuController extends BaseAdminController {
 			model = new ResultModel();
 		else
 			model = new ResultModel(ResultMessageEnum.OPTION_EXCEPTION);
+		return model;
+	}
+	
+	/**
+	 * 删除/批量删除
+	 * @return
+	 */
+	@RequestMapping(value = "/menu/del", method = RequestMethod.DELETE)
+	public ResultModel del(String ids){
+		ResultModel model = null;
+		if(StringUtils.isNotEmpty(ids)){
+			String[] strArr = ids.split(",");
+			SysMenu[] menuArr = new SysMenu[strArr.length];
+			SysMenu menu = null;
+			for(int i = 0, l = strArr.length; i < l; i++){
+				if(StringUtils.isNumeric(strArr[i])){
+					menu = new SysMenu();
+					menu.setMenuId(Integer.valueOf(strArr[i]));
+					menu.setMenuState((short) -1);
+					menuArr[i] = menu;
+				}
+			}
+			//调用service
+			List<Integer> errs = sysMenuService.batchRemove(menuArr);
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("errs", errs);
+			model = new ResultModel().setData(map);
+		}else
+			model = new ResultModel(ResultMessageEnum.PARAM_NOT_EMPTY);
 		return model;
 	}
 }

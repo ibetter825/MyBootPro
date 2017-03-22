@@ -322,6 +322,17 @@ var admin = {};
     			  btn: ['确定','取消'] //按钮
     			}, function(){
     				//请求后台删除数据
+    				$.ajax({
+    					type: 'DELETE',
+    					url: '/admin/menu/del?ids=20,22',
+    					dataType: 'json',
+    					success: function(res){
+    						layer.msg(res.msg);
+    						if(res.success){
+    							
+    						}
+    					}
+    				});
     			});
     	}else
     		layer.msg('请选择需要删除的记录');

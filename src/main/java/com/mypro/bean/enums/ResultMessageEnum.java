@@ -5,6 +5,7 @@ public enum ResultMessageEnum {
 	SESSION_TIMEOUT("会话已过期请重新登录"),
 	DATA_ALREADY_EXISTS("信息已经存在你"),
 	DATA_NOT_EXISTS("信息不存在或已删除"),
+	PARAM_NOT_EMPTY("传入参数不能为空"),
 	OPTION_EXCEPTION("操作处理失败"),
 	SYSTEM_EXCEPTION("程序发生错误"),
 	FILE_UPLOAD_SUCCESS("文件上传成功"),

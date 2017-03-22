@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.mypro.bean.entity.admin.SysMenu;
 import com.mypro.bean.rq.QueryRq;
 import com.mypro.dao.admin.SysMenuDao;
@@ -38,5 +39,16 @@ public class SysMenuServiceImpl implements SysMenuService {
 	public List<Map<String, Object>> queryBySql(){
 		String sql = "select menu_id, menu_name from sys_menu";
 		return sysMenuDao.selectBySql(sql);
+	}
+	@Override
+	public List<Integer> batchRemove(SysMenu[] menus) {
+		List<Integer> errs = null;
+		for (SysMenu menu : menus) {
+			if(sysMenuDao.updateByPrimaryKeySelective(menu) != 1){
+				if(errs == null) errs = Lists.newArrayList();
+				errs.add(menu.getMenuId());
+			}
+		}
+		return errs;
 	}
 }

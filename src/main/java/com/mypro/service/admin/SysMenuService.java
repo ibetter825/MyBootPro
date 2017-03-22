@@ -28,5 +28,11 @@ public interface SysMenuService {
 	 * @return
 	 */
 	public boolean addOrEdit(SysMenu menu);
+	/**
+	 * 批量删除数据
+	 * @param idArr
+	 * @return
+	 */
+	public List<Integer> batchRemove(SysMenu[] menus);
 	public List<?> queryBySql();
 }

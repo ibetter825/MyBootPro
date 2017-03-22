@@ -14,6 +14,7 @@ import com.mypro.service.admin.SysMenuConfigService;
 
 @Service
 public class SysMenuConfigServiceImpl implements SysMenuConfigService {
+	@SuppressWarnings("unused")
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -34,5 +35,6 @@ public class SysMenuConfigServiceImpl implements SysMenuConfigService {
 	public SysMenuConfig queryConfig(SysMenuConfig config) {
 		return smcDao.selectOne(config);
 	}  
+	
 	
 }
