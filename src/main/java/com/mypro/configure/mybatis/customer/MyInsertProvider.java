@@ -12,7 +12,7 @@ import tk.mybatis.mapper.mapperhelper.SqlHelper;
 import tk.mybatis.mapper.util.StringUtil;
 
 /**
- * 自定义查询工具
+ * 自定义插入sql生成工具
  * @author user
  *
  */
