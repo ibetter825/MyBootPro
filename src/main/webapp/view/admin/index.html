@@ -360,8 +360,11 @@
 					html.push(getMenuHtml(menu.children));
 					html.push('</ul></li>');
 				}else{
+					var url = menu.url;
 					html.push('<li class="cmenu">');
-					html.push('<a target="iframe" href="'+menu.url+'">');
+					if(url.indexOf('/admin/forward/tpl') > -1)
+						url += '/' + menu.id + '.html';
+					html.push('<a target="iframe" href="'+url+'">');
 					html.push('<i class="'+menu.icon+'"></i>');
 					html.push('<span class="menu-text"> '+menu.title+'</span>');
 					html.push('</a></li>');

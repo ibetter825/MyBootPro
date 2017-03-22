@@ -22,4 +22,15 @@ public class ForwardController extends BaseAdminController {
 	public ModelAndView index(@PathVariable("view") String view){
 		return new ModelAndView("admin/"+view);
 	}
+	
+	/**
+	 * 跳转到模板页面
+	 * menu为传入的菜单id
+	 * @param menuId
+	 * @return
+	 */
+	@RequestMapping("/forward/tpl/{menu}.html")
+	public ModelAndView tpl(@PathVariable("menu") Integer menu){
+		return new ModelAndView("admin/tpl");
+	}
 }

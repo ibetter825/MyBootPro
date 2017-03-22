@@ -26,10 +26,8 @@ public class SysMenuConfigServiceImpl implements SysMenuConfigService {
 
 	@Override
 	public boolean addOrEditConfig(SysMenuConfig config) {
-		if(smcDao.updateByPrimaryKeySelective(config) != 1)//插入不成功
-			return smcDao.insertSelective(config) == 1;//修改
-		else
-			return true;
+		int res = smcDao.insertOrUpdateSelective(config);
+		return res == 1 || res == 2;
 	}
 
 	@Override

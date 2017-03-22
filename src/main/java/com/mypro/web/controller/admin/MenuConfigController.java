@@ -95,15 +95,4 @@ public class MenuConfigController extends BaseAdminController {
 			model = new ResultModel(ResultMessageEnum.DATA_NOT_EXISTS);
 		return model;
 	}
-	
-	/**
-	 * 跳转到模板页面
-	 * menu为传入的菜单id
-	 * @param menuId
-	 * @return
-	 */
-	@RequestMapping("/cfg/tpl/{menu}.html")
-	public ModelAndView tpl(@PathVariable("menu") Integer menu){
-		return new ModelAndView("admin/tpl");
-	}
 }
