@@ -134,6 +134,9 @@ var admin = {};
 				}, 0);
 			},
 			loadError : function(xhr, st, err) {
+				console.log('loadError');
+				console.log(xhr);
+				console.log(st);
 				console.log(err);
 		    }
 		}
