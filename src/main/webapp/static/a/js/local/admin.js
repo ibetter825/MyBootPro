@@ -123,6 +123,8 @@ var admin = {};
 			multiselect: true,
 			//multikey: "ctrlKey",
 	        multiboxonly: false,
+			editurl:'',
+			autowidth: true,
 			loadComplete : function() {
 				var _this = this;
 				setTimeout(function(){
@@ -131,8 +133,9 @@ var admin = {};
 					updatePagerIcons(_this);
 				}, 0);
 			},
-			editurl:'',
-			autowidth: true
+			loadError : function(xhr, st, err) {
+				console.log(err);
+		    }
 		}
 		//替换分页插件的按钮图标
 		function updatePagerIcons(table) {
