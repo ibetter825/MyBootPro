@@ -319,20 +319,27 @@ var admin = {};
 	    	//请求后台删除数据
     		layer.msg('确定要删除吗？', {
     			  time: 0,
-    			  btn: ['确定','取消'] //按钮
-    			}, function(){
-    				//请求后台删除数据
-    				$.ajax({
-    					type: 'DELETE',
-    					url: '/admin/menu/del?ids=20,22',
-    					dataType: 'json',
-    					success: function(res){
-    						layer.msg(res.msg);
-    						if(res.success){
-    							
-    						}
-    					}
-    				});
+    			  btn: ['确定','取消'], //按钮
+    			  yes: function(){
+      					//请求后台删除数据
+	      				$.ajax({
+	      					type: 'DELETE',
+	      					url: '/admin/menu/del?ids='+list.join(','),
+	      					dataType: 'json',
+	      					success: function(res){
+	      						if(res.success){
+	      							if(res.data.errs.length != 0){
+	      								layer.msg('部分记录未删除成功:['+res.data.errs+']');
+	      								$grid.trigger("reloadGrid");
+	      							}else
+	      								layer.msg('部分记录未删除成功');
+	      							$grid.trigger("reloadGrid");
+	      							return;
+	      						}
+	      						layer.msg(res.msg);
+	      					}
+	      				});
+	      			}
     			});
     	}else
     		layer.msg('请选择需要删除的记录');

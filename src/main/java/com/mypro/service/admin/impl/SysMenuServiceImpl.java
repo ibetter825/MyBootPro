@@ -42,12 +42,10 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 	@Override
 	public List<Integer> batchRemove(SysMenu[] menus) {
-		List<Integer> errs = null;
+		List<Integer> errs = Lists.newArrayList();
 		for (SysMenu menu : menus) {
-			if(sysMenuDao.updateByPrimaryKeySelective(menu) != 1){
-				if(errs == null) errs = Lists.newArrayList();
+			if(sysMenuDao.updateByPrimaryKeySelective(menu) != 1)
 				errs.add(menu.getMenuId());
-			}
 		}
 		return errs;
 	}
