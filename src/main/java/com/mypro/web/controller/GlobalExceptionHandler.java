@@ -39,7 +39,8 @@ public class GlobalExceptionHandler {
 			try {
 				//resp.reset();
 				writer = resp.getWriter();
-				resp.setStatus(HttpStatus.OK.value());
+				//resp.setStatus(HttpStatus.OK.value());
+				resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 				resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
 				resp.setCharacterEncoding(WebConstant.DEFAULT_ENCODING); //避免乱码
 				resp.setHeader("Cache-Control", "no-cache, must-revalidate");

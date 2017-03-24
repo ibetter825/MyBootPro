@@ -399,7 +399,7 @@ var admin = {};
 					html.push('<option value="'+list[j].value+'">'+list[j].text+'</option>');
 				html.push('</select>');
 			} else if(col.widget === 'date')
-				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="auto-bind-timepicker col-sm-12 '+col.vali+']" name="rq[\''+col.name+'\']" autocomplete="off">');
+				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" data-constraint="rq[\''+col.name+'\']" class="auto-bind-timepicker col-sm-12 '+col.vali+']" autocomplete="off">');
 			
 			html.push('</div>');
 			html.push('</div>');
