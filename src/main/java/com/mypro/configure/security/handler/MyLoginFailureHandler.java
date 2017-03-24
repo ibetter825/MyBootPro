@@ -10,6 +10,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.alibaba.fastjson.JSON;
+import com.mypro.bean.constant.SecurityConstant;
 import com.mypro.bean.model.ResultModel;
 import com.mypro.common.utils.WebUtil;
 
@@ -20,7 +21,7 @@ import com.mypro.common.utils.WebUtil;
  */
 public class MyLoginFailureHandler implements AuthenticationFailureHandler {
 
-	private String defaultTargetUrl = "/admin/login.html";
+	private String defaultTargetUrl = SecurityConstant.LOGIN_PAGE_URL;
 
 	private boolean forwardToDestination = false; 
     
