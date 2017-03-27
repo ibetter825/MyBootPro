@@ -2,6 +2,7 @@ package com.mypro.configure.redis;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
+import com.mypro.bean.constant.CacheConstant;
 import com.mypro.configure.properties.RedisPropertiesConfig;
 
 import redis.clients.jedis.HostAndPort;
@@ -85,7 +88,16 @@ public class RedisClusterConfig {
 	public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
 		RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
 		// Number of seconds before expiration. Defaults to unlimited (0)
-		cacheManager.setDefaultExpiration(10); // 设置key-value超时时间
+		cacheManager.setDefaultExpiration(CacheConstant.CACHE_DEFAULT_EXPIRATION); // 设置默认key-value超时时间
+		Map<String, Long> expires = Maps.newConcurrentMap(); //单独设置key-value超时时间,这个可以写到配置文件中去
+		String[] arr = CacheConstant.CACHE_CUSTOM_EXPIRES.split(";");
+		String[] kt = null;
+		for (String exp : arr) {
+			kt = exp.split(":");
+			expires.put(kt[0], Long.valueOf(kt[1]));
+		}
+		cacheManager.setExpires(expires);
+		
 		return cacheManager;
 	}
  
