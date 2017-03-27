@@ -93,7 +93,7 @@ var admin = {};
 		var a = document .createElement ("script" );
         a.type= "text/javascript" ;
         a.text= code ;
-        document .getElementsByTagName ("head" )[0 ].appendChild (a) ;
+        document .getElementsByTagName ("head" )[0 ].appendChild (a);
 	}
 	app.getGridOption = function(option){
 		var deft = {
@@ -134,10 +134,12 @@ var admin = {};
 				}, 0);
 			},
 			loadError : function(xhr, st, err) {
-				console.log('loadError');
-				console.log(xhr);
-				console.log(st);
-				console.log(err);
+				layer.open({
+					  type: 2,
+					  content: xhr.responseText,
+					  area: ['100%', '100%'],
+					  maxmin: true
+					});
 		    }
 		}
 		//替换分页插件的按钮图标

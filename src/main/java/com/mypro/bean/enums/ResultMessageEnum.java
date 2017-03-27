@@ -3,6 +3,7 @@ package com.mypro.bean.enums;
 public enum ResultMessageEnum {
 	
 	SESSION_TIMEOUT("会话已过期请重新登录"),
+	SESSION_EXPIRED("当前账号已在另一个地方登陆"),
 	DATA_ALREADY_EXISTS("信息已经存在你"),
 	DATA_NOT_EXISTS("信息不存在或已删除"),
 	PARAM_NOT_EMPTY("传入参数不能为空"),

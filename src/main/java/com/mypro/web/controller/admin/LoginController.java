@@ -20,6 +20,7 @@ public class LoginController extends BaseAdminController {
 	}
 	@RequestMapping("/login/timeout.html")
 	public ModelAndView timeout(){
+		//可以在这里判断ajax后再返回null，但是仍然有问题，最好的办法还是直接覆盖其拦截器的设置
 		if(WebUtil.isAjax(request))
 			WebUtil.writeJson(response, SecurityConstant.TIME_OUT_SESSION_MSG);
 		return new ModelAndView("admin/error/timeout");
