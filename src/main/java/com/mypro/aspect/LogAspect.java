@@ -50,7 +50,7 @@ public class LogAspect {
 	public void doBeforeAdvice(JoinPoint joinPoint){
 		System.err.println("进入日志切面类前置通知!!!");  
 	    //获取目标方法的参数信息  
-	    Object[] obj = joinPoint.getArgs(); 
+	    Object[] args = joinPoint.getArgs(); 
 	    //AOP代理类的信息  
 	    //joinPoint.getThis();
 	    //代理的目标对象  
@@ -59,15 +59,7 @@ public class LogAspect {
 	    Signature signature = joinPoint.getSignature();
 	    //代理的是哪一个方法  
 	    String method = signature.getName();
-	    MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    SysOptLog log = new SysOptLog();
-	    if(method.startsWith("batch")){//批量操作对象
-	    	log.setOptDateTime(Instant.now().toEpochMilli());
-	    	log.setOptLogCont("批量操作:"+JSON.toJSONString(obj));
-	    	System.err.println("当前用户:"+userDetails.getUserId());
-	    	log.setOptUserId(userDetails.getUserId());
-	    	System.err.println("保存日志记录:"+(saveOptLog(log)?"成功":"失败"));
-	    }
+	    System.err.println("保存日志记录:"+(saveOptLog(method, args)?"成功":"失败"));
 	    System.err.println(signature.getName());
 	    //AOP代理类的名字  
 	    System.err.println(signature.getDeclaringTypeName());
@@ -124,10 +116,19 @@ public class LogAspect {
 	
 	/**
 	 * 保存日志记录到数据库
-	 * @param log
+	 * @param method
+	 * @param args
 	 * @return
 	 */
-	private boolean saveOptLog(SysOptLog log){
+	private boolean saveOptLog(String method, Object[] args){
+		MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    SysOptLog log = new SysOptLog();
+	    if(method.startsWith("batch")){//批量操作对象
+	    	log.setOptDateTime(Instant.now().toEpochMilli());
+	    	log.setOptLogCont("批量操作:"+JSON.toJSONString(args));
+	    	System.err.println("当前用户:"+userDetails.getUserId());
+	    	log.setOptUserId(userDetails.getUserId());
+	    }
 		//如果没存进去怎么整?
 		return logDao.insertSelective(log) == 1;
 	}
