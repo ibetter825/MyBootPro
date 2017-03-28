@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-22 17:01:00
+Date: 2017-03-28 15:58:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,7 +79,7 @@ CREATE TABLE `sys_menu` (
   `menu_url` varchar(100) DEFAULT '',
   `menu_desc` varchar(200) DEFAULT '',
   `menu_pid` int(11) DEFAULT '0',
-  `menu_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态:1 正常, -1软删除',
+  `menu_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态:1正常, -1软删除, 0不可用',
   `menu_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '菜单级别:0 一级菜单(model类),1 二级菜单,2 三级菜单',
   `menu_seq` int(11) NOT NULL DEFAULT '0' COMMENT '菜单排序',
   `menu_icon` varchar(200) DEFAULT '' COMMENT '菜单图标',
@@ -153,6 +153,26 @@ CREATE TABLE `sys_opt` (
 -- ----------------------------
 INSERT INTO `sys_opt` VALUES ('1', 'add', '新增', '', '1', '14', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 INSERT INTO `sys_opt` VALUES ('2', 'edit', '编辑', '', '1', '14', '0', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
+
+-- ----------------------------
+-- Table structure for sys_opt_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_opt_log`;
+CREATE TABLE `sys_opt_log` (
+  `opt_log_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `opt_date_time` bigint(20) NOT NULL,
+  `opt_user_id` int(11) NOT NULL,
+  `opt_log_cont` varchar(255) DEFAULT '' COMMENT '操作内容',
+  `opt_log_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1增-1删2改3批量0其他',
+  PRIMARY KEY (`opt_log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_opt_log
+-- ----------------------------
+INSERT INTO `sys_opt_log` VALUES ('1', '1490684180647', '10000', '批量操作:[[{\"menuId\":1,\"menuState\":-1},{\"menuId\":2,\"menuState\":-1}]]', '0');
+INSERT INTO `sys_opt_log` VALUES ('2', '1490687724801', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('3', '1490687770609', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
 
 -- ----------------------------
 -- Table structure for sys_persistent_logins
