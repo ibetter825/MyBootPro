@@ -16,7 +16,7 @@ public class SysUser extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String userId;
+	private Integer userId;
 	private String userPwd;
 	private String userSalt;
 	private String userName;
@@ -30,16 +30,17 @@ public class SysUser extends BaseEntity {
 	 * @param sysUser
 	 */
 	public SysUser(SysUser sysUser) {
+		this.userId = sysUser.getUserId();
 		this.userName = sysUser.getUserName();
 		this.userPwd = sysUser.getUserPwd();
 		this.userSalt = sysUser.getUserSalt();
 	}
 
-	public String getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

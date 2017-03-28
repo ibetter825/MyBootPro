@@ -23,15 +23,15 @@ public class MyUserDetails extends SysUser implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		 if(roles == null || roles.size() <1){
+		if(roles == null || roles.size() <1){
 	            return AuthorityUtils.commaSeparatedStringToAuthorityList("");
-	        }
-	        StringBuilder commaBuilder = new StringBuilder();
-	        for(SysRole role : roles){
-	            commaBuilder.append(role.getRoleNo()).append(",");
-	        }
-	        String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
-	        return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+        }
+        StringBuilder commaBuilder = new StringBuilder();
+        for(SysRole role : roles){
+            commaBuilder.append(role.getRoleNo()).append(",");
+        }
+        String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 	}
 
 	@Override
