@@ -340,7 +340,7 @@ var admin = {};
 	      								layer.msg('部分记录未删除成功:['+res.data.errs+']');
 	      								$grid.trigger("reloadGrid");
 	      							}else
-	      								layer.msg('部分记录未删除成功');
+	      								layer.msg('删除成功');
 	      							$grid.trigger("reloadGrid");
 	      							return;
 	      						}
