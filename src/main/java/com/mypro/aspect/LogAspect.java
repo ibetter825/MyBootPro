@@ -123,12 +123,12 @@ public class LogAspect {
 	private boolean saveOptLog(String method, Object[] args){
 		MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    SysOptLog log = new SysOptLog();
-	    if(method.startsWith("batch")){//批量操作对象
-	    	log.setOptDateTime(Instant.now().toEpochMilli());
+	    log.setOptDateTime(Instant.now().toEpochMilli());
+	    log.setOptUserId(userDetails.getUserId());
+	    if(method.startsWith("batch"))//批量操作对象
 	    	log.setOptLogCont("批量操作:"+JSON.toJSONString(args));
-	    	System.err.println("当前用户:"+userDetails.getUserId());
-	    	log.setOptUserId(userDetails.getUserId());
-	    }
+	    else if(method.startsWith("add"))
+	    	log.setOptLogCont("编辑操作:"+JSON.toJSONString(args));
 		//如果没存进去怎么整?
 		return logDao.insertSelective(log) == 1;
 	}
