@@ -378,6 +378,19 @@
 				    		
 				    		html.push(getColumnElement(col));
 				    	});
+			    		var hl = new Array();
+			    		$(cs.cols['edit']).each(function(i, c){
+			    			col = c;
+				    		if(selectedArr.indexOf('edit_'+c.column) !== -1)
+				    			return;
+				    		selectedArr.push('edit_'+c.column);
+				    		
+				    		col.COLUMN_NAME = c.column;
+				    		col.DATA_TYPE = c.type;
+				    		
+				    		hl.push(getColumnElement(col));
+				    	});
+			    		$dtoModel.find('.c-ele-edit').append(hl.join(''));
 			    	}
 		    	}
 		    	var cols = $gridCol.jqGrid('getGridParam', 'selarrrow');//获取选择行id的array
