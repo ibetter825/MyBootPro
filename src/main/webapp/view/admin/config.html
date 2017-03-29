@@ -574,9 +574,10 @@
 			
 			$.post('/admin/cfg/aoe', config, function(data){
 				layer.msg(data.msg);
-				//成功以后还需要将dto的值修改一下
-				//...
 				if(data.success){
+					//成功以后将dto的值修改一下
+					var temp = 'cfg'+curTarget.replace(/^\S/,function(s){return s.toUpperCase();});
+					dto[temp] = config[temp];
 					layer.closeAll('page');
 				}
 			}, 'json');
