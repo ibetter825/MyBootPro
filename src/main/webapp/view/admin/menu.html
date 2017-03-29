@@ -142,15 +142,15 @@
 					     ],
 					option: {
 						//jqgrid配置，替换默认的配置
-						colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
-						colModel:[//config
-							{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: false},
-							{name:'menu_name',index:'menu_name',width:90, editable:true},
-							{name:'menu_url',index:'menu_url', width:150, editable: true, editoptions:{maxlength:"30"}},
-							{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-								formatter:'actions', 
-								formatoptions:{
-									keys:true
+						colNames:["菜单编号", "菜单名称","菜单地址", "操作"],//config
+						colModel:[
+							{"name":"menu_id","index":"menu_id", "width":60, "sorttype":"int", "editable": false},
+							{"name":"menu_name","index":"menu_name","width":90, "editable":true},
+							{"name":"menu_url","index":"menu_url", "width":150, "editable": true, "editoptions":{"maxlength":"30"}},
+							{"name":"myac","index":"", "width":80, "fixed":true, "sortable":false, "resize":false,
+								"formatter":"actions", 
+								"formatoptions":{
+									"keys":true
 								}
 							}
 						]

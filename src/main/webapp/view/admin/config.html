@@ -317,11 +317,11 @@
 					html.push('</div><hr/>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="colNames"> 字段名称: </label>');
-						html.push('<textarea name="colNames" class="col-sm-9 validate[required]" rows="1" title="字段名称">'+ (grid && grid['colNames'] ? grid['colNames'] : '') +'</textarea>');
+						html.push('<textarea name="colNames" class="col-sm-9 validate[required]" rows="1" title="字段名称">'+ (grid && grid['option'] ? JSON.stringify(grid['option']['colNames']) : '[]') +'</textarea>');
 					html.push('</div>');
 					html.push('<div class="form-group">');
 						html.push('<label class="col-sm-2 control-label" for="colModel"> 字段配置: </label>');
-						html.push('<div class="col-sm-9 no-padding"><textarea id="editor-colModel" class="validate[required]" name="colModel" rows="12" title="字段配置">'+ (grid && grid['colModel'] ? grid['colModel'] : '') +'</textarea></div>');
+						html.push('<textarea class="col-sm-9 validate[required]" name="colModel" rows="12" title="字段配置">'+ (grid && grid['option'] ? JSON.stringify(grid['option']['colModel']) : '[]') +'</textarea>');
 					html.push('</div>');
 				html.push('</div>');
 			return html.join('');
@@ -340,7 +340,7 @@
 		    	
 		    	$dtoModel.find('.widget-main').empty().append(getGridListElement(dto['cfgGrid']));
 		    	
-		    	initEditor('editor-colModel');
+		    	//initEditor('editor-colModel');
 		    	openModel();
 		    }else
 		      layer.msg('请选择数据表');
@@ -536,19 +536,24 @@
 				}
 				config['cfgSearch'] = JSON.stringify(cs);
 			}else if(curTarget === 'grid'){
-				var grid = {
-					url: {
-						list: data.find('[name="list"]').val(),
-						add: data.find('[name="add"]').val(),
-						del: data.find('[name="del"]').val(),
-						edit: data.find('[name="edit"]').val()
-					},
-					option: {
-						colNames: data.find('[name="colNames"]').val(),
-						colModel: editors['editor-colModel'].$txt.text()
-					}
+				try {
+					var grid = {
+							url: {
+								list: data.find('[name="list"]').val(),
+								add: data.find('[name="add"]').val(),
+								del: data.find('[name="del"]').val(),
+								edit: data.find('[name="edit"]').val()
+							},
+							option: {
+								colNames: $.parseJSON(data.find('[name="colNames"]').val()),
+								colModel: $.parseJSON(data.find('[name="colModel"]').val()),
+							}
+						}
+						config['cfgGrid'] = JSON.stringify(grid);
+				} catch (e) {
+					layer.msg('必须严格遵循JSON格式填写');
 				}
-				config['cfgGrid'] = JSON.stringify(grid);
+				
 			}else if(curTarget === 'object'){
 				var dataAdd = $('.c-ele-add').find('.form-data');
 				var dataEdit = $('.c-ele-edit').find('.form-data');

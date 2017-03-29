@@ -163,21 +163,12 @@ var admin = {};
 	 */
 	app.initGrid = function() {
 		loadJS('jqgrid', function(){
+			console.log(config.grid.option.colModel)
 			$grid.jqGrid(app.getGridOption({
-				url : config.grid.url.list,//config
+				url : config.grid.url.list,
 				height: $height,
-				colNames:['菜单编号', '菜单名称','菜单地址', '操作'],//config
-				colModel:[//config
-					{name:'menu_id',index:'menu_id', width:60, sorttype:"int", editable: false},
-					{name:'menu_name',index:'menu_name',width:90, editable:true},
-					{name:'menu_url',index:'menu_url', width:150, editable: true, editoptions:{maxlength:"30"}},
-					{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-						formatter:'actions', 
-						formatoptions:{
-							keys:true
-						}
-					}
-				], 
+				colNames: config.grid.option.colNames,
+				colModel: config.grid.option.colModel, 
 				pager : pagerSelector
 			}));
 			//按钮自定义样式
