@@ -74,6 +74,11 @@
 					<div class="widget-header header-color-blue">
 						<h6><i class="icon-search"></i>表单</h6>
 					</div>
+					<div class="widget-toolbar no-border" style="position: absolute; top: 0; right: 0;">
+						<button type="button" class="c-ele c-ele-object hide btn btn-xs btn-pink" onclick="exchangeObjectType(this)">
+							<i class="icon-exchange"></i>
+						</button>
+					</div>
 					<div class="widget-body">
 						<input id="config-sub-method" type="hidden" name="configSubMethod" value="return admin.search();">
 						<div class="widget-main"></div>
@@ -87,9 +92,9 @@
 							<button type="button" class="c-ele c-ele-search c-ele-object hide btn btn-sm btn-purple pull-right" onclick="replaceFormSubmit();" title="替换默认的表单提交方法">
 								<i class="icon-legal"></i><span class="bigger-110"> 提交方法</span>
 							</button>
-							<button type="button" class="c-ele c-ele-object hide btn btn-sm btn-info pull-right" onclick="exchangeObjectType(this)">
+							<!-- <button type="button" class="c-ele c-ele-object hide btn btn-sm btn-info pull-right" onclick="exchangeObjectType(this)">
 								<i class="icon-exchange"></i><span class="bigger-110">切换到修改</span>
-							</button>
+							</button> -->
 						</div>
 					</div>
 				</div>
@@ -413,17 +418,17 @@
 			var type = $dtoModel.attr('type');
 			switch(type){
 				case 'add':
-					$(btn).find('span').html('切换到新增');
+					//$(btn).find('span').html('切换到新增');
 					$dtoModel.attr('type', 'edit').find('.c-ele-edit').removeClass('hide').siblings().addClass('hide');
 					$dtoModel.find('h6').html('<i class="icon-edit"></i> 配置对象-编辑表单');
 					break;
 				case 'edit':
-					$(btn).find('span').html('切换到编辑');
+					//$(btn).find('span').html('切换到编辑');
 					$dtoModel.attr('type', 'add').find('.c-ele-add').removeClass('hide').siblings().addClass('hide');
 					$dtoModel.find('h6').html('<i class="icon-plus"></i> 配置对象-新增表单');
 					break;
 				default: 
-					$(btn).find('span').html('切换到新增');
+					//$(btn).find('span').html('切换到新增');
 					$dtoModel.attr('type', 'edit').find('.c-ele-edit').removeClass('hide').siblings().addClass('hide');
 					$dtoModel.find('h6').html('<i class="icon-edit"></i> 配置对象-编辑表单');
 			}
