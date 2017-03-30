@@ -84,7 +84,7 @@
 							<button type="submit" class="btn btn-sm btn-primary pull-right">
 								<i class="icon-ok"></i><span class="bigger-110"> 确&nbsp;定</span>
 							</button>
-							<button type="button" class="c-ele c-ele-search c-ele-object hide btn btn-sm btn-purple pull-right" onclick="replaceSearchFormSubmit();" title="替换默认的表单提交方法">
+							<button type="button" class="c-ele c-ele-search c-ele-object hide btn btn-sm btn-purple pull-right" onclick="replaceFormSubmit();" title="替换默认的表单提交方法">
 								<i class="icon-legal"></i><span class="bigger-110"> 提交方法</span>
 							</button>
 							<button type="button" class="c-ele c-ele-object hide btn btn-sm btn-info pull-right" onclick="exchangeObjectType(this)">
@@ -252,7 +252,7 @@
 			curTarget = 'search';
 			$('.c-ele').addClass('hide');
 			$('.c-ele-search').removeClass('hide');
-			$('#config-sub-method').val('return admin.search();');
+			//$('#config-sub-method').val('return admin.search();');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
 		    if (gr != null){
@@ -356,7 +356,7 @@
 			curTarget = 'object';
 			$('.c-ele').addClass('hide');
 			$('.c-ele-object').removeClass('hide');
-			$('#config-sub-method').val('return admin.submitDtoModelForm();');
+			//$('#config-sub-method').val('return admin.submitDtoModelForm();');
 			$dtoModel.attr('type', 'add').find('.c-ele-add').removeClass('hide').siblings().addClass('hide');
 			//是否已经选择了数据表
 			var gr = $grid.jqGrid('getGridParam', 'selrow');//获取最新你选择行的id
@@ -494,15 +494,28 @@
 		}
 		
 		//替换默认的提交方法
-		function replaceSearchFormSubmit(){
+		function replaceFormSubmit(){
 			var $smethod = $('#config-sub-method');
+			var val = '';
+			switch (curTarget) {
+				case 'object':
+					if(dto && dto['cfgObject'])
+						val = $.parseJSON(dto['cfgObject'])['subMethod'] || '';	
+					break;
+				case 'search':
+					if(dto && dto['cfgSearch'])
+						val = $.parseJSON(dto['cfgSearch'])['subMethod'] || '';	
+					break;
+			}
+			$smethod.val(val);
 			layer.prompt({
 				  formType: 2,
 				  skin: 'layer-skin',
-				  value: $smethod.val(),
+				  value: val,
 				  title: '自定义表单提交方法',
-				  area: ['500px', '150px']
+				  area: ['500px', '50px']
 				}, function(value, index, elem){
+					if(/(^s*)|(s*$)/g.test(value)) value = '';
 					$smethod.val(value);
 				 	layer.close(index);
 				});
@@ -579,7 +592,8 @@
 					cols: {
 						add: getParam(dataAdd),
 						edit: getParam(dataEdit)
-					}
+					},
+					subMethod: $('#config-sub-method').val()
 				});
 			}else if(curTarget === 'global'){
 				var global = {

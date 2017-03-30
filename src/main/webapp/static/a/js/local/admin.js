@@ -163,7 +163,6 @@ var admin = {};
 	 */
 	app.initGrid = function() {
 		loadJS('jqgrid', function(){
-			console.log(config.grid.option.colModel)
 			$grid.jqGrid(app.getGridOption({
 				url : config.grid.url.list,
 				height: $height,
@@ -347,6 +346,10 @@ var admin = {};
 	 * 提交dto编辑框表单
 	 */
 	app.submitDtoModelForm = function(){
+		if(config['object']['subMethod']){
+			window[config['object']['subMethod']]();
+			return false;
+		}
 		var vali = $dtoForm.validationEngine('validate');
 		if(!vali) return false;
 		//验证通过后需要提交表单
