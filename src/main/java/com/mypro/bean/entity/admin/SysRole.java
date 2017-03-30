@@ -1,5 +1,7 @@
 package com.mypro.bean.entity.admin;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.mypro.bean.entity.BaseEntity;
@@ -13,16 +15,19 @@ public class SysRole extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	private String roleNo;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer roleId;
 	private String roleName;
-	private String rolePno;
+	private Integer rolePid;
 	private String roleDesc;
 	private Short roleState;
-	public String getRoleNo() {
-		return roleNo;
+	private Short isSuper;
+	private Integer groupId;
+	public Integer getRoleId() {
+		return roleId;
 	}
-	public void setRoleNo(String roleNo) {
-		this.roleNo = roleNo;
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
 	}
 	public String getRoleName() {
 		return roleName;
@@ -30,11 +35,11 @@ public class SysRole extends BaseEntity {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	public String getRolePno() {
-		return rolePno;
+	public Integer getRolePid() {
+		return rolePid;
 	}
-	public void setRolePno(String rolePno) {
-		this.rolePno = rolePno;
+	public void setRolePid(Integer rolePid) {
+		this.rolePid = rolePid;
 	}
 	public String getRoleDesc() {
 		return roleDesc;
@@ -48,5 +53,16 @@ public class SysRole extends BaseEntity {
 	public void setRoleState(Short roleState) {
 		this.roleState = roleState;
 	}
-	
+	public Short getIsSuper() {
+		return isSuper;
+	}
+	public void setIsSuper(Short isSuper) {
+		this.isSuper = isSuper;
+	}
+	public Integer getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
 }

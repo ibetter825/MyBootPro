@@ -40,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 List<SysRole> roles = new ArrayList<SysRole>();
                 SysRole role = new SysRole();
                 role.setRoleName("超级管理员");
-                role.setRoleNo("super");
+                role.setRoleId(1);
                 role.setRoleState((short) 1);
                 roles.add(role);
                 return new MyUserDetails(user, roles);
