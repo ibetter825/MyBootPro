@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-30 15:26:23
+Date: 2017-03-30 17:04:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -233,15 +233,18 @@ CREATE TABLE `sys_role` (
   `role_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1:正常，0:不可用，-1:软删除',
   `is_super` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1:超级管理员，0:其他角色',
   `group_id` int(11) DEFAULT '0' COMMENT '外键关联group表，表示分组下面的角色，0表示没有分组',
+  `user_id` int(11) DEFAULT '0' COMMENT '创建角色的用户',
+  `add_time` bigint(20) DEFAULT '0' COMMENT '角色创建时间',
+  `edit_time` bigint(20) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '超级管理员', '0', '', '1', '1', '0');
-INSERT INTO `sys_role` VALUES ('2', '系统管理员', '0', '', '1', '0', '0');
-INSERT INTO `sys_role` VALUES ('3', '分组管理员', '0', '', '1', '0', '1');
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', '0', '', '1', '1', '0', '0', '0', '0');
+INSERT INTO `sys_role` VALUES ('2', '系统管理员', '0', '', '1', '0', '0', '0', '0', '0');
+INSERT INTO `sys_role` VALUES ('3', '分组管理员', '0', '', '1', '0', '1', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -316,7 +319,7 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('10000', '1');
+INSERT INTO `sys_user_role` VALUES ('10001', '1');
 
 -- ----------------------------
 -- Procedure structure for pro_role_menus
