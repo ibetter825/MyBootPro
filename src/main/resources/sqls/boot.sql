@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-30 17:04:29
+Date: 2017-03-31 16:09:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,21 +79,21 @@ CREATE TABLE `sys_menu` (
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk.html', 'sss', '0', '1', '0', '0', 'icon-dashboard');
-INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', null, '0', '1', '0', '1', 'icon-coffee');
+INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', '', '0', '1', '0', '1', 'icon-coffee');
 INSERT INTO `sys_menu` VALUES ('3', '模块设计', '', 'm', '0', '1', '0', '2', 'icon-laptop');
-INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', null, '0', '1', '0', '3', 'icon-glass');
-INSERT INTO `sys_menu` VALUES ('5', '文件管理', '', null, '0', '1', '0', '4', 'icon-desktop');
-INSERT INTO `sys_menu` VALUES ('6', '系统设计', '', null, '0', '1', '0', '5', ' icon-cogs');
-INSERT INTO `sys_menu` VALUES ('7', '管理信息', '', null, '2', '1', '1', '0', '');
-INSERT INTO `sys_menu` VALUES ('8', '其他设置', '', null, '2', '1', '1', '1', '');
-INSERT INTO `sys_menu` VALUES ('9', '编辑器', '', null, '2', '1', '1', '2', '');
-INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', null, '2', '1', '1', '3', '');
-INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', null, '7', '1', '2', '0', 'icon-laptop');
-INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', null, '7', '1', '2', '1', '');
+INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', '', '0', '1', '0', '3', 'icon-glass');
+INSERT INTO `sys_menu` VALUES ('5', '文件管理', '', '', '0', '1', '0', '4', 'icon-desktop');
+INSERT INTO `sys_menu` VALUES ('6', '系统设计', '', '', '0', '1', '0', '5', ' icon-cogs');
+INSERT INTO `sys_menu` VALUES ('7', '管理信息', '', '', '2', '1', '1', '0', '');
+INSERT INTO `sys_menu` VALUES ('8', '其他设置', '', '', '2', '1', '1', '1', '');
+INSERT INTO `sys_menu` VALUES ('9', '编辑器', '', '', '2', '1', '1', '2', '');
+INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', '', '2', '1', '1', '3', '');
+INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', '', '7', '1', '2', '0', 'icon-laptop');
+INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', '', '7', '1', '2', '1', '');
 INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', '', '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/forward/tpl', null, '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', null, '6', '1', '1', '0', '');
-INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu.html', null, '15', '1', '2', '0', 'icon-list');
+INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/forward/tpl', '', '11', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', '', '6', '1', '1', '0', '');
+INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu.html', '', '15', '1', '2', '0', 'icon-list');
 INSERT INTO `sys_menu` VALUES ('17', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
 
 -- ----------------------------
@@ -134,14 +134,17 @@ CREATE TABLE `sys_opt` (
   `opt_type` varchar(20) DEFAULT '' COMMENT '操作分类',
   `opt_suburl` varchar(200) DEFAULT '' COMMENT '点击链接',
   `opt_handler` varchar(50) DEFAULT '' COMMENT '点击时调用的js方法',
-  PRIMARY KEY (`opt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`opt_id`,`opt_code`,`menu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt
 -- ----------------------------
-INSERT INTO `sys_opt` VALUES ('1', 'add', '新增', '', '1', '14', '1', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
-INSERT INTO `sys_opt` VALUES ('2', 'edit', '编辑', '', '1', '14', '2', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
+INSERT INTO `sys_opt` VALUES ('1', 'add', '新增', '', '1', '14', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('2', 'edit', '编辑', '', '1', '14', '1', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
+INSERT INTO `sys_opt` VALUES ('3', 'add2', '新增2', '', '1', '14', '2', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('4', 'edit2', '编辑2', '', '1', '14', '3', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
+INSERT INTO `sys_opt` VALUES ('5', 'add', '新增', '', '1', '16', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 
 -- ----------------------------
 -- Table structure for sys_opt_log
@@ -220,6 +223,12 @@ CREATE TABLE `sys_right` (
 -- ----------------------------
 INSERT INTO `sys_right` VALUES ('1', '14', '1', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '2', '0');
+INSERT INTO `sys_right` VALUES ('1', '14', '3', '0');
+INSERT INTO `sys_right` VALUES ('1', '14', '4', '0');
+INSERT INTO `sys_right` VALUES ('2', '14', '2', '1');
+INSERT INTO `sys_right` VALUES ('2', '14', '3', '0');
+INSERT INTO `sys_right` VALUES ('2', '14', '4', '0');
+INSERT INTO `sys_right` VALUES ('2', '16', '5', '0');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -259,13 +268,14 @@ CREATE TABLE `sys_user` (
   `is_super` tinyint(4) DEFAULT '0' COMMENT '是否为超级管理源:0 否, 1 是',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `FK_SYS_USER_USER_NAME` (`user_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8 COMMENT='系统用户主表';
+) ENGINE=InnoDB AUTO_INCREMENT=10003 DEFAULT CHARSET=utf8 COMMENT='系统用户主表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('10000', 'BB855C106B50CEA148E553154E3DF151', 'yang', 'admin', '1', '1');
-INSERT INTO `sys_user` VALUES ('10001', 'BB855C106B50CEA148E553154E3DF151', 'yang', 'test', '1', '0');
+INSERT INTO `sys_user` VALUES ('10001', 'BB855C106B50CEA148E553154E3DF151', 'yang', 'role', '1', '0');
+INSERT INTO `sys_user` VALUES ('10002', 'BB855C106B50CEA148E553154E3DF151', 'yang', 'group', '1', '0');
 
 -- ----------------------------
 -- Table structure for sys_user_group
@@ -281,6 +291,7 @@ CREATE TABLE `sys_user_group` (
 -- Records of sys_user_group
 -- ----------------------------
 INSERT INTO `sys_user_group` VALUES ('10001', '1');
+INSERT INTO `sys_user_group` VALUES ('10002', '1');
 
 -- ----------------------------
 -- Table structure for sys_user_info
@@ -319,7 +330,7 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('10001', '1');
+INSERT INTO `sys_user_role` VALUES ('10001', '2');
 
 -- ----------------------------
 -- Procedure structure for pro_role_menus
@@ -330,6 +341,103 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `pro_role_menus`(in role varchar(36)
 BEGIN 
   select group_concat(menu_scort) into @menus from sys_menu where menu_no in (select DISTINCT a.menu_no from sys_operate a left join sys_role_operate b on a.menu_no = b.menu_no and a.opt_no = b.opt_no where a.opt_state <> -1 and b.role_no = role) and menu_state = 1 group by menu_state;
   select a.menu_no,a.menu_fno,a.menu_name,a.menu_desc,a.menu_seq,a.menu_state,a.menu_level,a.menu_icon,a.menu_param,a.menu_scort from sys_menu a where FIND_IN_SET(a.menu_no, @menus) > 0;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for func_query_children_menu
+-- ----------------------------
+DROP FUNCTION IF EXISTS `func_query_children_menu`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `func_query_children_menu`(in_menu_id INT) RETURNS varchar(4000) CHARSET utf8
+BEGIN
+	DECLARE sTemp VARCHAR(4000);
+	DECLARE sTempChd VARCHAR(4000);
+
+	SET sTemp='';
+	SET sTempChd = CAST(in_menu_id AS CHAR);
+
+	WHILE sTempChd IS NOT NULL DO
+		SET sTemp = CONCAT(sTemp,',',sTempChd);
+		SELECT GROUP_CONCAT(menu_id) INTO sTempChd FROM sys_menu WHERE FIND_IN_SET(menu_pid, sTempChd) > 0;
+	END WHILE;
+	RETURN substring(sTemp, 2);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for func_query_children_menus
+-- ----------------------------
+DROP FUNCTION IF EXISTS `func_query_children_menus`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `func_query_children_menus`(in_menu_ids VARCHAR(1000)) RETURNS varchar(4000) CHARSET utf8
+BEGIN
+	DECLARE sTemp VARCHAR(4000);
+	DECLARE sTempChd VARCHAR(4000);
+
+	SET sTemp='';
+	SET sTempChd = in_menu_ids;
+
+	WHILE sTempChd IS NOT NULL DO
+		SET sTemp = CONCAT(sTemp,',',sTempChd);
+		SELECT GROUP_CONCAT(menu_id) INTO sTempChd FROM sys_menu WHERE FIND_IN_SET(menu_pid, sTempChd) > 0;
+	END WHILE;
+	RETURN substring(sTemp, 2);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for func_query_parents_menu
+-- ----------------------------
+DROP FUNCTION IF EXISTS `func_query_parents_menu`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `func_query_parents_menu`(in_menu_id INT) RETURNS varchar(4000) CHARSET utf8
+BEGIN
+	DECLARE sTemp VARCHAR(4000);
+	DECLARE sTempChd VARCHAR(4000);
+
+	SET sTemp='';
+	SET sTempChd = CAST(in_menu_id AS CHAR);
+	SET sTemp = CONCAT(sTemp,',',sTempChd);
+
+	SELECT menu_pid INTO sTempChd FROM sys_menu WHERE menu_id = sTempChd;
+	WHILE sTempChd <> 0 DO
+		SET sTemp = CONCAT(sTemp,',',sTempChd);
+		SELECT menu_pid INTO sTempChd FROM sys_menu WHERE menu_id = sTempChd;
+	END WHILE;
+RETURN substring(sTemp, 2);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for func_query_parents_menus
+-- ----------------------------
+DROP FUNCTION IF EXISTS `func_query_parents_menus`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `func_query_parents_menus`(in_menu_ids VARCHAR(1000)) RETURNS varchar(4000) CHARSET utf8
+BEGIN
+	DECLARE sTemp VARCHAR(4000);
+	DECLARE sTempChd VARCHAR(4000);
+	DECLARE sLth INT;
+	DECLARE i INT;
+	DECLARE id VARCHAR(10);
+
+	SET sLth = length(in_menu_ids) - length(replace(in_menu_ids, ',', '')) + 1;#ids以','切割的
+	SET sTemp='';
+	SET sTempChd = '';
+	SET i = 1;
+
+	WHILE i <= sLth DO
+		SET id = reverse(substring_index(reverse(substring_index(in_menu_ids, ',', i)), ',', 1));
+		SELECT func_query_parents_menu(id+0) INTO sTempChd;
+		SET sTemp = CONCAT(sTemp,',',sTempChd);
+		SET i = i + 1;
+	END WHILE;
+RETURN substring(sTemp, 2);
 END
 ;;
 DELIMITER ;
