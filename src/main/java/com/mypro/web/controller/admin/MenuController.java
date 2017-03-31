@@ -28,12 +28,12 @@ public class MenuController extends BaseAdminController {
 	private SysMenuService sysMenuService;
 	
 	/**
-	 * 查询菜单树
+	 * 查询用户菜单树菜单树
 	 * @return
 	 */
 	@RequestMapping(value = "/menu/tree", method = RequestMethod.POST)
 	public List<Map<String, Object>> tree(){
-		return SysMenu.getMenuTree(sysMenuService.queryMenus(), null);
+		return SysMenu.getMenuTree(sysMenuService.queryMenus(getCurrentUser()), null);
 	}
 	
 	/**

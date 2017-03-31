@@ -13,7 +13,7 @@ public class MyUserDetails extends SysUser implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	//private List<SysRole> roles;
-	private List<SysOpt> opts;;//用户拥有的所有操作，其格式为menu_id:opt_id
+	private List<SysOpt> opts;//用户拥有的所有操作，其格式为menu_id:opt_id
 	
 	/*public MyUserDetails(SysUser user, List<SysRole> roles){
         super(user);
@@ -54,6 +54,14 @@ public class MyUserDetails extends SysUser implements UserDetails {
 	@Override
 	public String getUsername() {
 		return super.getUserName();
+	}
+
+	public List<SysOpt> getOpts() {
+		return opts;
+	}
+
+	public void setOpts(List<SysOpt> opts) {
+		this.opts = opts;
 	}
 
 	@Override

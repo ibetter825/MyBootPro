@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
-<mapper namespace="com.mypro.dao.admin.SysMenuDao" >  
+<mapper namespace="com.mypro.dao.admin.SysMenuDao" >
+	<resultMap type="com.mypro.bean.entity.admin.SysMenu" id="baseResultMap">
+		<id property="menuId" column="menu_id"/>
+  		<result property="menuName" column="menu_name"/>
+  		<result property="menuUrl" column="menu_url"/>
+  		<result property="menuDesc" column="menu_desc"/>
+  		<result property="menuPid" column="menu_pid"/>
+  		<result property="menuState" column="menu_state"/>
+  		<result property="menuLevel" column="menu_level"/>
+  		<result property="menuSeq" column="menu_seq"/>
+  		<result property="menuIcon" column="menu_icon"/>
+	</resultMap>
+	<sql id="baseColumnList">
+		menu_id, menu_name, menu_url, menu_desc, menu_pid, menu_state, menu_level, menu_seq, menu_icon
+	</sql>
     <select id="selectWithParams" parameterType="java.util.Map" resultType="java.util.Map">
-    	select * from sys_menu 
+    	select <include refid="baseColumnList"/> from sys_menu 
     	<trim prefix="WHERE" prefixOverrides="AND|OR">
     		<if test="menu_id != null and menu_id != ''">
 	    		menu_id = #{menu_id, jdbcType=INTEGER}
@@ -20,5 +34,8 @@
 	    		and menu_state <![CDATA[<>]]> -1
 	    	</if>
     	</trim>
+    </select>
+    <select id="selectWithMenuIds" parameterType="java.util.Map" resultMap="baseResultMap">
+    	SELECT <include refid="baseColumnList"/> FROM sys_menu where FIND_IN_SET(menu_id, func_query_parents_menus(${menuIds}))
     </select>
 </mapper>  

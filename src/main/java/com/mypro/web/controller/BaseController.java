@@ -6,10 +6,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RestController;
+import com.mypro.configure.security.customer.MyUserDetails;
 
 @RestController
 public class BaseController {
@@ -34,6 +36,16 @@ public class BaseController {
 		}
 		return res;
 	}
+	
+	/**
+	 * 获取当前session中的用户
+	 * @return
+	 */
+	public MyUserDetails getCurrentUser(){
+		MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return userDetails;
+	}
+	
 	/**
 	 * 获取系统根目录
 	 * @return

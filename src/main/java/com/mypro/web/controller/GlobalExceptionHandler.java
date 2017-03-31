@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
 	
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, HttpServletResponse resp, Exception e) throws Exception {
+    	e.printStackTrace();
     	if(WebUtil.isAjax(req)){
 			PrintWriter writer = null;
 			try {

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.mypro.bean.entity.admin.SysMenu;
 import com.mypro.bean.rq.QueryRq;
+import com.mypro.configure.security.customer.MyUserDetails;
 
 /**
  * 系统菜单 service接口
@@ -17,6 +18,12 @@ public interface SysMenuService {
 	 * @return
 	 */
 	public List<SysMenu> queryMenus();
+	/**
+	 * 查询用户的所有菜单
+	 * @param userId
+	 * @return
+	 */
+	public List<SysMenu> queryMenus(MyUserDetails user);
 	/**
 	 * 通过参数查询菜单
 	 * @return

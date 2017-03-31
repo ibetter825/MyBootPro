@@ -18,4 +18,10 @@ public interface SysMenuDao extends BaseDao<SysMenu> {
 	 * @return
 	 */
 	public List<Map<String, Object>> selectWithParams(Map<String, Object> rq);
+	/**
+	 * 传入('1,2,3,4')格式的菜单id查询
+	 * @param menuIds
+	 * @return
+	 */
+	public List<SysMenu> selectWithMenuIds(Map<String, String> rq);
 }

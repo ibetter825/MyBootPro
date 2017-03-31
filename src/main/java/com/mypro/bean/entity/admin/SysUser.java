@@ -31,6 +31,8 @@ public class SysUser extends BaseEntity {
 	 */
 	public SysUser(SysUser sysUser) {
 		this.userId = sysUser.getUserId();
+		this.isSuper = sysUser.getIsSuper();
+		//下面三个是ss登录需要的字段
 		this.userName = sysUser.getUserName();
 		this.userPwd = sysUser.getUserPwd();
 		this.userSalt = sysUser.getUserSalt();
