@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
+<mapper namespace="com.mypro.dao.admin.SysOptDao" >  
+	<resultMap type="com.mypro.bean.entity.admin.SysOpt" id="baseResultMap">
+		<id property="optId" column="opt_id"/>
+		<id property="optCode" column="opt_code"/>
+		<id property="menuId" column="menu_id"/>
+  		<result property="optLabel" column="opt_label"/>
+  		<result property="optDesc" column="opt_desc"/>
+  		<result property="optState" column="opt_state"/>
+  		<result property="optSeq" column="opt_seq"/>
+  		<result property="optIcon" column="opt_icon"/>
+  		<result property="optClass" column="opt_class"/>
+  		<result property="isShow" column="is_show"/>
+  		<result property="optType" column="opt_type"/>
+  		<result property="optSuburl" column="opt_suburl"/>
+  		<result property="optHandler" column="opt_handler"/>
+	</resultMap>
+    <select id="selectUserOpts" parameterType="java.lang.Integer" resultMap="baseResultMap">
+    	SELECT
+			opt.*
+		FROM
+			sys_opt opt
+		WHERE
+			opt.opt_id IN (
+				SELECT
+					r.opt_id
+				FROM
+					sys_right r
+				WHERE
+					r.role_id IN (
+						SELECT
+							ur.role_id
+						FROM
+							sys_user_role ur
+						WHERE
+							ur.user_id = #{userId, jdbcType=INTEGER}
+					)
+				OR r.group_id IN (
+					SELECT
+						ug.group_id
+					FROM
+						sys_user_group ug
+					WHERE
+						ug.user_id = #{userId, jdbcType=INTEGER}
+				)
+			)
+    </select>
+</mapper>  

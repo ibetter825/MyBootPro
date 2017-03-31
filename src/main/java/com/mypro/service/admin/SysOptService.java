@@ -10,4 +10,10 @@ import com.mypro.bean.entity.admin.SysOpt;
  */
 public interface SysOptService {
 	public List<SysOpt> queryOpts(SysOpt opt);
+	/**
+	 * 查询拥有的所有操作
+	 * @param userId
+	 * @return
+	 */
+	public List<SysOpt> queryUserOpts(Integer userId);
 }

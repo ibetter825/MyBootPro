@@ -11,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
 import com.mypro.bean.constant.SecurityConstant;
 import com.mypro.common.utils.Md5Util;
 import com.mypro.configure.security.exception.WrongCaptchaException;
@@ -43,7 +42,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         //加密过程在这里体现
         if (!Md5Util.md5(password+usersalt).equals(user.getPassword()))
             throw new BadCredentialsException(SecurityConstant.WRONG_PASSWORD_MSG);
-
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         return new UsernamePasswordAuthenticationToken(user, password, authorities);
 	}

@@ -20,4 +20,9 @@ public class SysOptServiceImpl implements SysOptService {
 	public List<SysOpt> queryOpts(SysOpt opt) {
 		return sysOptDao.select(opt);
 	}
+
+	@Override
+	public List<SysOpt> queryUserOpts(Integer userId) {
+		return null;
+	}
 }

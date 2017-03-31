@@ -43,6 +43,11 @@ public class SecurityConstant {
 	 */
 	public final static String USER_NAME_NOT_FOUND_MSG = "用户不存在";
 	/**
+	 * 查询用户的操作出错
+	 */
+	public final static String USER_RIGHT_SELECT_FAIL = "用户权限查询失败";
+	public final static String USER_RIGHT_INIT_FAIL = "用户权限处理失败";
+	/**
 	 * 密码错误
 	 */
 	public final static String WRONG_PASSWORD_MSG = "用户名或者密码错误";
