@@ -17,4 +17,8 @@ public class WebConstant {
 	 * 是否是Ajax
 	 */
 	public final static String REUQEST_TYPE_AJAX = "XMLHttpRequest";
+	/**
+	 * 后台管理请求根路径
+	 */
+	public final static String ADMIN_REQUEST_ROOT_PATH = "/admin";
 }

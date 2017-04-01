@@ -15,7 +15,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
-import com.mypro.bean.entity.admin.SysOpt;
+import com.mypro.bean.constant.WebConstant;
 import com.mypro.dao.admin.SysOptDao;
 
 @Service
@@ -27,14 +27,14 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 	@PostConstruct//被@PostConstruct修饰的方法会在服务器加载Servle的时候运行，并且只会被服务器执行一次。PostConstruct在构造函数之后执行,init()方法之前执行。
     private void loadResourceDefine() {//一定要加上@PostConstruct注解
 		//在Web服务器启动时，提取系统中的所有权限。
-		List<SysOpt> list = optDao.selectAll();
+		List<Map<String, Object>> list = optDao.selectAllOpts();
         if(list != null && list.size() > 0) {
         	resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
         	ConfigAttribute ca = new SecurityConfig("all");
         	Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
         	atts.add(ca);
-        	for (SysOpt opt : list)
-        		resourceMap.put("/admin", atts);
+        	for (Map<String, Object> opt : list)
+        		resourceMap.put(WebConstant.ADMIN_REQUEST_ROOT_PATH + "/" + opt.get("menu_code") + "/" + opt.get("opt_code"), atts);
         }
     }
 	@Override

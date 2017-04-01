@@ -7,11 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mypro.bean.entity.admin.SysMenu;
-import com.mypro.bean.entity.admin.SysOpt;
 import com.mypro.bean.rq.QueryRq;
 import com.mypro.configure.security.customer.MyUserDetails;
 import com.mypro.dao.admin.SysMenuDao;
@@ -35,13 +33,13 @@ public class SysMenuServiceImpl implements SysMenuService {
 			return sysMenuDao.selectAll();
 		else{
 			StringBuffer buffer = new StringBuffer();
-			List<SysOpt> opts = user.getOpts();
+			List<Map<String, Object>> opts = user.getOpts();
 			Map<String, String> rq = Maps.newHashMap();
 			String menuIds = "";
 			if(opts.size() != 0){
-				for (SysOpt opt : opts) {
-					if(buffer.indexOf(opt.getMenuId()+",") == -1)
-						buffer.append(opt.getMenuId()+",");
+				for (Map<String, Object> opt : opts) {
+					if(buffer.indexOf(opt.get("menu_id")+",") == -1)
+						buffer.append(opt.get("menu_id")+",");
 				}
 				menuIds = buffer.substring(0, buffer.length() - 1).toString();
 			}

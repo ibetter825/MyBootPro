@@ -2,10 +2,11 @@ package com.mypro.configure.security.customer;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.mypro.bean.entity.admin.SysOpt;
+import com.mypro.bean.constant.WebConstant;
 import com.mypro.bean.entity.admin.SysUser;
 
 public class MyUserDetails extends SysUser implements UserDetails {
@@ -13,13 +14,13 @@ public class MyUserDetails extends SysUser implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	//private List<SysRole> roles;
-	private List<SysOpt> opts;//用户拥有的所有操作，其格式为menu_id:opt_id
+	private List<Map<String, Object>> opts;//用户拥有的所有操作，其格式为menu_id:opt_id
 	
 	/*public MyUserDetails(SysUser user, List<SysRole> roles){
         super(user);
         this.roles = roles;
     }*/
-	public MyUserDetails(SysUser user, List<SysOpt> opts){
+	public MyUserDetails(SysUser user, List<Map<String, Object>> opts){
         super(user);
         this.opts = opts;
     }
@@ -40,8 +41,8 @@ public class MyUserDetails extends SysUser implements UserDetails {
 		if(opts == null || opts.size() < 1)
             return AuthorityUtils.commaSeparatedStringToAuthorityList("");
 		StringBuilder commaBuilder = new StringBuilder();
-        for(SysOpt opt : opts)
-            commaBuilder.append(opt.getMenuId()+":"+opt.getOptId()).append(",");
+        for(Map<String, Object> opt : opts)
+            commaBuilder.append(WebConstant.ADMIN_REQUEST_ROOT_PATH + "/" + opt.get("menu_code") + "/" + opt.get("opt_code")).append(",");
         String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 	}
@@ -55,12 +56,12 @@ public class MyUserDetails extends SysUser implements UserDetails {
 	public String getUsername() {
 		return super.getUserName();
 	}
-
-	public List<SysOpt> getOpts() {
+	
+	public List<Map<String, Object>> getOpts() {
 		return opts;
 	}
 
-	public void setOpts(List<SysOpt> opts) {
+	public void setOpts(List<Map<String, Object>> opts) {
 		this.opts = opts;
 	}
 

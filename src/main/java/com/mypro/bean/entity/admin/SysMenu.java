@@ -21,6 +21,7 @@ public class SysMenu extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer menuId;
+	private String menuCode;
 	private String menuName;
 	private String menuUrl;
 	private String menuDesc;
@@ -67,6 +68,14 @@ public class SysMenu extends BaseEntity {
 
 	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
+	}
+
+	public String getMenuCode() {
+		return menuCode;
+	}
+
+	public void setMenuCode(String menuCode) {
+		this.menuCode = menuCode;
 	}
 
 	public String getMenuName() {
