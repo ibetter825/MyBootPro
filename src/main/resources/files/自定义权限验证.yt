@@ -1,0 +1,7 @@
+1.系统在加载servlet的时候，调用MyInvocationSecurityMetadataSourceService中的loadResourceDefine方法
+	将所有的操作查询出来，再组合成集合(resourceMap)，这就是所有需要权限验证的内容
+2.用户在登录的时候，会将用户的所有操作查询出来，再组合成用户自己的权限集合
+3.当用户在操作任何一个链接的时候，就会根据url来在resourceMap中查找该资源是否需要进行权限验证
+	如果不存在怎么放过去
+	如果存在则继续在MyAccessDecisionManager的decide方法中验证
+4.decide中验证，循环用户的权限集合，如果该url存在则拥有权限，如果不存在在抛出异常
