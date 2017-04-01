@@ -14,9 +14,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.mypro.bean.constant.SecurityConstant;
+import com.mypro.configure.security.Authentication.MySecurityInterceptor;
 import com.mypro.configure.security.customer.MyAuthenticationProvider;
 import com.mypro.configure.security.customer.MyPersistentTokenRepository;
 import com.mypro.configure.security.handler.MyLogOutHandler;
@@ -36,10 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	@Autowired
 	private MyPersistentTokenRepository myPersistentTokenRepository;
+	@Autowired
+	private MySecurityInterceptor securityFilter;
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().sameOrigin()//设置页面可以被同域名下的iframe嵌套iframe嵌套
+        http.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)//在正确的位置添加自定义的过滤器  
+        	.headers().frameOptions().sameOrigin()//设置页面可以被同域名下的iframe嵌套iframe嵌套
         	.and().authorizeRequests()
                 .antMatchers("/", "/static/**", "/tag/*", "/admin/login/*").permitAll()
                 .anyRequest().authenticated()
