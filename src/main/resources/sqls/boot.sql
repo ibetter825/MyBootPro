@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-03-31 16:09:11
+Date: 2017-04-01 15:20:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,6 +64,7 @@ INSERT INTO `sys_group` VALUES ('3', '子分组2', '', '1', '1');
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `menu_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menu_code` varchar(50) DEFAULT '' COMMENT '菜单代码问题',
   `menu_name` varchar(50) NOT NULL DEFAULT '',
   `menu_url` varchar(100) DEFAULT '',
   `menu_desc` varchar(200) DEFAULT '',
@@ -73,28 +74,29 @@ CREATE TABLE `sys_menu` (
   `menu_seq` int(11) NOT NULL DEFAULT '0' COMMENT '菜单排序',
   `menu_icon` varchar(200) DEFAULT '' COMMENT '菜单图标',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '工作台', '/admin/forward/desk.html', 'sss', '0', '1', '0', '0', 'icon-dashboard');
-INSERT INTO `sys_menu` VALUES ('2', '模型管理', '', '', '0', '1', '0', '1', 'icon-coffee');
-INSERT INTO `sys_menu` VALUES ('3', '模块设计', '', 'm', '0', '1', '0', '2', 'icon-laptop');
-INSERT INTO `sys_menu` VALUES ('4', '常用工具', '', '', '0', '1', '0', '3', 'icon-glass');
-INSERT INTO `sys_menu` VALUES ('5', '文件管理', '', '', '0', '1', '0', '4', 'icon-desktop');
-INSERT INTO `sys_menu` VALUES ('6', '系统设计', '', '', '0', '1', '0', '5', ' icon-cogs');
-INSERT INTO `sys_menu` VALUES ('7', '管理信息', '', '', '2', '1', '1', '0', '');
-INSERT INTO `sys_menu` VALUES ('8', '其他设置', '', '', '2', '1', '1', '1', '');
-INSERT INTO `sys_menu` VALUES ('9', '编辑器', '', '', '2', '1', '1', '2', '');
-INSERT INTO `sys_menu` VALUES ('10', '日期管理', '', '', '2', '1', '1', '3', '');
-INSERT INTO `sys_menu` VALUES ('11', '首页模版', '/admin/desk', '', '7', '1', '2', '0', 'icon-laptop');
-INSERT INTO `sys_menu` VALUES ('12', '首页模版2', '/admin/desk', '', '7', '1', '2', '1', '');
-INSERT INTO `sys_menu` VALUES ('13', '文件数据', '/admin/desk', '', '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('14', '测试菜单', '/admin/forward/tpl', '', '11', '1', '2', '0', '');
-INSERT INTO `sys_menu` VALUES ('15', '权限管理', '', '', '6', '1', '1', '0', '');
-INSERT INTO `sys_menu` VALUES ('16', '菜单管理', '/admin/forward/menu.html', '', '15', '1', '2', '0', 'icon-list');
-INSERT INTO `sys_menu` VALUES ('17', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
+INSERT INTO `sys_menu` VALUES ('1', '', '工作台', '/admin/forward/desk.html', 'sss', '0', '1', '0', '0', 'icon-dashboard');
+INSERT INTO `sys_menu` VALUES ('2', '', '模型管理', '', '', '0', '1', '0', '1', 'icon-coffee');
+INSERT INTO `sys_menu` VALUES ('3', '', '模块设计', '', 'm', '0', '1', '0', '2', 'icon-laptop');
+INSERT INTO `sys_menu` VALUES ('4', '', '常用工具', '', '', '0', '1', '0', '3', 'icon-glass');
+INSERT INTO `sys_menu` VALUES ('5', '', '文件管理', '', '', '0', '1', '0', '4', 'icon-desktop');
+INSERT INTO `sys_menu` VALUES ('6', '', '系统设计', '', '', '0', '1', '0', '5', ' icon-cogs');
+INSERT INTO `sys_menu` VALUES ('7', '', '管理信息', '', '', '2', '1', '1', '0', '');
+INSERT INTO `sys_menu` VALUES ('8', '', '其他设置', '', '', '2', '1', '1', '1', '');
+INSERT INTO `sys_menu` VALUES ('9', '', '编辑器', '', '', '2', '1', '1', '2', '');
+INSERT INTO `sys_menu` VALUES ('10', '', '日期管理', '', '', '2', '1', '1', '3', '');
+INSERT INTO `sys_menu` VALUES ('11', '', '首页模版', '/admin/desk', '', '7', '1', '2', '0', 'icon-laptop');
+INSERT INTO `sys_menu` VALUES ('12', '', '首页模版2', '/admin/desk', '', '7', '1', '2', '1', '');
+INSERT INTO `sys_menu` VALUES ('13', '', '文件数据', '/admin/desk', '', '11', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('14', 'test', '测试菜单', '/admin/forward/tpl', '', '11', '1', '2', '0', '');
+INSERT INTO `sys_menu` VALUES ('15', '', '权限管理', '', '', '6', '1', '1', '0', '');
+INSERT INTO `sys_menu` VALUES ('16', 'menu', '菜单管理', '/admin/forward/menu.html', '', '15', '1', '2', '0', 'icon-list');
+INSERT INTO `sys_menu` VALUES ('17', '', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
+INSERT INTO `sys_menu` VALUES ('18', '', '测试', '', '', '0', '1', '0', '0', '');
 
 -- ----------------------------
 -- Table structure for sys_menu_config
@@ -144,7 +146,7 @@ INSERT INTO `sys_opt` VALUES ('1', 'add', '新增', '', '1', '14', '0', 'icon-pl
 INSERT INTO `sys_opt` VALUES ('2', 'edit', '编辑', '', '1', '14', '1', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
 INSERT INTO `sys_opt` VALUES ('3', 'add2', '新增2', '', '1', '14', '2', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 INSERT INTO `sys_opt` VALUES ('4', 'edit2', '编辑2', '', '1', '14', '3', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
-INSERT INTO `sys_opt` VALUES ('5', 'add', '新增', '', '1', '16', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('5', 'aoe', '新增', '', '1', '16', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 
 -- ----------------------------
 -- Table structure for sys_opt_log
@@ -157,7 +159,7 @@ CREATE TABLE `sys_opt_log` (
   `opt_log_cont` varchar(2000) DEFAULT '' COMMENT '操作内容',
   `opt_log_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1增-1删2改3批量0其他',
   PRIMARY KEY (`opt_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt_log
@@ -189,6 +191,25 @@ INSERT INTO `sys_opt_log` VALUES ('24', '1490837687008', '10000', '编辑操作:
 INSERT INTO `sys_opt_log` VALUES ('25', '1490838112923', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"菜单编号\\\",\\\"name\\\":\\\"menu_id\\\",\\\"column\\\":\\\"menu_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"validate[required,custom[integer]]\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"菜单名称\\\",\\\"name\\\":\\\"menu_name\\\",\\\"column\\\":\\\"menu_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"validate[required]\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[{\\\"label\\\":\\\"菜单编号\\\",\\\"name\\\":\\\"menu_id\\\",\\\"column\\\":\\\"menu_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"validate[custom[integer]]\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"菜单名称\\\",\\\"name\\\":\\\"menu_name\\\",\\\"column\\\":\\\"menu_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"validate[required]\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]},\\\"subMethod\\\":\\\"\\\"}\",\"menuId\":14}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('26', '1490838122084', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('27', '1490838127470', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('28', '1491017296830', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('29', '1491017336729', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('30', '1491022352666', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('31', '1491022633656', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('32', '1491022696266', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('33', '1491023198465', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('34', '1491023285370', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('35', '1491023295616', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('36', '1491023348175', '10001', '编辑操作:[{\"menuId\":18,\"menuName\":\"测试\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('37', '1491023599411', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('38', '1491023620543', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('39', '1491023669662', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('40', '1491023954430', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('41', '1491026760476', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('42', '1491026826842', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('43', '1491027279597', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('44', '1491027285669', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('45', '1491030305419', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('46', '1491030348219', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
 
 -- ----------------------------
 -- Table structure for sys_persistent_logins
@@ -228,7 +249,6 @@ INSERT INTO `sys_right` VALUES ('1', '14', '4', '0');
 INSERT INTO `sys_right` VALUES ('2', '14', '2', '1');
 INSERT INTO `sys_right` VALUES ('2', '14', '3', '0');
 INSERT INTO `sys_right` VALUES ('2', '14', '4', '0');
-INSERT INTO `sys_right` VALUES ('2', '16', '5', '0');
 
 -- ----------------------------
 -- Table structure for sys_role
