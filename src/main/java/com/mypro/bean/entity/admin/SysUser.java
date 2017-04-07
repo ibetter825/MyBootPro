@@ -38,6 +38,10 @@ public class SysUser extends BaseEntity {
 		this.userSalt = sysUser.getUserSalt();
 	}
 
+	public boolean isSuper(){
+		return this.isSuper == 1;
+	}
+	
 	public Integer getUserId() {
 		return userId;
 	}

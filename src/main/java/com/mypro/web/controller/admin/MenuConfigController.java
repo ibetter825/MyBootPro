@@ -84,8 +84,10 @@ public class MenuConfigController extends BaseAdminController {
 	 * @param config
 	 * @return
 	 */
-	@RequestMapping("/cfg/get")
-	public ResultModel get(SysMenuConfig config){
+	@RequestMapping("/cfg/get/{mid}")
+	public ResultModel get(@PathVariable("mid") Integer mid){
+		SysMenuConfig config = new SysMenuConfig();
+		config.setMenuId(mid);
 		ResultModel model = null;
 		config = smcService.queryConfig(config);
 		if(config != null){

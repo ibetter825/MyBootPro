@@ -94,7 +94,7 @@
 		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
 		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
 		
-		$.get('/admin/cfg/get?menuId='+menuId, function(data){
+		$.get('/admin/cfg/get/'+menuId, function(data){
 			if(data.success){
 				var dto = data.data.dto;
 				if(dto['cfgSearch']) config['search'] = $.parseJSON(dto.cfgSearch);
@@ -111,7 +111,7 @@
 		function init(){
 			//写入搜索表单的数据
 			admin.setSearchCont();
-			$.get('/admin/opt/btns?menuId='+menuId, function(data){
+			$.get('/admin/opt/btns/'+menuId, function(data){
 				if(data){
 					//写入操作按钮
 					if(!config.grid) config.grid = {};

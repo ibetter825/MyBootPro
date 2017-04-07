@@ -1,6 +1,8 @@
 package com.mypro.service.admin;
 
 import java.util.List;
+import java.util.Map;
+
 import com.mypro.bean.entity.admin.SysOpt;
 
 /**
@@ -11,9 +13,10 @@ import com.mypro.bean.entity.admin.SysOpt;
 public interface SysOptService {
 	public List<SysOpt> queryOpts(SysOpt opt);
 	/**
-	 * 查询拥有的所有操作
-	 * @param userId
+	 * 查询用户拥有的所有操作
+	 * 查询用户的角色，查询用户的分组，再去关联right表，再查询出并集
+	 * @param rq[userId, menuId]
 	 * @return
 	 */
-	public List<SysOpt> queryUserOpts(Integer userId);
+	public List<SysOpt> queryOptsByUseAndMenu(Map<String, Integer> rq);
 }

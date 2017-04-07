@@ -1,6 +1,8 @@
 package com.mypro.service.admin.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class SysOptServiceImpl implements SysOptService {
 	}
 
 	@Override
-	public List<SysOpt> queryUserOpts(Integer userId) {
-		return null;
+	public List<SysOpt> queryOptsByUseAndMenu(Map<String, Integer> rq) {
+		return sysOptDao.selectOptsByUserAndMenu(rq);
 	}
 }

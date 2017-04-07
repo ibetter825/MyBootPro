@@ -29,7 +29,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 	@Override
 	public List<SysMenu> queryMenus(MyUserDetails user) {
-		if(user.getIsSuper() == 1)//超级管理员
+		if(user.isSuper())//超级管理员
 			return sysMenuDao.selectAll();
 		else{
 			StringBuffer buffer = new StringBuffer();

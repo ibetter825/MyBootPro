@@ -25,11 +25,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private SysOptDao optDao;
 	
 	@Override
-	public UserDetails loadUserByUsername(String user_name) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		SysUser user;
         try {
         	user = new SysUser();
-    		user.setUserName(user_name);
+    		user.setUserName(userName);
             user = userDao.selectOne(user);
         } catch (Exception e) {
             throw new UsernameNotFoundException(SecurityConstant.USER_NAME_NOT_FOUND_MSG);
@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 role.setRoleState((short) 1);
                 roles.add(role);
                 return new MyUserDetails(user, roles);*/
-            	return new MyUserDetails(user, optDao.selectUserOpts(user.getUserId()));
+            	return new MyUserDetails(user, optDao.selectOptsByUser(user.getUserId()));
             } catch (Exception e) {
                 throw new SecurityCommonException(SecurityConstant.USER_RIGHT_SELECT_FAIL);
             }

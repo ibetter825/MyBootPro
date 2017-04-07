@@ -29,7 +29,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 			throws AccessDeniedException, InsufficientAuthenticationException {
 		if(configAttributes == null) return;
 		MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-		if(userDetails.getIsSuper() == 1) return;//超级管理员拥有所有权限不需要再验证权限
+		if(userDetails.isSuper()) return;//超级管理员拥有所有权限不需要再验证权限
 		FilterInvocation filterInvocation = (FilterInvocation) object;
 		String reqUri = filterInvocation.getHttpRequest().getRequestURI();
 		if(!reqUri.startsWith(WebConstant.ADMIN_REQUEST_ROOT_PATH)) return;//不拦截/admin/**以外的路径

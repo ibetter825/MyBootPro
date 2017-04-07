@@ -16,7 +16,7 @@
   		<result property="optSuburl" column="opt_suburl"/>
   		<result property="optHandler" column="opt_handler"/>
 	</resultMap>
-    <select id="selectUserOpts" parameterType="java.lang.Integer" resultType="java.util.Map">
+    <select id="selectOptsByUser" parameterType="java.lang.Integer" resultType="java.util.Map">
     	SELECT
 			opt.*, menu.menu_route
 		FROM
@@ -45,5 +45,32 @@
 						ug.user_id = #{userId, jdbcType=INTEGER}
 				)
 			)
+    </select>
+    <select id="selectOptsByUserAndMenu" parameterType="java.util.Map" resultMap="baseResultMap">
+    	SELECT
+			o.*
+		FROM
+			sys_opt o
+		LEFT JOIN sys_right r ON o.opt_id = r.opt_id
+		WHERE
+			r.menu_id = #{menuId, jdbcType=INTEGER}
+		AND (
+			r.role_id IN (
+				SELECT
+					ur.role_id
+				FROM
+					sys_user_role ur
+				WHERE
+					ur.user_id = #{userId, jdbcType=INTEGER}
+			)
+			OR r.group_id IN (
+				SELECT
+					ug.group_id
+				FROM
+					sys_user_group ug
+				WHERE
+					ug.user_id = #{userId, jdbcType=INTEGER}
+			)
+		)
     </select>
 </mapper>  
