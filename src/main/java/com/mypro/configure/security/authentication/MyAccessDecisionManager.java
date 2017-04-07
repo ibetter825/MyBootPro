@@ -1,4 +1,4 @@
-package com.mypro.configure.security.Authentication;
+package com.mypro.configure.security.authentication;
 
 import java.util.Collection;
 import org.springframework.security.access.AccessDecisionManager;
@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Service;
 
+import com.mypro.bean.constant.SecurityConstant;
+import com.mypro.bean.constant.WebConstant;
 import com.mypro.configure.security.customer.MyUserDetails;
 
 @Service
@@ -25,16 +27,17 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 	@Override
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes)
 			throws AccessDeniedException, InsufficientAuthenticationException {
-		if(configAttributes == null)return;  
+		if(configAttributes == null) return;
 		MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-		if(userDetails.getIsSuper() == 1)return;//超级管理员拥有所有权限不需要再判断下面的权限
+		if(userDetails.getIsSuper() == 1) return;//超级管理员拥有所有权限不需要再验证权限
 		FilterInvocation filterInvocation = (FilterInvocation) object;
+		String reqUri = filterInvocation.getHttpRequest().getRequestURI();
+		if(!reqUri.startsWith(WebConstant.ADMIN_REQUEST_ROOT_PATH)) return;//不拦截/admin/**以外的路径
+		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		for (GrantedAuthority auth : authorities) {
-			if(auth.getAuthority().contains(filterInvocation.getHttpRequest().getRequestURI()))
-				return;
-		}
-        throw new AccessDeniedException("权限不足"); 
+		for (GrantedAuthority auth : authorities)
+			if(auth.getAuthority().contains(reqUri)) return; //如果包含该权限则通过验证
+        throw new AccessDeniedException(SecurityConstant.USER_RIGHT_VALI_FAIL); 
 	}
 
 	@Override

@@ -41,8 +41,8 @@ public class MyUserDetails extends SysUser implements UserDetails {
 		if(opts == null || opts.size() < 1)
             return AuthorityUtils.commaSeparatedStringToAuthorityList("");
 		StringBuilder commaBuilder = new StringBuilder();
-        for(Map<String, Object> opt : opts)
-            commaBuilder.append(WebConstant.ADMIN_REQUEST_ROOT_PATH + "/" + opt.get("menu_code") + "/" + opt.get("opt_code")).append(",");
+        for(Map<String, Object> opt : opts)//将用户拥有的所有权限，以便进行权限判断
+            commaBuilder.append(WebConstant.ADMIN_REQUEST_ROOT_PATH + "/" + opt.get("menu_route") + "/" + opt.get("opt_code")).append(",");
         String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 	}

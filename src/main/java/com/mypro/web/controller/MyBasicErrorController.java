@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mypro.bean.constant.WebConstant;
+
 /**
  * 自定义错误页面处理
  * 404
@@ -71,7 +73,7 @@ public class MyBasicErrorController extends AbstractErrorController {
         ModelAndView modelAndView = resolveErrorView(request, response, status, model);
         String uri = (String) model.get("path");//出错的请求连接
         String path = "error";
-        if(uri.startsWith("/admin"))
+        if(uri.startsWith(WebConstant.ADMIN_REQUEST_ROOT_PATH))
         	path = "admin/error";
         if(modelAndView == null)
         	modelAndView = new ModelAndView(path, model);

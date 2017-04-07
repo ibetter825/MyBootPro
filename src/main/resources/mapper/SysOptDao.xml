@@ -18,7 +18,7 @@
 	</resultMap>
     <select id="selectUserOpts" parameterType="java.lang.Integer" resultType="java.util.Map">
     	SELECT
-			opt.*, menu.menu_code
+			opt.*, menu.menu_route
 		FROM
 			sys_opt opt LEFT JOIN sys_menu menu ON menu.menu_id = opt.menu_id
 		WHERE

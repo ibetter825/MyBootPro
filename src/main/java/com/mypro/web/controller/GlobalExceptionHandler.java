@@ -2,20 +2,17 @@ package com.mypro.web.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSON;
 import com.mypro.bean.constant.WebConstant;
 import com.mypro.bean.enums.ResultMessageEnum;
-import com.mypro.bean.model.ResultModel;
+import com.mypro.bean.model.ErrorModel;
 import com.mypro.common.utils.WebUtil;
 
 /**
@@ -45,7 +42,7 @@ public class GlobalExceptionHandler {
 				resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
 				resp.setCharacterEncoding(WebConstant.DEFAULT_ENCODING); //避免乱码
 				resp.setHeader("Cache-Control", "no-cache, must-revalidate");
-				writer.print(JSON.toJSONString(new ResultModel(ResultMessageEnum.SYSTEM_EXCEPTION)));
+				writer.print(JSON.toJSONString(new ErrorModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessageEnum.SYSTEM_EXCEPTION.getMsg(), req.getRequestURI())));
 				writer.flush();
 			} catch (IOException ex) {
 				ex.printStackTrace();

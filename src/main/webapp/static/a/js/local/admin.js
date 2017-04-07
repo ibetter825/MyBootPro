@@ -86,8 +86,33 @@ var loadJS = function(id, callback, url){
 		 script.src = url;
 	}
 }
+
 var admin = {};
 !(function(app) {
+	//错误处理
+	app.error = function(xhr, textStatus, exception){
+    	var status = xhr.status;
+    	var resp = $.parseJSON(xhr.responseText);
+    	if(status){
+    		switch (status) {
+    		case 403:
+    			layer.msg("访问被拒绝: ["+resp.message+"]", {icon:5});
+    			break;
+    		case 404:
+    			layer.msg("访问地址不存在或已删除", {icon:5});
+    			break;
+    		case 504:
+    			layer.msg("请求超时", {icon:5});
+    			break;
+    		case 0:
+    			layer.msg("网络异常", {icon:5});
+    			break;
+    		default:
+    			layer.msg("错误代码: ["+status+"]", {icon:5});
+    			break;
+    		}
+    	}
+    },
 	//eval全局执行
 	app.eval = function(code){
 		var a = document .createElement ("script" );
@@ -134,12 +159,7 @@ var admin = {};
 				}, 0);
 			},
 			loadError : function(xhr, st, err) {
-				layer.open({
-					  type: 2,
-					  content: xhr.responseText,
-					  area: ['100%', '100%'],
-					  maxmin: true
-					});
+				app.error(xhr, st, err);
 		    }
 		}
 		//替换分页插件的按钮图标
@@ -363,7 +383,7 @@ var admin = {};
 					//也可以不用重新刷新页面，在本地修改grid中的数据也一样
 					$grid.trigger("reloadGrid");
 				}
-			}, 'json');
+			}, 'json').error(function(xhr, st, err) {app.error(xhr, st, err);});
 		}
 		return false;
 	}

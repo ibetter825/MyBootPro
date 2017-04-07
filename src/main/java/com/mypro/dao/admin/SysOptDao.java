@@ -20,6 +20,6 @@ public interface SysOptDao extends BaseDao<SysOpt> {
 	 * @return
 	 */
 	public List<Map<String, Object>> selectUserOpts(Integer userId);
-	@Select("select opt.*, menu.menu_code from sys_opt opt left join sys_menu menu on menu.menu_id = opt.menu_id")
+	@Select("select opt.*, menu.menu_route from sys_opt opt left join sys_menu menu on menu.menu_id = opt.menu_id")
 	public List<Map<String, Object>> selectAllOpts();
 }

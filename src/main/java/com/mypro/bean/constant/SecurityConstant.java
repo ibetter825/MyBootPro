@@ -14,6 +14,10 @@ public class SecurityConstant {
 	 */
 	public final static int COOKIE_VALIDITY_SECONDS = 1209600;//14天
 	/**
+	 * ss不拦截的请求路径
+	 */
+	public final static String[] IGNORE_REQUEST_ROUTE = {"/", "/static/**", "/tag/*", "/admin/login/*"};
+	/**
 	 * 登录成功后存默认跳转页面
 	 */
 	public final static String LOGIN_SUCCESS_DEFAULT_TARGET_URL = "/admin/index.html";
@@ -47,6 +51,7 @@ public class SecurityConstant {
 	 */
 	public final static String USER_RIGHT_SELECT_FAIL = "用户权限查询失败";
 	public final static String USER_RIGHT_INIT_FAIL = "用户权限处理失败";
+	public final static String USER_RIGHT_VALI_FAIL = "用户没有权限";
 	/**
 	 * 密码错误
 	 */
