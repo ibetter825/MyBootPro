@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-04-01 15:20:56
+Date: 2017-04-07 15:24:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ INSERT INTO `sys_group` VALUES ('3', '子分组2', '', '1', '1');
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `menu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu_code` varchar(50) DEFAULT '' COMMENT '菜单代码问题',
+  `menu_route` varchar(50) DEFAULT '' COMMENT '菜单url路径',
   `menu_name` varchar(50) NOT NULL DEFAULT '',
   `menu_url` varchar(100) DEFAULT '',
   `menu_desc` varchar(200) DEFAULT '',
@@ -136,7 +136,8 @@ CREATE TABLE `sys_opt` (
   `opt_type` varchar(20) DEFAULT '' COMMENT '操作分类',
   `opt_suburl` varchar(200) DEFAULT '' COMMENT '点击链接',
   `opt_handler` varchar(50) DEFAULT '' COMMENT '点击时调用的js方法',
-  PRIMARY KEY (`opt_id`,`opt_code`,`menu_id`)
+  PRIMARY KEY (`opt_id`,`opt_code`,`menu_id`),
+  KEY `opt_id` (`opt_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -159,7 +160,7 @@ CREATE TABLE `sys_opt_log` (
   `opt_log_cont` varchar(2000) DEFAULT '' COMMENT '操作内容',
   `opt_log_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1增-1删2改3批量0其他',
   PRIMARY KEY (`opt_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt_log
@@ -210,6 +211,14 @@ INSERT INTO `sys_opt_log` VALUES ('43', '1491027279597', '10000', '编辑操作:
 INSERT INTO `sys_opt_log` VALUES ('44', '1491027285669', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('45', '1491030305419', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('46', '1491030348219', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('47', '1491469226609', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('48', '1491469238002', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('49', '1491548012014', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('50', '1491548020191', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('51', '1491548763681', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('52', '1491548771530', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('53', '1491548794536', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('54', '1491548810222', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
 
 -- ----------------------------
 -- Table structure for sys_persistent_logins
@@ -236,19 +245,24 @@ CREATE TABLE `sys_right` (
   `menu_id` int(11) NOT NULL,
   `opt_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`role_id`,`menu_id`,`opt_id`,`group_id`)
+  PRIMARY KEY (`role_id`,`menu_id`,`opt_id`,`group_id`),
+  KEY `FK_SYS_RIGHT_MENU_ID` (`menu_id`),
+  KEY `FK_SYS_RIGHT_OPT_ID` (`opt_id`),
+  CONSTRAINT `FK_SYS_RIGHT_MENU_ID` FOREIGN KEY (`menu_id`) REFERENCES `sys_menu` (`menu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_SYS_RIGHT_OPT_ID` FOREIGN KEY (`opt_id`) REFERENCES `sys_opt` (`opt_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统权限表';
 
 -- ----------------------------
 -- Records of sys_right
 -- ----------------------------
+INSERT INTO `sys_right` VALUES ('0', '14', '2', '1');
 INSERT INTO `sys_right` VALUES ('1', '14', '1', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '2', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '3', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '4', '0');
-INSERT INTO `sys_right` VALUES ('2', '14', '2', '1');
 INSERT INTO `sys_right` VALUES ('2', '14', '3', '0');
 INSERT INTO `sys_right` VALUES ('2', '14', '4', '0');
+INSERT INTO `sys_right` VALUES ('0', '16', '5', '1');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -310,7 +324,6 @@ CREATE TABLE `sys_user_group` (
 -- ----------------------------
 -- Records of sys_user_group
 -- ----------------------------
-INSERT INTO `sys_user_group` VALUES ('10001', '1');
 INSERT INTO `sys_user_group` VALUES ('10002', '1');
 
 -- ----------------------------
