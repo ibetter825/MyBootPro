@@ -11,7 +11,7 @@ public class QueryRq {
 	/**
 	 * 查询的参数封到rq中
 	 */
-	private Map<String, Object> rq;
+	private Map<String, Object> qrq;
 	/**
 	 * 排序对象
 	 * 使用时需要将or转成为字符串的order以供Pagerhelper使用
@@ -23,11 +23,11 @@ public class QueryRq {
 	 */
 	private String order;
 	
-	public Map<String, Object> getRq() {
-		return rq;
+	public Map<String, Object> getQrq() {
+		return qrq;
 	}
-	public void setRq(Map<String, Object> rq) {
-		this.rq = rq;
+	public void setQrq(Map<String, Object> qrq) {
+		this.qrq = qrq;
 	}
 	public Map<String, String> getOr() {
 		return or;

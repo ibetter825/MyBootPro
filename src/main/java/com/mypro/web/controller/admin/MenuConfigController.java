@@ -1,21 +1,22 @@
 package com.mypro.web.controller.admin;
 
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.google.common.collect.Maps;
 import com.mypro.bean.entity.admin.SysMenuConfig;
 import com.mypro.bean.enums.ResultMessageEnum;
 import com.mypro.bean.model.PageModel;
 import com.mypro.bean.model.ResultModel;
+import com.mypro.bean.rq.BeanRq;
 import com.mypro.bean.rq.PagerRq;
+import com.mypro.bean.rq.QueryRq;
+import com.mypro.common.helper.SqlHelper;
 import com.mypro.service.admin.SysMenuConfigService;
 
 /**
@@ -39,8 +40,7 @@ public class MenuConfigController extends BaseAdminController {
 	public PageModel tables(PagerRq page){
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());
 		PageHelper.orderBy(page.getOrder());
-		String sql = "select TABLE_NAME, TABLE_COMMENT from information_schema.tables where table_schema='boot'";
-		smcService.queryTable(sql);
+		smcService.queryTable("boot");
 		return new PageModel(pager);
 	}
 	
@@ -55,9 +55,37 @@ public class MenuConfigController extends BaseAdminController {
 	public PageModel columns(PagerRq page,	@RequestParam(defaultValue = "") String tableName){
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());
 		PageHelper.orderBy(page.getOrder());
-		String sql = "select COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, ORDINAL_POSITION, COLUMN_DEFAULT, IS_NULLABLE, COLUMN_COMMENT from information_schema.columns where table_schema='boot' and table_name = '"+ tableName +"'";
-		smcService.queryTable(sql);
+		smcService.queryTable(tableName);
 		return new PageModel(pager);
+	}
+	
+	/**
+	 * 根据tableName查询数据
+	 * @param page
+	 * @param tableName
+	 * @return
+	 */
+	@RequestMapping("/db/list/{name}")
+	public PageModel list(PagerRq page,	@PathVariable("name") String tableName, QueryRq query){
+		List<Map<String, Object>> clist = smcService.queryColumns(tableName);
+		Page<Map<?, ?>> pager = PageHelper.startPage(page.getPage(), page.getSize());
+		PageHelper.orderBy(page.getOrder());
+		smcService.queryListBySql(SqlHelper.select(clist, tableName, query));
+		return new PageModel(pager);
+	}
+	
+	/**
+	 * 添加信息
+	 * @param tableName
+	 * @param bean
+	 * @return
+	 */
+	@RequestMapping(value = "/db/edit/{name}")
+	public ResultModel edit(@PathVariable("name") String tableName, BeanRq bean, QueryRq query){
+		ResultModel model = null;
+		if(smcService.editBeanBySql(SqlHelper.update(tableName, bean, query))) model = new ResultModel();
+		else model = new ResultModel(ResultMessageEnum.OPTION_EXCEPTION.getMsg());
+		return model;
 	}
 	
 	/**

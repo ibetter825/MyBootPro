@@ -601,7 +601,10 @@
 					subMethod: $('#config-sub-method').val()
 				});
 			}else if(curTarget === 'global'){
+				var gr = $grid.jqGrid('getGridParam', 'selrow');
+				var table = $gridCol.jqGrid('getRowData', gr);
 				var global = {
+					table: table['TABLE_NAME'],
 					js: editors['editor-js'].$txt.text(),
 					html: $('#editor-html').val(),
 					jssource: editors['editor-js'].$txt.html(),

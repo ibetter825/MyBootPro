@@ -49,7 +49,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 	@Override
 	public List<Map<String, Object>> queryWithParams(QueryRq query){
-		return sysMenuDao.selectWithParams(query.getRq());
+		return sysMenuDao.selectWithParams(query.getQrq());
 	}
 	@Override
 	public boolean addOrEdit(SysMenu menu) {

@@ -16,7 +16,32 @@ public interface SysMenuConfigService {
 	 * @param sql
 	 * @return
 	 */
-	public List<Map<String, Object>> queryTable(String sql);
+	public List<Map<String, Object>> queryTable(String schemaName);
+	/**
+	 * 查询表的字段
+	 * @param table
+	 * @return
+	 */
+	public List<Map<String, Object>> queryColumns(String tableName);
+	/**
+	 * 传入sql查询结果
+	 * @param sql
+	 * @return
+	 */
+	public List<Map<String, Object>> queryListBySql(String sql);
+	/**
+	 * 直接传入sql修改数据
+	 * @param sql
+	 * @return
+	 */
+	public boolean editBeanBySql(String sql);
+	/**
+	 * 直接传入sql增加数据
+	 * @param sql
+	 * @return
+	 */
+	public boolean addBeanBySql(String sql);
+	
 	/**
 	 * 修改菜单配置文件
 	 * @param config

@@ -17,7 +17,7 @@ public class ResultModel implements Serializable {
 	/**
 	 * 操作成功代码
 	 */
-	public static final String SUCCESS = "0";
+	public static final String SUCCESS = "1";
 	/**
 	 * 操作成功消息
 	 */

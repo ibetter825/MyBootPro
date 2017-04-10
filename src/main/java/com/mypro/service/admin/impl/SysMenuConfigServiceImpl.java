@@ -21,10 +21,32 @@ public class SysMenuConfigServiceImpl implements SysMenuConfigService {
 	private SysMenuConfigDao smcDao;
 	
 	@Override
-	public List<Map<String, Object>> queryTable(String sql) {
+	public List<Map<String, Object>> queryTable(String schemaName) {
+		String sql = "select TABLE_NAME, TABLE_COMMENT from information_schema.tables where table_schema='"+schemaName+"'";
+		return smcDao.selectBySql(sql);
+	}
+	
+	@Override
+	public List<Map<String, Object>> queryColumns(String tableName) {
+		String sql = "select COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, ORDINAL_POSITION, COLUMN_DEFAULT, IS_NULLABLE, COLUMN_COMMENT, COLUMN_KEY from information_schema.columns where table_schema='boot' and table_name = '"+ tableName +"'";
 		return smcDao.selectBySql(sql);
 	}
 
+	@Override
+	public List<Map<String, Object>> queryListBySql(String sql) {
+		return smcDao.selectBySql(sql);
+	}
+	
+	@Override
+	public boolean addBeanBySql(String sql) {
+		return smcDao.insertBySql(sql) == 1;
+	}
+
+	@Override
+	public boolean editBeanBySql(String sql) {
+		return smcDao.updateBySql(sql) == 1;
+	}
+	
 	@Override
 	public boolean addOrEditConfig(SysMenuConfig config) {
 		int res = smcDao.insertOrUpdateSelective(config);
@@ -34,7 +56,5 @@ public class SysMenuConfigServiceImpl implements SysMenuConfigService {
 	@Override
 	public SysMenuConfig queryConfig(SysMenuConfig config) {
 		return smcDao.selectOne(config);
-	}  
-	
-	
+	}
 }

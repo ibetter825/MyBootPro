@@ -406,16 +406,16 @@ var admin = {};
 			html.push('<label class="col-sm-4 control-label no-padding-right" for="s-'+col.name+'"> '+col.label+': </label>');
 			html.push('<div class="col-sm-8">');
 			if(col.widget === 'text')
-				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="col-sm-12 '+col.vali+']" name="rq[\''+col.name+'\']" autocomplete="off">');
+				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="col-sm-12 '+col.vali+']" name="qrq[\''+col.name+'\']" autocomplete="off">');
 			else if(col.widget === 'select'){
-				html.push('<select id="s-'+col.name+'" class="col-sm-12" name="rq[\''+col.name+'\']">');
+				html.push('<select id="s-'+col.name+'" class="col-sm-12" name="qrq[\''+col.name+'\']">');
 				html.push('<option value=""></option>');
 				var list = col.source.cont;
 				for(var j = 0, ln = list.length; j < ln; j++)
 					html.push('<option value="'+list[j].value+'">'+list[j].text+'</option>');
 				html.push('</select>');
 			} else if(col.widget === 'date')
-				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" data-constraint="rq[\''+col.name+'\']" class="auto-bind-timepicker col-sm-12 '+col.vali+']" autocomplete="off">');
+				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" data-constraint="qrq[\''+col.name+'\']" class="auto-bind-timepicker col-sm-12 '+col.vali+']" autocomplete="off">');
 			
 			html.push('</div>');
 			html.push('</div>');

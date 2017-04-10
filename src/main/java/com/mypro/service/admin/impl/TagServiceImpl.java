@@ -59,7 +59,7 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	public List<QtTag> selectWithParams(QueryRq rq) {
-		return tagDao.selectWithParams(rq.getRq());
+		return tagDao.selectWithParams(rq.getQrq());
 	}
 
 	@Override
