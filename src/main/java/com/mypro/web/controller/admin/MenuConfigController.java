@@ -55,7 +55,7 @@ public class MenuConfigController extends BaseAdminController {
 	public PageModel columns(PagerRq page,	@RequestParam(defaultValue = "") String tableName){
 		Page<Map> pager = PageHelper.startPage(page.getPage(), page.getSize());
 		PageHelper.orderBy(page.getOrder());
-		smcService.queryTable(tableName);
+		smcService.queryColumns(tableName);
 		return new PageModel(pager);
 	}
 	

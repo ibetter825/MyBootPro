@@ -121,8 +121,7 @@
 			layer.msg('请选择需要配置的菜单');
 		else{
 			//查询数据库看是否存在改菜单的配置
-			var config = {'menuId': curMenuId}
-			$.get('/admin/cfg/get', config, function(data){
+			$.get('/admin/cfg/get/'+curMenuId, function(data){
 				if(data.success) dto = data.data.dto;
 				init();
 			}, 'json');
@@ -300,7 +299,7 @@
 		}
 		
 		function getGridListElement(grid){
-			if(typeof grid === 'string')
+			if(typeof grid === 'string' && grid !== '')
 				grid = $.parseJSON(grid);
 			var html = new Array();
 				html.push('<div class="form-data col-sm-12">');
@@ -601,10 +600,10 @@
 					subMethod: $('#config-sub-method').val()
 				});
 			}else if(curTarget === 'global'){
-				var gr = $grid.jqGrid('getGridParam', 'selrow');
-				var table = $gridCol.jqGrid('getRowData', gr);
+				//var gr = $grid.jqGrid('getGridParam', 'selrow');
+				//var table = $gridCol.jqGrid('getRowData', gr);
 				var global = {
-					table: table['TABLE_NAME'],
+					//table: table['TABLE_NAME'],
 					js: editors['editor-js'].$txt.text(),
 					html: $('#editor-html').val(),
 					jssource: editors['editor-js'].$txt.html(),
