@@ -28,7 +28,9 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes)
 			throws AccessDeniedException, InsufficientAuthenticationException {
 		if(configAttributes == null) return;
-		MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+		Object principal = authentication.getPrincipal();
+		if(principal.equals("anonymousUser")) throw new AccessDeniedException(SecurityConstant.USER_NOT_LOGIN); 
+		MyUserDetails userDetails = (MyUserDetails) principal;//有可能是个字符串:"anonymousUser"匿名用户
 		if(userDetails.isSuper()) return;//超级管理员拥有所有权限不需要再验证权限
 		FilterInvocation filterInvocation = (FilterInvocation) object;
 		String reqUri = filterInvocation.getHttpRequest().getRequestURI();

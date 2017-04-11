@@ -52,6 +52,7 @@ public class SecurityConstant {
 	public final static String USER_RIGHT_SELECT_FAIL = "用户权限查询失败";
 	public final static String USER_RIGHT_INIT_FAIL = "用户权限处理失败";
 	public final static String USER_RIGHT_VALI_FAIL = "用户没有权限";
+	public final static String USER_NOT_LOGIN = "请登录系统操作";
 	/**
 	 * 密码错误
 	 */
