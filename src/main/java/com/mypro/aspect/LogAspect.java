@@ -1,6 +1,5 @@
 package com.mypro.aspect;
 
-import java.time.Instant;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -123,7 +122,7 @@ public class LogAspect {
 	private boolean saveOptLog(String method, Object[] args){
 		MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    SysOptLog log = new SysOptLog();
-	    log.setOptDateTime(Instant.now().toEpochMilli());
+	    log.setOptDateTime(System.currentTimeMillis());
 	    log.setOptUserId(userDetails.getUserId());
 	    if(method.startsWith("batch"))//批量操作对象
 	    	log.setOptLogCont("批量操作:"+JSON.toJSONString(args));
