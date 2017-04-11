@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-04-07 15:24:30
+Date: 2017-04-11 16:23:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,7 +74,7 @@ CREATE TABLE `sys_menu` (
   `menu_seq` int(11) NOT NULL DEFAULT '0' COMMENT '菜单排序',
   `menu_icon` varchar(200) DEFAULT '' COMMENT '菜单图标',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -95,8 +95,9 @@ INSERT INTO `sys_menu` VALUES ('13', '', '文件数据', '/admin/desk', '', '11'
 INSERT INTO `sys_menu` VALUES ('14', 'test', '测试菜单', '/admin/forward/tpl', '', '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('15', '', '权限管理', '', '', '6', '1', '1', '0', '');
 INSERT INTO `sys_menu` VALUES ('16', 'menu', '菜单管理', '/admin/forward/menu.html', '', '15', '1', '2', '0', 'icon-list');
-INSERT INTO `sys_menu` VALUES ('17', '', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
-INSERT INTO `sys_menu` VALUES ('18', '', '测试', '', '', '0', '1', '0', '0', '');
+INSERT INTO `sys_menu` VALUES ('17', 'db/sys_role', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
+INSERT INTO `sys_menu` VALUES ('18', '', '用户管理', '/admin/forward/tpl', '', '15', '1', '2', '2', 'icon-user');
+INSERT INTO `sys_menu` VALUES ('19', '', '分组管理', '/admin/forward/tpl', '', '15', '1', '2', '3', 'icon-group');
 
 -- ----------------------------
 -- Table structure for sys_menu_config
@@ -114,9 +115,8 @@ CREATE TABLE `sys_menu_config` (
 -- ----------------------------
 -- Records of sys_menu_config
 -- ----------------------------
-INSERT INTO `sys_menu_config` VALUES ('14', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/menu/list\",\"add\":\"/admin/menu/aoe\",\"del\":\"/admin/menu/del\",\"edit\":\"/admin/menu/aoe\"},\"option\":{\"colNames\":[\"菜单编号\",\"菜单名称\",\"菜单地址\",\"操作\"],\"colModel\":[{\"name\":\"menu_id\",\"index\":\"menu_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"menu_name\",\"index\":\"menu_name\",\"width\":90,\"editable\":true},{\"name\":\"menu_url\",\"index\":\"menu_url\",\"width\":150,\"editable\":true,\"editoptions\":{\"maxlength\":\"30\"}},{\"name\":\"myac\",\"index\":\"\",\"width\":80,\"fixed\":true,\"sortable\":false,\"resize\":false,\"formatter\":\"actions\",\"formatoptions\":{\"keys\":true}}]}}', '{\"cols\":{\"add\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[required,custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"validate[required]\",\"source\":\"\",\"value\":\"\"}],\"edit\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"validate[custom[integer]]\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"validate[required]\",\"source\":\"\",\"value\":\"\"}]},\"subMethod\":\"\"}', '{\"js\":\"function a(){    alert(1);}function b(){    alert(2);}function c(){    alert(3);}function sf(){    alert(\'tijiaobiaodan\');}\",\"html\":\"<a href=\\\"#\\\">你好</a>\",\"jssource\":\"<p>function a(){</p><p>&nbsp; &nbsp; alert(1);</p><p>}</p><p>function b(){</p><p>&nbsp; &nbsp; alert(2);</p><p>}</p><p>function c(){</p><p>&nbsp; &nbsp; alert(3);</p><p></p><p>}</p><p>function sf(){</p><p>&nbsp; &nbsp; alert(\'tijiaobiaodan\');<br></p><p>}</p><p><br></p>\"}');
-INSERT INTO `sys_menu_config` VALUES ('16', '{\"cols\":[{\"label\":\"菜单编号\",\"name\":\"menu_id\",\"column\":\"menu_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单名称\",\"name\":\"menu_name\",\"column\":\"menu_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单状态\",\"name\":\"menu_state\",\"column\":\"menu_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '', '[{\"label\":\"菜单名称\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单链接\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单描述\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"父级菜单\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单排序\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"},{\"label\":\"菜单图标\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"验证规则\",\"source\":\"\",\"value\":\"\"}]', '{\"js\":\"\",\"html\":\"\",\"jssource\":\"<p><br></p>\"}');
-INSERT INTO `sys_menu_config` VALUES ('17', '{\"cols\":[{\"label\":\"角色名称\",\"name\":\"role_name\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"角色状态\",\"name\":\"role_state\",\"column\":\"role_state\",\"type\":\"tinyint\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '', '', '');
+INSERT INTO `sys_menu_config` VALUES ('17', '{\"cols\":[{\"label\":\"角色名称\",\"name\":\"role_name\",\"sign\":\"in\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/db/sys_role/list\",\"add\":\"/admin/db/sys_role/add\",\"del\":\"/admin/db/sys_role/add\",\"edit\":\"/admin/db/sys_role/edit\"},\"option\":{\"colNames\":[\"角色编号\",\"角色名称\"],\"colModel\":[{\"name\":\"role_id\",\"index\":\"role_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"role_name\",\"index\":\"role_name\",\"width\":90,\"editable\":true}]}}', '{\"cols\":{\"add\":[{\"label\":\"角色编号\",\"name\":\"qrq[\'role_id\']\",\"column\":\"role_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"角色名称\",\"name\":\"brq[\'role_name\']\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}],\"edit\":[]},\"subMethod\":\"return admin.search();\"}', '');
+INSERT INTO `sys_menu_config` VALUES ('18', '{\"cols\":[{\"label\":\"用户名\",\"name\":\"user_name\",\"sign\":\"in\",\"column\":\"user_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/db/sys_user/list\",\"add\":\"/admin/db/sys_user/add\",\"del\":\"/admin/db/sys_user/add\",\"edit\":\"/admin/db/sys_user/edit\"},\"option\":{\"colNames\":[\"用户编号\",\"用户名称\"],\"colModel\":[{\"name\":\"user_id\",\"index\":\"user_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"user_name\",\"index\":\"user_name\",\"width\":90,\"editable\":true}]}}', '', '');
 
 -- ----------------------------
 -- Table structure for sys_opt
@@ -138,7 +138,7 @@ CREATE TABLE `sys_opt` (
   `opt_handler` varchar(50) DEFAULT '' COMMENT '点击时调用的js方法',
   PRIMARY KEY (`opt_id`,`opt_code`,`menu_id`),
   KEY `opt_id` (`opt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt
@@ -148,6 +148,8 @@ INSERT INTO `sys_opt` VALUES ('2', 'edit', '编辑', '', '1', '14', '1', 'icon-e
 INSERT INTO `sys_opt` VALUES ('3', 'add2', '新增2', '', '1', '14', '2', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 INSERT INTO `sys_opt` VALUES ('4', 'edit2', '编辑2', '', '1', '14', '3', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
 INSERT INTO `sys_opt` VALUES ('5', 'aoe', '新增', '', '1', '16', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('6', 'add', '新增', '', '1', '17', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('7', 'edit', '编辑', '', '1', '17', '1', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
 
 -- ----------------------------
 -- Table structure for sys_opt_log
@@ -160,7 +162,7 @@ CREATE TABLE `sys_opt_log` (
   `opt_log_cont` varchar(2000) DEFAULT '' COMMENT '操作内容',
   `opt_log_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1增-1删2改3批量0其他',
   PRIMARY KEY (`opt_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt_log
@@ -219,6 +221,58 @@ INSERT INTO `sys_opt_log` VALUES ('51', '1491548763681', '10000', '编辑操作:
 INSERT INTO `sys_opt_log` VALUES ('52', '1491548771530', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('53', '1491548794536', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台1\"}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('54', '1491548810222', '10001', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('55', '1491810880201', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('56', '1491810981068', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('57', '1491810987036', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('58', '1491811064669', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('59', '1491811087814', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('60', '1491811116505', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('61', '1491811121634', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('62', '1491811127151', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('63', '1491812722149', '10000', '编辑操作:[{\"cfgGlobal\":\"{\\\"js\\\":\\\"\\\",\\\"html\\\":\\\"\\\",\\\"jssource\\\":\\\"<p><br></p>\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('64', '1491813162730', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/list/sys_menu\\\",\\\"add\\\":\\\"/admin/db/add/sys_menu\\\",\\\"del\\\":\\\"/admin/db/edit/sys_menu\\\",\\\"edit\\\":\\\"/admin/db/edit/sys_menu\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"菜单编号\\\",\\\"菜单名称\\\",\\\"菜单地址\\\",\\\"操作\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"menu_id\\\",\\\"index\\\":\\\"menu_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"menu_name\\\",\\\"index\\\":\\\"menu_name\\\",\\\"width\\\":90,\\\"editable\\\":true},{\\\"name\\\":\\\"menu_url\\\",\\\"index\\\":\\\"menu_url\\\",\\\"width\\\":150,\\\"editable\\\":true,\\\"editoptions\\\":{\\\"maxlength\\\":\\\"30\\\"}},{\\\"name\\\":\\\"myac\\\",\\\"index\\\":\\\"\\\",\\\"width\\\":80,\\\"fixed\\\":true,\\\"sortable\\\":false,\\\"resize\\\":false,\\\"formatter\\\":\\\"actions\\\",\\\"formatoptions\\\":{\\\"keys\\\":true}}]}}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('65', '1491813401284', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/list/sys_role\\\",\\\"add\\\":\\\"/admin/db/add/sys_role\\\",\\\"del\\\":\\\"/admin/db/edit/sys_role\\\",\\\"edit\\\":\\\"/admin/db/edit/sys_role\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"角色编号\\\",\\\"角色名称\\\",\\\"角色状态\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"role_id\\\",\\\"index\\\":\\\"role_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"role_name\\\",\\\"index\\\":\\\"role_name\\\",\\\"width\\\":90,\\\"editable\\\":true},{\\\"name\\\":\\\"role_state\\\",\\\"index\\\":\\\"role_state\\\",\\\"width\\\":150,\\\"editable\\\":true}]}}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('66', '1491813702812', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('67', '1491871255187', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_role/list\\\",\\\"add\\\":\\\"/admin/db/sys_role/add\\\",\\\"del\\\":\\\"/admin/db/sys_role/\\\",\\\"edit\\\":\\\"/admin/db/sys_role/edit\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"角色编号\\\",\\\"角色名称\\\",\\\"角色状态\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"role_id\\\",\\\"index\\\":\\\"role_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"role_name\\\",\\\"index\\\":\\\"role_name\\\",\\\"width\\\":90,\\\"editable\\\":true},{\\\"name\\\":\\\"role_state\\\",\\\"index\\\":\\\"role_state\\\",\\\"width\\\":150,\\\"editable\\\":true}]}}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('68', '1491871398698', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('69', '1491871457949', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('70', '1491871557888', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('71', '1491871573096', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('72', '1491871578402', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('73', '1491871595726', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('74', '1491871700512', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('75', '1491871835118', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('76', '1491872192905', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('77', '1491872199684', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('78', '1491872817181', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('79', '1491873759242', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('80', '1491873778627', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('81', '1491873787356', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('82', '1491873807612', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('83', '1491874140380', '10002', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('84', '1491874290792', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('85', '1491874393573', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('86', '1491874554140', '10002', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('87', '1491876600780', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('88', '1491876877748', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[]},\\\"subMethod\\\":\\\"return admin.search();\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('89', '1491876918297', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]},\\\"subMethod\\\":\\\"return admin.search();\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('90', '1491877071955', '10000', '编辑操作:[{\"menuId\":1,\"menuName\":\"工作台\"}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('91', '1491877280254', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]},\\\"subMethod\\\":\\\"\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('92', '1491877402940', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"brq[\'role_name\']\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"qrq[\'role_id\']\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]},\\\"subMethod\\\":\\\"return admin.search();\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('93', '1491877474291', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"brq[\'role_name\']\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"qrq[\'role_id\']\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]},\\\"subMethod\\\":\\\"\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('94', '1491877771569', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"role_id\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"qrq[\'role_id\']\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"brq[\'role_name\']\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]},\\\"subMethod\\\":\\\"\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('95', '1491877814222', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('96', '1491888322872', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('97', '1491888369942', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"brq[\'role_name\']\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[]},\\\"subMethod\\\":\\\"return admin.search();\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('98', '1491888638955', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"角色编号\\\",\\\"name\\\":\\\"qrq[\'role_id\']\\\",\\\"column\\\":\\\"role_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"brq[\'role_name\']\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[]},\\\"subMethod\\\":\\\"return admin.search();\\\"}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('99', '1491888768365', '10000', '编辑操作:[{\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('100', '1491888773071', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_menu/list\\\",\\\"add\\\":\\\"/admin/db/sys_menu/add\\\",\\\"del\\\":\\\"/admin/db/sys_menu/add\\\",\\\"edit\\\":\\\"/admin/db/sys_menu/edit\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"角色编号\\\",\\\"角色名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"role_id\\\",\\\"index\\\":\\\"role_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"role_name\\\",\\\"index\\\":\\\"role_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('101', '1491888829327', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_role/list\\\",\\\"add\\\":\\\"/admin/db/sys_role/add\\\",\\\"del\\\":\\\"/admin/db/sys_role/add\\\",\\\"edit\\\":\\\"/admin/db/sys_role/edit\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"角色编号\\\",\\\"角色名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"role_id\\\",\\\"index\\\":\\\"role_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"role_name\\\",\\\"index\\\":\\\"role_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('102', '1491891253893', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"sign\\\":\\\"eq\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('103', '1491893924214', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"角色名称\\\",\\\"name\\\":\\\"role_name\\\",\\\"sign\\\":\\\"in\\\",\\\"column\\\":\\\"role_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('104', '1491894772309', '10000', '', '0');
+INSERT INTO `sys_opt_log` VALUES ('105', '1491894926165', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"用户名\\\",\\\"name\\\":\\\"user_name\\\",\\\"sign\\\":\\\"in\\\",\\\"column\\\":\\\"user_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":18}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('106', '1491895002889', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_user/list\\\",\\\"add\\\":\\\"/admin/db/sys_user/add\\\",\\\"del\\\":\\\"/admin/db/sys_user/add\\\",\\\"edit\\\":\\\"/admin/db/sys_user/edit\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"用户编号\\\",\\\"用户名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"user_id\\\",\\\"index\\\":\\\"user_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"user_name\\\",\\\"index\\\":\\\"user_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":18}]', '0');
 
 -- ----------------------------
 -- Table structure for sys_persistent_logins
@@ -256,10 +310,10 @@ CREATE TABLE `sys_right` (
 -- Records of sys_right
 -- ----------------------------
 INSERT INTO `sys_right` VALUES ('0', '14', '2', '1');
-INSERT INTO `sys_right` VALUES ('1', '14', '1', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '2', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '3', '0');
 INSERT INTO `sys_right` VALUES ('1', '14', '4', '0');
+INSERT INTO `sys_right` VALUES ('1', '14', '7', '0');
 INSERT INTO `sys_right` VALUES ('2', '14', '3', '0');
 INSERT INTO `sys_right` VALUES ('2', '14', '4', '0');
 INSERT INTO `sys_right` VALUES ('0', '16', '5', '1');
