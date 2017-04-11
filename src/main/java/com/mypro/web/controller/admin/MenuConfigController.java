@@ -65,7 +65,7 @@ public class MenuConfigController extends BaseAdminController {
 	 * @param tableName
 	 * @return
 	 */
-	@RequestMapping("/db/list/{name}")
+	@RequestMapping("/db/{name}/list")
 	public PageModel list(PagerRq page,	@PathVariable("name") String tableName, QueryRq query){
 		List<Map<String, Object>> clist = smcService.queryColumns(tableName);
 		Page<Map<?, ?>> pager = PageHelper.startPage(page.getPage(), page.getSize());
@@ -80,7 +80,7 @@ public class MenuConfigController extends BaseAdminController {
 	 * @param bean
 	 * @return
 	 */
-	@RequestMapping(value = "/db/edit/{name}")
+	@RequestMapping(value = "/db/{name}/edit")
 	public ResultModel edit(@PathVariable("name") String tableName, BeanRq bean, QueryRq query){
 		ResultModel model = null;
 		if(smcService.editBeanBySql(SqlHelper.update(tableName, bean, query))) model = new ResultModel();

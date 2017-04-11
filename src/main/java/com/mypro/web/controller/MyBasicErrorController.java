@@ -76,7 +76,7 @@ public class MyBasicErrorController extends AbstractErrorController {
         if(uri.startsWith(WebConstant.ADMIN_REQUEST_ROOT_PATH))
         	path = "admin/error";
         if(modelAndView == null)
-        	modelAndView = new ModelAndView(path, model);
+        	modelAndView = new ModelAndView(path + "/error", model);
         else
         	modelAndView.setViewName(path+"/"+model.get("status"));
         return modelAndView;
