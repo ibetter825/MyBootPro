@@ -120,10 +120,12 @@
 					cols: [
 					        //widget: 控件类型        type: 字段类型        source:填充内容来源 type(local, server)； value: 默认值什么的
 					        //widget包括：text文本框 textarea 文本域 editor 富文本编辑器 select下拉框 hidden隐藏文本框 date时间选择器 chosen下拉框插件 tree 树插件如ztree
-					        {widget: 'text', type: 'varchar', name: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
-					        {widget: 'text', type: 'varchar', name: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
-					        {widget: 'select', type: 'integer', name: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
-					        {widget: 'date', type: 'long', name: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
+					        //name: 表单中的name属性值,column对应的数据表中的字段
+					        //还需要添加使用该字段的条件符号: eq:等于  ne:不等  lt:小于  le:小于等于  gt:大于  ge:大于等于 nu:空值  nn:非空值   in:包含   ni:不包含   
+					        {widget: 'text', type: 'varchar', name: 'menu_id', sign: '', column: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
+					        {widget: 'text', type: 'varchar', name: 'menu_name', sign: '', column: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
+					        {widget: 'select', type: 'integer', name: 'menu_state', sign: '', column: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
+					        {widget: 'date', type: 'long', name: 'data_date', sign: '', column: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
 					      ],
 					 subMethod: ''
 				},

@@ -8,7 +8,7 @@ public class SqlConstant {
 	/**
 	 * 不等于
 	 */
-	public final static String NOT_EQUAL = "not";
+	public final static String NOT_EQUAL = "ne";
 	/**
 	 * 大于
 	 */
@@ -20,21 +20,25 @@ public class SqlConstant {
 	/**
 	 * 大于等于
 	 */
-	public final static String GREATER_THAN_OR_EQUAL = "gte";
+	public final static String GREATER_THAN_OR_EQUAL = "ge";
 	/**
 	 * 小于等于
 	 */
-	public final static String LESS_THAN_OR_EQUAL = "lte";
+	public final static String LESS_THAN_OR_EQUAL = "le";
 	/**
-	 * 全模糊
+	 * 空值
 	 */
-	public final static String VAGUE = "v";
+	public final static String NULL = "nu";
 	/**
-	 * 左模糊
+	 * 非空值
 	 */
-	public final static String LEFT_VAGUE = "lv";
+	public static final String NOT_NULL = "nn";
 	/**
-	 * 右模糊
+	 * 包含
 	 */
-	public final static String RIGHT_VAGUE = "rv";
+	public static final String CONTAIN = "in";
+	/**
+	 * 不包含
+	 */
+	public static final String NOT_CONTAIN = "ni";
 }

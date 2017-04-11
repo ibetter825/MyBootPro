@@ -226,17 +226,32 @@
 			html.push('<div class="identity_'+ col.COLUMN_NAME +' form-data form-group">');
 				html.push('<div class="col-sm-12">');
 					html.push('<input type="text" name="label" value="'+ (col.label ? col.label : '') +'" placeholder="显示名称" class="col-sm-2 validate[required]" title="字段显示名称">');
-					html.push('<input type="text" name="name" value="'+ col.COLUMN_NAME +'" placeholder="字段名称" class="col-sm-2 validate[required]" title="字段名称">');
-					html.push('<input type="hidden" name="column" value="'+col.COLUMN_NAME+'">');//考虑到表单字段与实际数据名可能不一样的情况
+					html.push('<input type="text" name="name" value="'+ (col.name === undefined ? col.COLUMN_NAME : col.name) +'" placeholder="字段名称" class="col-sm-2 validate[required]" title="字段名称">');
+					html.push('<input type="hidden" name="column" value="'+ col.COLUMN_NAME +'">');//考虑到表单字段与实际数据名可能不一样的情况
+					html.push('</select>');
+						//eq:等于  ne:不等  lt:小于  le:小于等于  gt:大于  ge:大于等于 nu:空值  nn:非空值   in:包含   ni:不包含
+						html.push('<select name="sign" class="col-sm-2" title="条件符号">');
+						html.push('<option value=""></option>');
+						html.push('<option value="eq"'+ (col.sign && col.sign === 'eq' ? ' selected' : '') +'>等于</option>');
+						html.push('<option value="ne"'+ (col.sign && col.sign === 'ne' ? ' selected' : '') +'>不等于</option>');
+						html.push('<option value="lt"'+ (col.source && col.source === 'lt' ? ' selected' : '') +'>小于</option>');
+						html.push('<option value="le"'+ (col.source && col.source === 'le' ? ' selected' : '') +'>小于等于</option>');
+						html.push('<option value="gt"'+ (col.source && col.source === 'gt' ? ' selected' : '') +'>大于</option>');
+						html.push('<option value="ge"'+ (col.source && col.source === 'ge' ? ' selected' : '') +'>大于等于</option>');
+						html.push('<option value="nu"'+ (col.source && col.source === 'nu' ? ' selected' : '') +'>空值</option>');
+						html.push('<option value="nn"'+ (col.source && col.source === 'nn' ? ' selected' : '') +'>非空值</option>');
+						html.push('<option value="in"'+ (col.source && col.source === 'in' ? ' selected' : '') +'>包含</option>');
+						html.push('<option value="ni"'+ (col.source && col.source === 'ni' ? ' selected' : '') +'>不包含</option>');
+					html.push('</select>');
 					html.push('<input type="text" name="value" value="'+ (col.value ? col.value : '') +'" placeholder="默认值" class="col-sm-2" title="默认值">');
-					html.push('<input type="text" name="type" value="'+ col.DATA_TYPE +'" readonly="readonly" placeholder="字段数据类型" class="col-sm-2" title="字段数据类型">');
+					html.push('<input type="text" name="type" value="'+ col.DATA_TYPE +'" readonly="readonly" placeholder="字段数据类型" class="col-sm-1" title="字段数据类型">');
 					html.push('<select name="widget" class="col-sm-2" title="前台控件类型">');
 						html.push('<option value="text"'+ (col.widget && col.widget === 'text' ? ' selected' : '') +'>text</option>');
 						html.push('<option value="select"'+ (col.widget && col.widget === 'select' ? ' selected' : '') +'>select</option>');
 						html.push('<option value="date"'+ (col.widget && col.widget === 'date' ? 'selected' : '') +'>date</option>');
 						html.push('<option value="hidden"'+ (col.widget && col.widget === 'hidden' ? 'selected' : '') +'>hidden</option>');
 					html.push('</select>');
-						html.push('<select name="source" class="col-sm-2" title="内容来源">');
+						html.push('<select name="source" class="col-sm-1" title="内容来源">');
 						html.push('<option value=""></option>');
 						html.push('<option value="fixed"'+ (col.source && col.source === 'fixed' ? ' selected' : '') +'>fixed</option>');
 						html.push('<option value="url"'+ (col.source && col.source === 'url' ? ' selected' : '') +'>url</option>');
@@ -540,6 +555,7 @@
 					col = {};
 					col['label'] = $(data[i]).find('[name="label"]').val();
 					col['name'] = $(data[i]).find('[name="name"]').val();
+					col['sign'] = $(data[i]).find('[name="sign"]').val();
 					col['column'] = $(data[i]).find('[name="column"]').val();
 					col['type'] = $(data[i]).find('[name="type"]').val();
 					col['widget'] = $(data[i]).find('[name="widget"]').val();
@@ -581,6 +597,7 @@
 						col = {};
 						col['label'] = $(list[i]).find('[name="label"]').val();
 						col['name'] = $(list[i]).find('[name="name"]').val();
+						col['sign'] = $(data[i]).find('[name="sign"]').val();
 						col['column'] = $(list[i]).find('[name="column"]').val();
 						col['type'] = $(list[i]).find('[name="type"]').val();
 						col['widget'] = $(list[i]).find('[name="widget"]').val();

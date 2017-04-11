@@ -104,6 +104,9 @@ var admin = {};
     		case 504:
     			layer.msg("请求超时", {icon:5});
     			break;
+    		case 500:
+    			layer.msg("发生错误:["+resp.message+"]", {icon:5});
+    			break;
     		case 0:
     			layer.msg("网络异常", {icon:5});
     			break;
@@ -241,9 +244,9 @@ var admin = {};
 			    	"showDropdowns": true,
 			    	 locale : {  
 	                     applyLabel : '确定',
-	                     cancelLabel : '取消',  
-	                     fromLabel : '起始时间',  
-	                     toLabel : '结束时间',  
+	                     cancelLabel : '取消',
+	                     fromLabel : '起始时间',
+	                     toLabel : '结束时间',
 	                     customRangeLabel : '自定义',  
 	                     daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
 	                     monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
@@ -310,7 +313,9 @@ var admin = {};
 	    	$dtoModel.removeClass('dto-model-hide').find('h6').html('<i class="icon-edit"></i> 编辑');
 	    	$dtoModel.attr('type', 'edit');
 	    	var row = $grid.jqGrid('getRowData', gr);
-	    	var list = config.object.cols['edit'] || config.object.cols['add'];
+	    	var list = config.object.cols['edit'];
+	    	if(!list || list.length == 0) list = config.object.cols['add'];
+	    		
 			app.setObjectCont(list, row);
 	    	layer.open({
 	    		  type: 1,
@@ -399,16 +404,17 @@ var admin = {};
 	app.setSearchCont = function(){
 		var html = new Array();
 		var cols = config.search.cols;
-		var col = null;
+		var col = null, sign = null;
 		for(var i = 0, l = cols.length; i < l; i++){
 			col = cols[i];
 			html.push('<div class="col-sm-3 no-padding-left">');
 			html.push('<label class="col-sm-4 control-label no-padding-right" for="s-'+col.name+'"> '+col.label+': </label>');
 			html.push('<div class="col-sm-8">');
+			sign = col.sign ? '#'+col.sign+'#' : '';
 			if(col.widget === 'text')
-				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="col-sm-12 '+col.vali+']" name="qrq[\''+col.name+'\']" autocomplete="off">');
+				html.push('<input id="s-'+col.name+'" type="text" placeholder="'+col.label+'" class="col-sm-12 '+col.vali+'" name="qrq[\''+col.name+sign+'\']" autocomplete="off">');
 			else if(col.widget === 'select'){
-				html.push('<select id="s-'+col.name+'" class="col-sm-12" name="qrq[\''+col.name+'\']">');
+				html.push('<select id="s-'+col.name+'" class="col-sm-12" name="qrq[\''+col.name+sign+'\']">');
 				html.push('<option value=""></option>');
 				var list = col.source.cont;
 				for(var j = 0, ln = list.length; j < ln; j++)
@@ -447,20 +453,20 @@ var admin = {};
 			col = list[i];
 			html.push('<div class="form-group">');
 			html.push('<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-'+ col.name +'"> '+ col.label  +': </label>');
-			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ convert(col.name) +'"></div>');
+			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'"></div>');
 			html.push('</div>');
 		}
 		$dtoForm.find('.widget-main').empty().append(html.join(''));
 		app.attachVali($dtoForm);//给dto表单绑定验证
 		
-		function convert(str){
+		/*function convert(str){
 			//下划线转驼峰命名
 			var a = str.split("_");
 			var o = a[0];
 			for(var i = 1, l = a.length; i < l; i++)
 			    o = o + a[i].slice(0,1).toUpperCase() + a[i].slice(1);
 			return o;
-		}
+		}*/
 	}
 	/**
 	 * 打开配置菜单页面
