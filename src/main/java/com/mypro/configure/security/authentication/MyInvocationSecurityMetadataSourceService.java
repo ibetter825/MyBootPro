@@ -85,7 +85,6 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 	 * @return
 	 */
 	public boolean isDbOptUri(String uri){
-		Pattern pattern = Pattern.compile(regEx);
-		return pattern.matcher(uri).matches();
+		return Pattern.compile(regEx).matcher(uri).matches();
 	}
 }
