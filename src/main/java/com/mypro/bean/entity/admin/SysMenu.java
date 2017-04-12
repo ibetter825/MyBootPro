@@ -52,10 +52,10 @@ public class SysMenu extends BaseEntity {
 			}
 			map = new HashMap<String, Object>();
 			map.put("id", m.getMenuId());
-	    	map.put("title", m.getMenuName());
-	    	map.put("icon", m.getMenuIcon());
+	    	map.put("name", m.getMenuName());
+	    	map.put("clzz", m.getMenuIcon());
 	    	map.put("level", m.getMenuLevel());
-	    	map.put("url", m.getMenuUrl());
+	    	map.put("uri", m.getMenuUrl());
         	map.put("children", getMenuTree(menus, m.getMenuId()));
         	tree.add(map);
 		}

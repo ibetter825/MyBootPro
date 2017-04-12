@@ -352,21 +352,21 @@
 				if(menu.children && menu.children.length > 0){
 					html.push('<li class="fmenu">');
 					html.push('<a href="#" class="dropdown-toggle">');
-					html.push('<i class="'+menu.icon+'"></i>');
-					html.push('<span class="menu-text"> '+menu.title+' </span>');
+					html.push('<i class="'+menu.clzz+'"></i>');
+					html.push('<span class="menu-text"> '+menu.name+' </span>');
 					html.push('<b class="arrow icon-angle-down"></b>');
 					html.push('</a>');
 					html.push('<ul class="submenu">');
 					html.push(getMenuHtml(menu.children));
 					html.push('</ul></li>');
 				}else{
-					var url = menu.url;
+					var url = menu.uri;
 					html.push('<li class="cmenu">');
 					if(url.indexOf('/admin/forward/tpl') > -1)
 						url += '/' + menu.id + '.html';
 					html.push('<a target="iframe" href="'+url+'">');
-					html.push('<i class="'+menu.icon+'"></i>');
-					html.push('<span class="menu-text"> '+menu.title+'</span>');
+					html.push('<i class="'+menu.clzz+'"></i>');
+					html.push('<span class="menu-text"> '+menu.name+'</span>');
 					html.push('</a></li>');
 				}
 			}

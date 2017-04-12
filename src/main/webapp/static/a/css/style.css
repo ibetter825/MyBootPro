@@ -1,12 +1,12 @@
 /* scroll style */
-body::-webkit-scrollbar, div::-webkit-scrollbar{width:5px;/*纵向滚动条的宽度*/height:5px;/*横向滚动条的高度*/}
-body::-webkit-scrollbar-button:vertical:decrement, div::-webkit-scrollbar-button:vertical:decrement{width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
-body::-webkit-scrollbar-button:vertical:increment, div::-webkit-scrollbar-button:vertical:increment{width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
-body::-webkit-scrollbar-button:horizontal:decrement, div::-webkit-scrollbar-button:horizontal:decrement{width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
-body::-webkit-scrollbar-button:horizontal:increment, div::-webkit-scrollbar-button:horizontal:increment {width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
-body::-webkit-scrollbar-track, div::-webkit-scrollbar-track{background:rgba(0, 0, 0, 0.2);}
-body::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {background:rgba(62, 142, 185, 0.8);}
-body::-webkit-scrollbar-corner, div::-webkit-scrollbar-corner {background:rgba(0, 0, 0, 0.2);}
+body::-webkit-scrollbar, div::-webkit-scrollbar, ul::-webkit-scrollbar {width:5px;/*纵向滚动条的宽度*/height:5px;/*横向滚动条的高度*/}
+body::-webkit-scrollbar-button:vertical:decrement, div::-webkit-scrollbar-button:vertical:decrement, ul::-webkit-scrollbar-button:vertical:decrement {width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
+body::-webkit-scrollbar-button:vertical:increment, div::-webkit-scrollbar-button:vertical:increment, ul::-webkit-scrollbar-button:vertical:increment {width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
+body::-webkit-scrollbar-button:horizontal:decrement, div::-webkit-scrollbar-button:horizontal:decrement, ul::-webkit-scrollbar-button:horizontal:decrement {width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
+body::-webkit-scrollbar-button:horizontal:increment, div::-webkit-scrollbar-button:horizontal:increment, ul::-webkit-scrollbar-button:horizontal:increment {width:5px; height:5px; background-color:rgba(85, 85, 85, 1);}
+body::-webkit-scrollbar-track, div::-webkit-scrollbar-track, ul::-webkit-scrollbar-track {background:rgba(0, 0, 0, 0.2);}
+body::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb, ul::-webkit-scrollbar-thumb {background:rgba(62, 142, 185, 0.8);}
+body::-webkit-scrollbar-corner, div::-webkit-scrollbar-corner, ul::-webkit-scrollbar-corner {background:rgba(0, 0, 0, 0.2);}
 /* ace */
 .custom {font-family: "Microsoft Yahei";}
 .custom .page-content {padding: 8px 12px 0;}
@@ -17,6 +17,8 @@ body::-webkit-scrollbar-corner, div::-webkit-scrollbar-corner {background:rgba(0
 .custom .page-header .form-group>div{margin-top: 8px;}
 .custom .page-header .form-group label[class*="col-"] {padding-top:4px; margin-bottom:4px;}
 .custom select {height: 28px;}
+.custom .form-group .ztree {position: fixed; z-index: 1990; background: #6FB3E0; overflow: auto;}
+.custom .form-group .ztree * {background: #6FB3E0;}
 /* common */
 .hide {display: none;}
 body .dto-form .widget-main {padding-top: 18px; padding-bottom: 0; max-height: 280px; overflow: auto;}

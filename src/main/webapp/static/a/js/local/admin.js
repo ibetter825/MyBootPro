@@ -7,7 +7,8 @@ var CONSTANT = {
 	'jqgrid': ['/static/a/js/jqGrid/jquery.jqGrid.min.js?v=4.5.2', '/static/a/js/jqGrid/i18n/grid.locale-cn.js?v=4.5.2'],
 	'validate': ['/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2', '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2'],
 	'datepicker': ['/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
-	'editor': ['/static/a/js/editor/wangEditor.min.js?v=2.0.0']
+	'editor': ['/static/a/js/editor/wangEditor.min.js?v=2.0.0'],
+	'ztree': ['/static/a/js/ztree/skin/awesome.css?v=3.5.26', '/static/a/js/ztree/jquery.ztree.core.min.js?v=3.5.26']
 }
 //创建事件
 var EVT = document.createEvent('HTMLEvents');
@@ -45,45 +46,56 @@ var loadJS = function(id, callback, url){
 		}, path[i]);
 	}
 	function load(id, callback, url){
-		var script = document.getElementById(id);
-		if(script) {//已经加载过该js,但是需要判断是否已经加载完成
-			if(script.ready)
+		var isJs = /\/.+\.js($|\?)/i.test(url) ? true : false;
+		var dom = document.getElementById(id);
+		if(dom) {//已经加载过该js,但是需要判断是否已经加载完成
+			if(dom.ready)
 				callback();
 			else {
-				if(script.callback === undefined)//如果还没有加载完成，将当前的回调函数放入节点callback中变量中，在加载完成后触发自定义函数循环调用回调函数
-					script.callback = [];
-				script.callback.push(callback);
+				if(dom.callback === undefined)//如果还没有加载完成，将当前的回调函数放入节点callback中变量中，在加载完成后触发自定义函数循环调用回调函数
+					dom.callback = [];
+				dom.callback.push(callback);
 			}
 			return;
 		}
+		
 		var head = document.getElementsByTagName('head');  
 		if(head && head.length)
 			head = head[0];
 		else
 			head = document.body;
-		script = document.createElement('script');   
-		script.type = "text/javascript";
-		script.id = id;
-		script.ready = false;//还没加载完成
-		head.appendChild(script);
+		
+		if(!isJs){ //加载css
+			dom = document.createElement('link');
+			dom.type = "text/css";
+			dom.rel = "stylesheet";
+			dom.href = url;
+		}else{
+			dom = document.createElement('script');   
+			dom.type = "text/javascript";
+			dom.src = url;
+		}
+		dom.ready = false;//还没加载完成
+		dom.id = id;
+		head.appendChild(dom);
+		
 		//添加监听事件
 	    if (window.addEventListener)
-	    	script.addEventListener('listen', listen, false)
+	    	dom.addEventListener('listen', listen, false)
 	    else if (window.attachEvent)
-	    	script.attachEvent('onlisten', listen)
+	    	dom.attachEvent('onlisten', listen)
 	    	
-		script.onload = script.onreadystatechange = function(){
+		dom.onload = dom.onreadystatechange = function(){
 			//script 标签，IE 下有 onreadystatechange 事件, w3c 标准有 onload 事件     
 			//这些 readyState 是针对IE8及以下的，W3C 标准的 script 标签没有 onreadystatechange 和 this.readyState , 
 			//文件加载不成功 onload 不会执行，
 			//(!this.readyState) 是针对 W3C标准的, IE 9 也支持 W3C标准的 onload 
 			if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded" ){
 				callback();
-				script.ready = true;
-				script.dispatchEvent(EVT);//触发事件
+				dom.ready = true;
+				dom.dispatchEvent(EVT);//触发事件
 			}
 		 }//end onreadystatechange 
-		 script.src = url;
 	}
 }
 
@@ -449,14 +461,73 @@ var admin = {};
 	app.setObjectCont = function(list, dto){
 		var html = new Array();
 		var col = null;
+		var callbacks = new Array();
 		for(var i = 0, l = list.length; i < l; i++){
 			col = list[i];
 			html.push('<div class="form-group">');
 			html.push('<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-'+ col.name +'"> '+ col.label  +': </label>');
-			html.push('<div class="col-sm-6"><input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'"></div>');
+			html.push('<div class="col-sm-6">');
+			if(col['widget'] === 'text')
+				html.push('<input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'">');
+			else if(col['widget'] === 'tree'){
+				var id = 'd-'+ col.name;
+				html.push('<input id="'+(id+'-name')+'" onclick="loadTreeData(event, \''+id+'\');" readonly="reaonly" type="text" placeholder="'+ col.label +'" class="col-sm-12"/>');
+				html.push('<input id="'+id+'" type="hidden" name="'+ col.name +'" class="'+ col.vali +'">');
+				html.push('<div class="ztree-cnter col-sm-12 no-padding hide"><ul id="'+ (id+'-ztree') +'" class="ztree" data-state="unload"></ul></div>');
+				
+				//加载树控件数据
+				window.loadTreeData = function(e, id){
+					e.stopPropagation();
+					var $inpt = $('#'+id+'-name');
+					var $hide = $('#'+id);
+					var $tree = $('#'+id+'-ztree');
+					$(document).unbind('click').on('click', function(e){
+						if(e.target.id.indexOf(id) > -1) return;
+						$tree.parent().addClass('hide');
+					});
+					var setting = {
+						callback: {
+							onClick: function(event, treeId, treeNode, clickFlag) {
+								$inpt.val(treeNode.name);
+								$hide.val(treeNode.id);
+								$tree.parent().addClass('hide');
+								$(document).unbind('click');
+							}
+						}
+					};
+					
+					if($tree.parent().hasClass('hide'))
+						$tree.parent().removeClass('hide');
+					else{
+						$tree.parent().addClass('hide');
+						return;
+					}
+					var state = $tree.attr('data-state');
+					if(state === 'loaded' || state === 'loading') return;
+					
+					$tree.css({'minWidth':'206px', 'maxHeight': '200px'});
+					
+					var from = col.source.from;
+					if(from === 'server'){//远程数据
+						var url = col.source.url;
+						$tree.attr('data-state', 'loading');//正在加载数据
+						$.post(url, function(data){
+							loadJS('ztree', function(){
+								$.fn.zTree.init($('#'+id+'-ztree'), setting, data);
+								$tree.attr('data-state', 'loaded');
+							});
+						}, 'json').error(function(xhr, st, err) {$tree.attr('data-state', 'unload'); app.error(xhr, st, err);});
+					}else{//本地数据
+						
+					}
+				}
+			}
+			html.push('</div>');
 			html.push('</div>');
 		}
 		$dtoForm.find('.widget-main').empty().append(html.join(''));
+		for(var i = 0, l = callbacks.length; i < l; i++)
+			callbacks[i]();
 		app.attachVali($dtoForm);//给dto表单绑定验证
 		
 		/*function convert(str){
