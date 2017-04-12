@@ -512,6 +512,8 @@ var admin = {};
 						var url = col.source.url;
 						$tree.attr('data-state', 'loading');//正在加载数据
 						$.post(url, function(data){
+							//取到数据后，可以先存到本地，然后就可以不用每次请求数据了
+							//...
 							loadJS('ztree', function(){
 								$.fn.zTree.init($('#'+id+'-ztree'), setting, data);
 								$tree.attr('data-state', 'loaded');
