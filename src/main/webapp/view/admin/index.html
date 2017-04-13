@@ -307,8 +307,13 @@
 	<#include "/admin/includes/footer.html"/>
 
 	<script type="text/javascript">
-		//var settings = ace.cookie.get('ace.settings'); 
-		var $cnt = $('.iframe-container'), $window = $(window), $menus = $('#menus'), $ifr = $('#iframe')[0];
+		var $cnt = $('.iframe-container'), $window = $(window), $menus = $('#menus'), $ifr = $('#iframe')[0], $sidebar = $('#sidebar');
+		var collapsed = ace.storage.get('ace.settings.sidebar-collapsed');
+		if(collapsed == 1)//收缩
+			$sidebar.addClass('menu-min');
+		else //展开
+			$sidebar.removeClass('menu-min');
+		
 		function resizeCnt() {
 			$cnt.height($window.height() - 90);
 			$menus.height($window.height() - 113);

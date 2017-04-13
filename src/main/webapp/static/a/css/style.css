@@ -33,6 +33,8 @@ body .layer-skin .layui-layer-content {padding: 10px;}
 body .layer-skin .layui-layer-btn a {color: #fff; border-radius: 0; border: none; margin: 0;}
 body .layer-skin .layui-layer-btn .layui-layer-btn0{background: #428BCA; }
 body .layer-skin .layui-layer-btn .layui-layer-btn1{background: #D15B47;}
+/*index*/
+#menus {overflow: auto;}
 /* list page */
 .form-btns {margin-top: 12px; text-align:right;}
 /*grid*/

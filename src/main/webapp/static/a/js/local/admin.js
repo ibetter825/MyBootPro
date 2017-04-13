@@ -519,14 +519,24 @@ var admin = {};
 					if(from === 'server'){//远程数据
 						var url = list[i].source.url;
 						$tree.attr('data-state', 'loading');//正在加载数据
-						$.post(url, function(data){
-							//取到数据后，可以先存到本地，然后就可以不用每次请求数据了
-							//...
+						
+						function load(data){
 							loadJS('ztree', function(){
 								$.fn.zTree.init($('#'+id+'-ztree'), setting, data);
 								$tree.attr('data-state', 'loaded');
 							});
-						}, 'json').error(function(xhr, st, err) {$tree.attr('data-state', 'unload'); app.error(xhr, st, err);});
+						}
+						//先查看本地是否存在数据,以及过期时间
+						var lc = ace.storage.get(url);
+						if(lc){
+							load($.parseJSON(lc));
+						}else{
+							$.post(url, function(data){
+								//取到数据后，可以先存到本地，然后就可以不用每次请求数据了
+								ace.storage.set(url, JSON.stringify(data));
+								load(data);
+							}, 'json').error(function(xhr, st, err) {$tree.attr('data-state', 'unload'); app.error(xhr, st, err);});
+						}
 					}else{//本地数据
 						
 					}
