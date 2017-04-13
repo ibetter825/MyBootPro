@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-04-11 16:23:59
+Date: 2017-04-13 17:04:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,7 +74,7 @@ CREATE TABLE `sys_menu` (
   `menu_seq` int(11) NOT NULL DEFAULT '0' COMMENT '菜单排序',
   `menu_icon` varchar(200) DEFAULT '' COMMENT '菜单图标',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -95,9 +95,10 @@ INSERT INTO `sys_menu` VALUES ('13', '', '文件数据', '/admin/desk', '', '11'
 INSERT INTO `sys_menu` VALUES ('14', 'test', '测试菜单', '/admin/forward/tpl', '', '11', '1', '2', '0', '');
 INSERT INTO `sys_menu` VALUES ('15', '', '权限管理', '', '', '6', '1', '1', '0', '');
 INSERT INTO `sys_menu` VALUES ('16', 'menu', '菜单管理', '/admin/forward/menu.html', '', '15', '1', '2', '0', 'icon-list');
-INSERT INTO `sys_menu` VALUES ('17', 'db/sys_role', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
+INSERT INTO `sys_menu` VALUES ('17', 'db/sys_opt', '角色管理', '/admin/forward/tpl', '', '15', '1', '2', '1', 'icon-group');
 INSERT INTO `sys_menu` VALUES ('18', '', '用户管理', '/admin/forward/tpl', '', '15', '1', '2', '2', 'icon-user');
 INSERT INTO `sys_menu` VALUES ('19', '', '分组管理', '/admin/forward/tpl', '', '15', '1', '2', '3', 'icon-group');
+INSERT INTO `sys_menu` VALUES ('20', 'db/sys_opt', '操作管理', '/admin/forward/tpl', '', '15', '1', '2', '0', 'icon-wrench');
 
 -- ----------------------------
 -- Table structure for sys_menu_config
@@ -115,8 +116,9 @@ CREATE TABLE `sys_menu_config` (
 -- ----------------------------
 -- Records of sys_menu_config
 -- ----------------------------
-INSERT INTO `sys_menu_config` VALUES ('17', '{\"cols\":[{\"label\":\"角色名称\",\"name\":\"role_name\",\"sign\":\"in\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/db/sys_role/list\",\"add\":\"/admin/db/sys_role/add\",\"del\":\"/admin/db/sys_role/add\",\"edit\":\"/admin/db/sys_role/edit\"},\"option\":{\"colNames\":[\"角色编号\",\"角色名称\"],\"colModel\":[{\"name\":\"role_id\",\"index\":\"role_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"role_name\",\"index\":\"role_name\",\"width\":90,\"editable\":true}]}}', '{\"cols\":{\"add\":[{\"label\":\"角色编号\",\"name\":\"qrq[\'role_id\']\",\"column\":\"role_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"角色名称\",\"name\":\"brq[\'role_name\']\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}],\"edit\":[]},\"subMethod\":\"return admin.search();\"}', '');
+INSERT INTO `sys_menu_config` VALUES ('17', '{\"cols\":[{\"label\":\"角色名称\",\"name\":\"role_name\",\"sign\":\"in\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/db/sys_role/list\",\"add\":\"/admin/db/sys_role/add\",\"del\":\"/admin/db/sys_role/add\",\"edit\":\"/admin/db/sys_role/edit\",\"other\":\"{\\\"right\\\": \\\"/admin/role/right\\\"}\"},\"option\":{\"colNames\":[\"角色编号\",\"角色名称\"],\"colModel\":[{\"name\":\"role_id\",\"index\":\"role_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"role_name\",\"index\":\"role_name\",\"width\":90,\"editable\":true}]}}', '{\"cols\":{\"add\":[{\"label\":\"角色编号\",\"name\":\"qrq[\'role_id\']\",\"column\":\"role_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"角色名称\",\"name\":\"brq[\'role_name\']\",\"column\":\"role_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}],\"edit\":[]},\"subMethod\":\"\"}', '');
 INSERT INTO `sys_menu_config` VALUES ('18', '{\"cols\":[{\"label\":\"用户名\",\"name\":\"user_name\",\"sign\":\"in\",\"column\":\"user_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/db/sys_user/list\",\"add\":\"/admin/db/sys_user/add\",\"del\":\"/admin/db/sys_user/add\",\"edit\":\"/admin/db/sys_user/edit\"},\"option\":{\"colNames\":[\"用户编号\",\"用户名称\"],\"colModel\":[{\"name\":\"user_id\",\"index\":\"user_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"user_name\",\"index\":\"user_name\",\"width\":90,\"editable\":true}]}}', '', '');
+INSERT INTO `sys_menu_config` VALUES ('19', '{\"cols\":[{\"label\":\"分组编号\",\"name\":\"group_id\",\"sign\":\"eq\",\"column\":\"group_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"分组名称\",\"name\":\"group_name\",\"sign\":\"in\",\"column\":\"group_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}]}', '{\"url\":{\"list\":\"/admin/db/sys_group/list\",\"add\":\"/admin/db/sys_group/add\",\"del\":\"/admin/db/sys_group/add\",\"edit\":\"/admin/db/sys_group/edit\"},\"option\":{\"colNames\":[\"分组编号\",\"分组名称\"],\"colModel\":[{\"name\":\"group_id\",\"index\":\"group_id\",\"width\":60,\"sorttype\":\"int\",\"editable\":false},{\"name\":\"group_name\",\"index\":\"group_name\",\"width\":90,\"editable\":true}]}}', '{\"cols\":{\"add\":[{\"label\":\"分组编号\",\"name\":\"group_id\",\"sign\":\"\",\"column\":\"group_id\",\"type\":\"int\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"},{\"label\":\"分组名称\",\"name\":\"group_name\",\"sign\":\"\",\"column\":\"group_name\",\"type\":\"varchar\",\"widget\":\"text\",\"vali\":\"\",\"source\":\"\",\"value\":\"\"}],\"edit\":[]},\"subMethod\":\"return admin.search();\"}', '');
 
 -- ----------------------------
 -- Table structure for sys_opt
@@ -138,7 +140,7 @@ CREATE TABLE `sys_opt` (
   `opt_handler` varchar(50) DEFAULT '' COMMENT '点击时调用的js方法',
   PRIMARY KEY (`opt_id`,`opt_code`,`menu_id`),
   KEY `opt_id` (`opt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt
@@ -150,6 +152,8 @@ INSERT INTO `sys_opt` VALUES ('4', 'edit2', '编辑2', '', '1', '14', '3', 'icon
 INSERT INTO `sys_opt` VALUES ('5', 'aoe', '新增', '', '1', '16', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 INSERT INTO `sys_opt` VALUES ('6', 'add', '新增', '', '1', '17', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
 INSERT INTO `sys_opt` VALUES ('7', 'edit', '编辑', '', '1', '17', '1', 'icon-edit', 'btn-danger', '1', 'outer', '', 'admin.editDto();');
+INSERT INTO `sys_opt` VALUES ('8', 'add', '新增', '', '1', '19', '0', 'icon-plus', 'btn-success', '1', 'outer', '', 'admin.addDto();');
+INSERT INTO `sys_opt` VALUES ('9', 'right', '分配权限', '', '1', '17', '2', 'icon-eye-open', 'btn-default', '1', 'outer', '', 'admin.rightDto();');
 
 -- ----------------------------
 -- Table structure for sys_opt_log
@@ -162,7 +166,7 @@ CREATE TABLE `sys_opt_log` (
   `opt_log_cont` varchar(2000) DEFAULT '' COMMENT '操作内容',
   `opt_log_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1增-1删2改3批量0其他',
   PRIMARY KEY (`opt_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_opt_log
@@ -273,6 +277,12 @@ INSERT INTO `sys_opt_log` VALUES ('103', '1491893924214', '10000', '编辑操作
 INSERT INTO `sys_opt_log` VALUES ('104', '1491894772309', '10000', '', '0');
 INSERT INTO `sys_opt_log` VALUES ('105', '1491894926165', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"用户名\\\",\\\"name\\\":\\\"user_name\\\",\\\"sign\\\":\\\"in\\\",\\\"column\\\":\\\"user_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":18}]', '0');
 INSERT INTO `sys_opt_log` VALUES ('106', '1491895002889', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_user/list\\\",\\\"add\\\":\\\"/admin/db/sys_user/add\\\",\\\"del\\\":\\\"/admin/db/sys_user/add\\\",\\\"edit\\\":\\\"/admin/db/sys_user/edit\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"用户编号\\\",\\\"用户名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"user_id\\\",\\\"index\\\":\\\"user_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"user_name\\\",\\\"index\\\":\\\"user_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":18}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('107', '1491986855417', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"分组编号\\\",\\\"name\\\":\\\"group_id\\\",\\\"sign\\\":\\\"\\\",\\\"column\\\":\\\"group_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"分组名称\\\",\\\"name\\\":\\\"group_name\\\",\\\"sign\\\":\\\"\\\",\\\"column\\\":\\\"group_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":19}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('108', '1491986958651', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_group/list\\\",\\\"add\\\":\\\"/admin/db/sys_group/add\\\",\\\"del\\\":\\\"/admin/db/sys_group/add\\\",\\\"edit\\\":\\\"/admin/db/sys_group/edit\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"分组编号\\\",\\\"分组名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"group_id\\\",\\\"index\\\":\\\"group_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"group_name\\\",\\\"index\\\":\\\"group_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":19}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('109', '1491986983712', '10000', '编辑操作:[{\"cfgObject\":\"{\\\"cols\\\":{\\\"add\\\":[{\\\"label\\\":\\\"分组编号\\\",\\\"name\\\":\\\"group_id\\\",\\\"sign\\\":\\\"\\\",\\\"column\\\":\\\"group_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"分组名称\\\",\\\"name\\\":\\\"group_name\\\",\\\"sign\\\":\\\"\\\",\\\"column\\\":\\\"group_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}],\\\"edit\\\":[]},\\\"subMethod\\\":\\\"return admin.search();\\\"}\",\"menuId\":19}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('110', '1491987035492', '10000', '编辑操作:[{\"cfgSearch\":\"{\\\"cols\\\":[{\\\"label\\\":\\\"分组编号\\\",\\\"name\\\":\\\"group_id\\\",\\\"sign\\\":\\\"eq\\\",\\\"column\\\":\\\"group_id\\\",\\\"type\\\":\\\"int\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"},{\\\"label\\\":\\\"分组名称\\\",\\\"name\\\":\\\"group_name\\\",\\\"sign\\\":\\\"in\\\",\\\"column\\\":\\\"group_name\\\",\\\"type\\\":\\\"varchar\\\",\\\"widget\\\":\\\"text\\\",\\\"vali\\\":\\\"\\\",\\\"source\\\":\\\"\\\",\\\"value\\\":\\\"\\\"}]}\",\"menuId\":19}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('111', '1492070593097', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_role/list\\\",\\\"add\\\":\\\"/admin/db/sys_role/add\\\",\\\"del\\\":\\\"/admin/db/sys_role/add\\\",\\\"edit\\\":\\\"/admin/db/sys_role/edit\\\",\\\"other\\\":\\\"{\\\\\\\"right\\\\\\\": \\\\\\\"/admin/db/sys_role/right\\\\\\\"}\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"角色编号\\\",\\\"角色名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"role_id\\\",\\\"index\\\":\\\"role_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"role_name\\\",\\\"index\\\":\\\"role_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":17}]', '0');
+INSERT INTO `sys_opt_log` VALUES ('112', '1492071245875', '10000', '编辑操作:[{\"cfgGrid\":\"{\\\"url\\\":{\\\"list\\\":\\\"/admin/db/sys_role/list\\\",\\\"add\\\":\\\"/admin/db/sys_role/add\\\",\\\"del\\\":\\\"/admin/db/sys_role/add\\\",\\\"edit\\\":\\\"/admin/db/sys_role/edit\\\",\\\"other\\\":\\\"{\\\\\\\"right\\\\\\\": \\\\\\\"/admin/role/right\\\\\\\"}\\\"},\\\"option\\\":{\\\"colNames\\\":[\\\"角色编号\\\",\\\"角色名称\\\"],\\\"colModel\\\":[{\\\"name\\\":\\\"role_id\\\",\\\"index\\\":\\\"role_id\\\",\\\"width\\\":60,\\\"sorttype\\\":\\\"int\\\",\\\"editable\\\":false},{\\\"name\\\":\\\"role_name\\\",\\\"index\\\":\\\"role_name\\\",\\\"width\\\":90,\\\"editable\\\":true}]}}\",\"menuId\":17}]', '0');
 
 -- ----------------------------
 -- Table structure for sys_persistent_logins
