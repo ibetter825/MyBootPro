@@ -1,12 +1,12 @@
 package com.mypro.bean.entity.admin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import com.google.common.collect.Maps;
 import com.mypro.bean.entity.BaseEntity;
 
 
@@ -50,7 +50,7 @@ public class SysMenu extends BaseEntity {
 				if(!m.getMenuPid().equals(menuPid))
 					continue;
 			}
-			map = new HashMap<String, Object>();
+			map = Maps.newHashMap();
 			map.put("id", m.getMenuId());
 	    	map.put("name", m.getMenuName());
 	    	map.put("clzz", m.getMenuIcon());

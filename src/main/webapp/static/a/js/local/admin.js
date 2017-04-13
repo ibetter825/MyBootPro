@@ -5,8 +5,8 @@
 var CONSTANT = {
 	//先加载的js文件放在前面
 	'jqgrid': ['/static/a/js/jqGrid/jquery.jqGrid.min.js?v=4.5.2', '/static/a/js/jqGrid/i18n/grid.locale-cn.js?v=4.5.2'],
-	'validate': ['/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2', '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2'],
-	'datepicker': ['/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
+	'validate': ['/static/a/css/validationEngine.jquery.css?v=2.6.2', '/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2', '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2'],
+	'datepicker': ['/static/a/css/daterangepicker.css?v=2.0.0', '/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
 	'editor': ['/static/a/js/editor/wangEditor.min.js?v=2.0.0'],
 	'ztree': ['/static/a/js/ztree/skin/awesome.css?v=3.5.26', '/static/a/js/ztree/jquery.ztree.core.min.js?v=3.5.26']
 }
@@ -65,7 +65,9 @@ var loadJS = function(id, callback, url){
 		else
 			head = document.body;
 		
+		var stylecss = null;
 		if(!isJs){ //加载css
+			stylecss = document.getElementById('stylecss');
 			dom = document.createElement('link');
 			dom.type = "text/css";
 			dom.rel = "stylesheet";
@@ -77,7 +79,10 @@ var loadJS = function(id, callback, url){
 		}
 		dom.ready = false;//还没加载完成
 		dom.id = id;
-		head.appendChild(dom);
+		if(stylecss)
+			head.insertBefore(dom, stylecss);
+		else
+			head.appendChild(dom);
 		
 		//添加监听事件
 	    if (window.addEventListener)
@@ -243,8 +248,10 @@ var admin = {};
 	 */
 	app.attachTimepicker = function(){
 		loadJS('datepicker', function(){
+			$('.daterangepicker').remove();
 			$('.auto-bind-timepicker').each(function(i){
 				var id = this.id;
+				var state = $('#'+id).attr('state');//bind状态
 				var constraint = $(this).attr('data-constraint');
 				$(this).after('<input id="'+id+'_hidden" name="'+constraint+'" type="text" style="display:none;"/>');
 				bindDateTimePicker('#'+id);
@@ -441,6 +448,7 @@ var admin = {};
 		html.push('</div>');
 		$('#search-cnter').empty().append(html.join(''));
 		app.attachVali($search);//给搜索表单绑定验证
+		app.attachTimepicker();//绑定日期控件
 	}
 	/**
 	 * 操作按钮
@@ -460,21 +468,21 @@ var admin = {};
 	 */
 	app.setObjectCont = function(list, dto){
 		var html = new Array();
-		var col = null;
+		var col = null, id = null;
 		var callbacks = new Array();
 		for(var i = 0, l = list.length; i < l; i++){
-			col = list[i];
+			var col = list[i];
+			id = 'd-'+ col.name;
 			html.push('<div class="form-group">');
 			html.push('<label class="col-sm-2 col-sm-offset-2 control-label no-padding-right" for="d-'+ col.name +'"> '+ col.label  +': </label>');
 			html.push('<div class="col-sm-6">');
 			if(col['widget'] === 'text')
-				html.push('<input id="d-'+ col.name +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'">');
+				html.push('<input id="'+ id +'" type="text" placeholder="'+ col.label +'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'">');
 			else if(col['widget'] === 'tree'){
-				var id = 'd-'+ col.name;
+				
 				html.push('<input id="'+(id+'-name')+'" onclick="loadTreeData(event, \''+id+'\');" readonly="reaonly" type="text" placeholder="'+ col.label +'" class="col-sm-12"/>');
 				html.push('<input id="'+id+'" type="hidden" name="'+ col.name +'" class="'+ col.vali +'">');
 				html.push('<div class="ztree-cnter col-sm-12 no-padding hide"><ul id="'+ (id+'-ztree') +'" class="ztree" data-state="unload"></ul></div>');
-				
 				//加载树控件数据
 				window.loadTreeData = function(e, id){
 					e.stopPropagation();
@@ -507,9 +515,9 @@ var admin = {};
 					
 					$tree.css({'minWidth':'206px', 'maxHeight': '200px'});
 					
-					var from = col.source.from;
+					var from = list[i].source.from;
 					if(from === 'server'){//远程数据
-						var url = col.source.url;
+						var url = list[i].source.url;
 						$tree.attr('data-state', 'loading');//正在加载数据
 						$.post(url, function(data){
 							//取到数据后，可以先存到本地，然后就可以不用每次请求数据了
@@ -523,7 +531,36 @@ var admin = {};
 						
 					}
 				}
-			}
+			}else if(col['widget'] === 'hidden')
+				html.push('<input id="'+ id +'" type="hidden" name="'+ col.name +'">');
+			else if(col['widget'] === 'select'){//下拉框
+				html.push('<select id="d-'+col.name+'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'">');
+				var from = col.source.from;
+				if(from === 'server'){//远程数据
+					var url = col.source.url;
+					$tree.attr('data-state', 'loading');//正在加载数据
+					$.post(url, function(data){
+						loadData(data, id);
+					}, 'json').error(function(xhr, st, err) {app.error(xhr, st, err);});
+				}else{//本地数据
+					var data = col.source.data;
+					html.push(loadData(data));
+				}
+				
+				function loadData(data, id){
+					var arr = new Array();
+					for(var i = 0, ln = data.length; i < ln; i++)
+						arr.push('<option value="'+data[i]['value']+'">'+data[i]['text']+'</option>');
+					if(id)
+						$('#'+id).append(arr.join(''));
+					else
+						return arr.join('');
+				}
+				html.push('</select>');
+			}else if(col['widget'] === 'textarea')
+				html.push('<textarea id="d-'+col.name+'" class="col-sm-12 '+ col.vali +'" name="'+ col.name +'" rows="2"></textarea>');
+			else if(col['widget'] === 'date')//datepicker
+				html.push('<input id="'+ id +'" type="text" placeholder="'+col.label+'" data-constraint="'+col.name+'" class="auto-bind-timepicker col-sm-12 '+col.vali+']" autocomplete="off">');
 			html.push('</div>');
 			html.push('</div>');
 		}
@@ -531,7 +568,7 @@ var admin = {};
 		for(var i = 0, l = callbacks.length; i < l; i++)
 			callbacks[i]();
 		app.attachVali($dtoForm);//给dto表单绑定验证
-		
+		app.attachTimepicker();//绑定日期控件
 		/*function convert(str){
 			//下划线转驼峰命名
 			var a = str.split("_");

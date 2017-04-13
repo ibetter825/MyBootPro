@@ -4,8 +4,6 @@
 <head>
 	<#assign title="菜单管理">
 	<#include "/admin/includes/header.html"/>
-	<link rel="stylesheet" href="/static/a/css/validationEngine.jquery.css" />
-	<link rel="stylesheet" href="/static/a/css/daterangepicker.css" />
 	<style>
 		.formError-small .formErrorContent {border-color: #fff; border-radius: 0;}
 	</style>
@@ -91,9 +89,9 @@
 				search: {
 					cols: [
 					        //widget: 控件类型        type: 字段类型        source:填充内容来源 type(local, server)； value: 默认值什么的
-					        //widget包括：text文本框 textarea 文本域 editor 富文本编辑器 select下拉框 hidden隐藏文本框 date时间选择器 chosen下拉框插件 tree 树插件如ztree
+					        //widget包括：text文本框 textarea 文本域 editor 富文本编辑器  select下拉框   hidden 隐藏文本框 date时间选择器 chosen下拉框插件 tree 树插件如ztree
 					        //name: 表单中的name属性值,column对应的数据表中的字段
-					        //还需要添加使用该字段的条件符号: eq:等于  ne:不等  lt:小于  le:小于等于  gt:大于  ge:大于等于 nu:空值  nn:非空值   in:包含   ni:不包含   
+					        //还需要添加使用该字段的条件符号(sign默认可以不选择，java会自动识别为=): eq:等于  ne:不等  lt:小于  le:小于等于  gt:大于  ge:大于等于 nu:空值  nn:非空值   in:包含   ni:不包含   
 					        {widget: 'text', type: 'varchar', name: 'menu_id', sign: '', column: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
 					        {widget: 'text', type: 'varchar', name: 'menu_name', sign: '', column: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
 					        {widget: 'select', type: 'integer', name: 'menu_state', sign: '', column: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
@@ -133,7 +131,10 @@
 				object: {
 					cols: {//新增，或修改字段集合, 格式与search cols一致, 新增与修改有时不一致，当edit为空时则两者一样
 						add: [
-							{widget: 'tree', type: 'varchar', name: 'menu_id', sign: '', column: 'menu_id', label: '父级菜单', vali: 'validate[custom[integer]]', source: {from: 'server', url: '/admin/menu/tree'}, value: ''}      
+							{widget: 'tree', type: 'varchar', name: 'menu_id', sign: '', column: 'menu_id', label: '父级菜单', vali: 'validate[custom[integer]]', source: {from: 'server', url: '/admin/menu/tree'}, value: ''},
+							{widget: 'select', type: 'varchar', name: 'menu_state', sign: '', column: 'menu_state', label: '父级菜单', vali: 'validate[required]', source: {from: 'local', data: [{value: 0, text: '不可用'}, {value: 1, text: '正常'}]}, value: ''},
+							{widget: 'textarea', type: 'varchar', name: 'menu_desc', sign: '', column: 'menu_desc', label: '父级菜单', vali: 'validate[required]', source: '', value: ''},
+							{widget: 'date', type: 'varchar', name: 'menu_date', sign: '', column: 'menu_date', label: '数据日期', vali: 'validate[required]', source: '', value: ''}
 						],
 						edit: []
 					},

@@ -26,6 +26,7 @@ body .dto-form .widget-main {padding-top: 18px; padding-bottom: 0; max-height: 2
 body .dto-form .widget-box {margin: 0;}
 body .dto-form .widget-main .col-sm-6 {position: static;}/* 解决使用dto-form内容填充到layer后出现验证错误时父容器出现滚动条 并错位的问题*/
 .dto-model-hide {position: absolute; top: -100%; left: -100%;}
+body .daterangepicker.dropdown-menu {z-index: 1910130825;}
 /*layer skin*/
 body .layer-skin .layui-layer-title{background: #307ECC; color: #fff; border: none;}
 body .layer-skin .layui-layer-content {padding: 10px;}
