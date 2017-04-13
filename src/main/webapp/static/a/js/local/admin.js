@@ -8,7 +8,7 @@ var CONSTANT = {
 	'validate': ['/static/a/css/validationEngine.jquery.css?v=2.6.2', '/static/a/js/validation/jquery.validationEngine-zh_CN.js?v=2.6.2', '/static/a/js/validation/jquery.validationEngine.js?v=2.6.2'],
 	'datepicker': ['/static/a/css/daterangepicker.css?v=2.0.0', '/static/a/js/datepicker/moment.min.js?v=2.0.0', '/static/a/js/datepicker/daterangepicker.js'],
 	'editor': ['/static/a/js/editor/wangEditor.min.js?v=2.0.0'],
-	'ztree': ['/static/a/js/ztree/skin/awesome.css?v=3.5.26', '/static/a/js/ztree/jquery.ztree.core.min.js?v=3.5.26']
+	'ztree': ['/static/a/js/ztree/skin/zTreeStyle.css?v=3.5.26', '/static/a/js/ztree/jquery.ztree.core.min.js?v=3.5.26']
 }
 //创建事件
 var EVT = document.createEvent('HTMLEvents');

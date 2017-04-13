@@ -18,8 +18,8 @@ body::-webkit-scrollbar-corner, div::-webkit-scrollbar-corner, ul::-webkit-scrol
 .custom .page-header .form-group label[class*="col-"] {padding-top:4px; margin-bottom:4px;}
 .custom select {height: 28px;}
 .custom .form-group .ztree-cnter {min-height:0;}
-.custom .form-group .ztree {position: fixed; z-index: 1990; background: #6FB3E0; overflow: auto;}
-.custom .form-group .ztree * {background: #6FB3E0;}
+.custom .form-group .ztree {position: fixed; z-index: 1990; border: 1px solid #C6C6C6; border-top: 0; background-color: #FFF; overflow: auto;}
+/* .custom .form-group .ztree * {background-color: #FFF;} */
 /* common */
 .hide {display: none;}
 body .dto-form .widget-main {padding-top: 18px; padding-bottom: 0; max-height: 280px; overflow: auto;}
