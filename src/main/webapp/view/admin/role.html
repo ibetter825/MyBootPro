@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<#assign title="菜单管理">
+	<#include "/admin/includes/header.html"/>
+	<style>
+		.formError-small .formErrorContent {border-color: #fff; border-radius: 0;}
+	</style>
+</head>
+
+<body class="custom">
+	<div class="page-content">
+		<div class="page-header">
+			<div class="widget-box">
+				<form id="search-form" class="form-horizontal" role="form" onsubmit="return admin.search();">
+					<div class="widget-header header-color-blue">
+						<h6><i class="icon-search"></i>搜索</h6>
+						<div class="widget-toolbar">
+							<a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a>
+						</div>
+						<div class="widget-toolbar no-border">
+							<button class="btn btn-xs btn-info" type="submit"><i class="icon-search bigger-110"></i> 查&nbsp;询
+							</button><button class="btn btn-xs" type="reset"><i class="icon-undo bigger-110"></i> 重&nbsp;置</button>
+						</div>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<div class="form-group" id="search-cnter"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- /.page-header -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="widget-box">
+					<div class="widget-header header-color-blue">
+						<h6><i class="icon-table"></i>列表</h6>
+						<div class="widget-toolbar"><a href="#" data-action="collapse"><i class="1 icon-chevron-up"></i></a></div>
+					</div>
+					<div class="widget-body">
+						<div class="widget-toolbox">
+							<div class="btn-toolbar">
+								<div class="btn-group" id="opt-cnter">
+									<!-- <button class="btn btn-sm btn-success" onclick="admin.addDto();"><i class="icon-plus"></i> 新增
+									</button><button class="btn btn-sm btn-danger" onclick="admin.editDto();"><i class="icon-edit"></i> 编辑</button> -->
+								</div>
+							</div>
+						</div>
+						<div class="widget-main">
+							<table id="grid-table"></table>
+							<div id="grid-pager"></div>
+						</div>
+					</div>
+				</div>
+			</div><!-- /.col -->
+		</div>
+		<!-- /row -->
+		<!-- PAGE CONTENT ENDS -->
+		<div id="dto-model" class="dto-model-hide">
+			<form id="dto-form" class="form-horizontal" role="form" onsubmit="return admin.submitDtoModelForm();">
+				<div class="widget-box no-border">
+					<div class="widget-header header-color-blue">
+						<h6><i class="icon-search"></i>表单</h6>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main"></div>
+						<div class="widget-toolbox padding-8 clearfix">
+							<button type="button" class="btn btn-sm btn-danger pull-right" onclick="admin.closeDtoModel();">
+								<i class="icon-trash"></i><span class="bigger-110"> 取&nbsp;消</span>
+							</button>
+							<button type="submit" class="btn btn-sm btn-primary pull-right">
+								<i class="icon-ok"></i><span class="bigger-110"> 确&nbsp;定</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<!-- basic scripts -->
+	<#include "/admin/includes/footer.html"/>
+	
+	<script type="text/javascript">
+		var config = {
+				search: {
+					cols: [
+					        //widget: 控件类型        type: 字段类型        source:填充内容来源 type(local, server)； value: 默认值什么的
+					        //widget包括：text文本框 textarea 文本域 editor 富文本编辑器  select下拉框   hidden 隐藏文本框 date时间选择器 chosen下拉框插件 tree 树插件如ztree
+					        //name: 表单中的name属性值,column对应的数据表中的字段
+					        //还需要添加使用该字段的条件符号(sign默认可以不选择，java会自动识别为=): eq:等于  ne:不等  lt:小于  le:小于等于  gt:大于  ge:大于等于 nu:空值  nn:非空值   in:包含   ni:不包含   
+					        {widget: 'text', type: 'varchar', name: 'menu_id', sign: '', column: 'menu_id', label: '菜单编号', vali: 'validate[custom[integer]]', source: '', value: ''},
+					        {widget: 'text', type: 'varchar', name: 'menu_name', sign: '', column: 'menu_name', label: '菜单名称', vali: '', source: '', value: ''},
+					        {widget: 'select', type: 'integer', name: 'menu_state', sign: '', column: 'menu_state', label: '菜单状态', vali: '', source: {type: 'local', cont: [{value: 0, text: '正常'}, {value: 1, text: '不正常'}]}, value: ''},
+					        {widget: 'date', type: 'long', name: 'data_date', sign: '', column: 'data_date', label: '数据日期', vali: '', source: '', value: ''}
+					      ],
+					 subMethod: ''
+				},
+				grid: {
+					url: {
+						list: '/admin/menu/list',
+						del: '',
+						add: '',
+						edit: ''
+					},
+					btns: [//用于权限限制
+					      	{type: 'outer', label: '新增', clss: 'btn-success', icon: 'icon-plus', handler: 'admin.addDto()', param: '', suburl: ''},
+					      	{type: 'outer', label: '删除', clss: 'btn-danger', icon: 'icon-trash', handler: 'admin.delDto()', param: '', suburl: ''},
+					      	{type: 'outer', label: '编辑', clss: 'btn-primary', icon: 'icon-edit', handler: 'admin.editDto()', param: '', suburl: ''},
+					      	{type: 'outer', label: '配置', clss: 'btn-warning', icon: 'icon-cogs', handler: 'admin.config()', param: '', suburl: ''}
+					     ],
+					option: {
+						//jqgrid配置，替换默认的配置
+						colNames:["菜单编号", "菜单名称","菜单地址", "操作"],//config
+						colModel:[
+							{"name":"menu_id","index":"menu_id", "width":60, "sorttype":"int", "editable": false},
+							{"name":"menu_name","index":"menu_name","width":90, "editable":true},
+							{"name":"menu_url","index":"menu_url", "width":150, "editable": true, "editoptions":{"maxlength":"30"}},
+							{"name":"myac","index":"", "width":80, "fixed":true, "sortable":false, "resize":false,
+								"formatter":"actions", 
+								"formatoptions":{
+									"keys":true
+								}
+							}
+						]
+					}
+				},
+				object: {
+					cols: {//新增，或修改字段集合, 格式与search cols一致, 新增与修改有时不一致，当edit为空时则两者一样
+						add: [
+							{widget: 'tree', type: 'varchar', name: 'menu_id', sign: '', column: 'menu_id', label: '父级菜单', vali: 'validate[custom[integer]]', source: {from: 'server', url: '/admin/menu/tree'}, value: ''},
+							{widget: 'select', type: 'varchar', name: 'menu_state', sign: '', column: 'menu_state', label: '父级菜单', vali: 'validate[required]', source: {from: 'local', data: [{value: 0, text: '不可用'}, {value: 1, text: '正常'}]}, value: ''},
+							{widget: 'textarea', type: 'varchar', name: 'menu_desc', sign: '', column: 'menu_desc', label: '父级菜单', vali: 'validate[required]', source: '', value: ''},
+							{widget: 'date', type: 'varchar', name: 'menu_date', sign: '', column: 'menu_date', label: '数据日期', vali: 'validate[required]', source: '', value: ''}
+						],
+						edit: []
+					},
+					subMethod: ''
+				},
+				global: {
+					table: 'sys_menu',//主要数据表名
+					js: '',//一些自定义方法变量等，一条字符串，在页面中转换为js代码//自定义校验方法，加入到validateEngine中去
+					html: ''//html代码
+				}
+		}
+		//计算表格高度
+		var $window = $(window), $header = $('.page-header:first'), $height = $window.height() - $header.height() - 266;
+		var searchSelector = '#search-form', gridSelector = '#grid-table', pagerSelector = '#grid-pager', dtoModelSelector = '#dto-model';
+		var $search = $(searchSelector), $grid = $(gridSelector), $pager = $(pagerSelector), $dtoModel = $(dtoModelSelector), $dtoForm = $('#dto-form');
+		var curMenuId = null;
+		//写入搜索表单的数据
+		admin.setSearchCont();
+		//写入操作按钮
+		admin.setOptionCont();
+		
+		admin.initGrid();
+		admin.attachVali($dtoForm);//给dto表单绑定验证
+		admin.attachTimepicker();
+
+	</script>
+</body>
+
+</html>

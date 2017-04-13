@@ -28,7 +28,7 @@ wap:
 	3.ConcurrentSessionFilter 登录过期后对ajax的处理问题
 	4.AOP记录操作日志
 	5.业务层与dao层方法的命名规则
-	  ① 业务层: 增add* 删remove* 改edit* 查query* 批量batch*
+	  ① 业务层: 增add* 删remove* 改edit* 查query* 批量batch* 其他hand*
 	  ② dao层: 增insert* 删delete* 改update* 查select*
 	6.现在是把用户的所有操作是在登录时查询出来，再存入security的权限验证容器中，如果用户的权限变更的话，在session未过期之前不起作用，因此暂时想到的方法是在权限变更后将对应用户踢下线(如果在线)
 分析：
