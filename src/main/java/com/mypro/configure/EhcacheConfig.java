@@ -7,6 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 
 /**
  * Ehcache配置
+ * 由于采用了redis所以放弃使用ehcache
  * @author user
  *
  */
